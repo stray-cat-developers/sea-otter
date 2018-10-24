@@ -1,0 +1,142 @@
+buildscript {
+    ext {
+        kotlinVersion = '1.2.70'
+        springBootVersion = '2.0.6.RELEASE'
+        queryDslVersion = '4.1.4'
+    }
+    repositories {
+        jcenter()
+        maven { url 'https://palantir.bintray.com/releases/' }
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath 'com.palantir.configurationresolver:gradle-configuration-resolver-plugin:0.3.0'
+    }
+}
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version '1.2.70'
+    id "org.jetbrains.kotlin.plugin.allopen" version '1.2.70'
+    id "org.jetbrains.kotlin.plugin.noarg" version '1.2.70'
+    id "org.jetbrains.kotlin.plugin.jpa" version '1.2.70'
+    id "org.jetbrains.kotlin.plugin.spring" version '1.2.70'
+    id "org.jmailen.kotlinter" version '1.18.0'
+    id 'org.springframework.boot' version '1.5.16.RELEASE'
+}
+
+apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'idea'
+apply plugin: 'com.palantir.configuration-resolver'
+
+ext {
+    junitJupiterVersion = '5.3.1'
+    junitPlatformVersion = '1.0.2'
+    swaggerVersoin = '2.9.2'
+    jacksonVersion = '2.9.7'
+}
+
+group 'io.mustelidae.seaotter'
+version '1.0-SNAPSHOT'
+
+junitPlatform {
+    platformVersion junitPlatformVersion
+    filters {
+        engines {
+        }
+        tags {
+            exclude 'slow'
+        }
+    }
+    enableStandardTestTask true
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
+    compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
+    compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.24.0.RELEASE'
+
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
+    compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlinVersion
+    compile group: 'org.jetbrains.kotlinx', name: 'kotlinx-coroutines-core', version: '0.27.0'
+
+    runtime group: 'org.mongodb', name: 'mongo-java-driver', version: '3.6.4'
+
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
+
+    compile group: 'com.github.kittinunf.fuel', name: 'fuel', version: '1.15.0'
+
+    compile group: 'com.google.guava', name: 'guava', version: '26.0-jre'
+
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersoin
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersoin
+    compile group: 'io.springfox', name: 'springfox-bean-validators', version: swaggerVersoin
+
+    compile group: 'io.sentry', name: 'sentry-logback', version: '1.7.5'
+
+    //Local 개발용.
+    compile group: 'de.flapdoodle.embed', name: 'de.flapdoodle.embed.mongo', version: '2.0.0'
+    compile group: 'cz.jirutka.spring', name: 'embedmongo-spring', version: '1.3.1'
+
+    testCompile group: 'com.nhaarman', name: 'mockito-kotlin', version: '1.6.0'
+    testCompile group: 'com.github.sbrannen', name: 'spring-test-junit5', version: '1.3.1'
+    testCompile group: 'com.google.truth', name: 'truth', version: '0.42'
+    
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitJupiterVersion
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitJupiterVersion
+    testCompile group: 'org.junit.platform', name: 'junit-platform-launcher', version: junitPlatformVersion
+}
+
+jar {
+    archiveName = 'api-server.jar'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.8'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+bootRun {
+    systemProperties['spring.profiles.active'] = project.gradle.startParameter.systemPropertiesArgs['spring.profiles.active']
+    addResources = true
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/kotlin'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+compileKotlin.dependsOn formatKotlin
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}

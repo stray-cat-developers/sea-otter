@@ -1,0 +1,35 @@
+logging:
+  level:
+    org.springframework.web: info
+    org.springframework.boot: info
+    io.musteliadae.seaotter: trace
+  config: classpath:logback-spring.xml
+
+
+spring:
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  port: 6100
+  error:
+    include-stacktrace: always
+    whitelabel:
+      enabled: false
+  compression:
+    enabled: true
+    mime-types: application/json,text/html,text/plain,text/css,text/javascript,application/javascript,image/jpeg,image/png
+
+sea-otter:
+  uploader: local
+  local-storage:
+    default-path: /var/tmp
+    url: http://localhost
+  aws-s3:
+    bucket: sea-otter
+    default-path: multimedia/
+    cloud-front:
+      enabled: false
+      url: http://localhost
