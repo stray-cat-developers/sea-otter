@@ -1,6 +1,7 @@
 package io.mustelidae.seaotter.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.twelvemonkeys.servlet.image.IIOProviderContextListener
 import io.mustelidae.seaotter.utils.Jackson
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -20,6 +21,9 @@ class WebConfig : WebMvcConfigurerAdapter() {
     fun objectMapper(): ObjectMapper {
         return Jackson.getMapper()
     }
+
+    @Bean
+    fun iIOProviderContextListener(): IIOProviderContextListener = IIOProviderContextListener()
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         converters.add(BufferedImageHttpMessageConverter())
