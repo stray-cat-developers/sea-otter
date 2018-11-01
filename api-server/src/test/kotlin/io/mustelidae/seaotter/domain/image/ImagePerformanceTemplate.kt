@@ -34,7 +34,7 @@ abstract class ImagePerformanceTemplate {
 
     private fun resize(fileName: String) {
         val inputPath = getTestImageFileAsAbsolutePath(fileName)
-        val scale = 50.0
+        val scale = 40.0
 
         var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
         val time = measureTimeMillis {
@@ -45,7 +45,7 @@ abstract class ImagePerformanceTemplate {
         val outputStream = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "jpg", outputStream)
 
-        val outFile = getOutputFile("resize_${getProcessorName()}_${fileName}_to.jpg")
+        val outFile = getOutputFile("${fileName}_to_resize_${getProcessorName()}.jpg")
 
         println("out file path: ${outFile.absolutePath}")
         outFile.createNewFile()

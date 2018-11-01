@@ -9,6 +9,7 @@ class ImageScalingPerformanceTest: ImagePerformanceTemplate() {
     override fun resize(bufferedImage: BufferedImage, scale: Double): BufferedImage {
         val flabbyImage = ImageScalingFlabbyImage(bufferedImage)
         flabbyImage.resize(scale)
+
         return flabbyImage.getBufferedImage()
     }
 

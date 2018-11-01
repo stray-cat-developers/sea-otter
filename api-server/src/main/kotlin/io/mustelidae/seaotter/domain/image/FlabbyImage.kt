@@ -18,9 +18,6 @@ interface FlabbyImage {
     fun resize(scale: Double)
 
     @Throws(IOException::class)
-    fun compress(quality: Double)
-
-    @Throws(IOException::class)
     fun crop(width: Int, height: Int)
 
     @Throws(IOException::class)
@@ -36,6 +33,10 @@ interface FlabbyImage {
         val fixedHeight = Math.round(height * (ratio * 0.01)).toInt()
 
         return Pair(fixedWidth, fixedHeight)
+    }
+
+    fun isSameSize(width: Int, height: Int): Boolean {
+        return (getBufferedImage().width == width && getBufferedImage().height == height)
     }
 
     companion object {
