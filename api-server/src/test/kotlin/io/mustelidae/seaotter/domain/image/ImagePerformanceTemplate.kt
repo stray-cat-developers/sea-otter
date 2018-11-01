@@ -3,6 +3,7 @@ package io.mustelidae.seaotter.domain.image
 import com.google.common.io.Files
 import io.mustelidae.seaotter.utils.getOutputFile
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
+import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
@@ -37,10 +38,17 @@ abstract class ImagePerformanceTemplate {
         val scale = 40.0
 
         var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+
         val time = measureTimeMillis {
             bufferedImage = resize(bufferedImage, scale)
         }
         println("resize process time: $time")
+
+        if(bufferedImage.colorModel.pixelSize == 32){
+            val convert = BufferedImage(bufferedImage.width, bufferedImage.height, BufferedImage.TYPE_INT_RGB)
+            convert.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null)
+            bufferedImage = convert
+        }
 
         val outputStream = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "jpg", outputStream)
