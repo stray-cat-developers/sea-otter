@@ -25,24 +25,73 @@ abstract class ImagePerformanceTemplate {
     )
 
     abstract fun resize(bufferedImage:BufferedImage, scale:Double): BufferedImage
+    abstract fun resize(bufferedImage:BufferedImage, width: Int, height: Int): BufferedImage
+    abstract fun crop(bufferedImage: BufferedImage, width: Int, height: Int): BufferedImage
+
     abstract fun getProcessorName(): String
 
-    fun resizeProcess() {
+    fun allImageAreScaledUsingProportions() {
+        val scale = 40.0
         for(imageFileName in imageFiles){
-            resize(imageFileName)
+            resizeUsingScale(imageFileName, scale)
         }
     }
 
-    private fun resize(fileName: String) {
-        val inputPath = getTestImageFileAsAbsolutePath(fileName)
-        val scale = 40.0
+    fun allImageAreFrameUsingProportions() {
+        val width = 400
+        val height = 350
+        for(imageFileName in imageFiles){
+            resizeUsingFixFrame(imageFileName, width, height)
+        }
+    }
 
+    fun cropAllImagesToFixedSize() {
+        val width = 500
+        val height = 500
+
+        for(imageFileName in imageFiles){
+            cropTheImage(imageFileName, width, height)
+        }
+    }
+
+    private fun cropTheImage(fileName: String, width: Int, height: Int) {
+        val inputPath = getTestImageFileAsAbsolutePath(fileName)
+        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+
+        val time = measureTimeMillis {
+            bufferedImage = crop(bufferedImage, width, height)
+        }
+        println("resize process time: $time")
+
+        write(bufferedImage, "${fileName}_to_crop_${getProcessorName()}")
+    }
+
+    private fun resizeUsingScale(fileName: String, scale: Double) {
+        val inputPath = getTestImageFileAsAbsolutePath(fileName)
         var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
 
         val time = measureTimeMillis {
             bufferedImage = resize(bufferedImage, scale)
         }
         println("resize process time: $time")
+
+        write(bufferedImage, "${fileName}_to_scale_resize_${getProcessorName()}")
+    }
+
+    private fun resizeUsingFixFrame(fileName: String, width: Int, height: Int) {
+        val inputPath = getTestImageFileAsAbsolutePath(fileName)
+        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+
+        val time = measureTimeMillis {
+            bufferedImage = resize(bufferedImage, width, height)
+        }
+        println("resize process time: $time")
+
+        write(bufferedImage, "${fileName}_to_frame_resize_${getProcessorName()}")
+    }
+
+    private fun write(targetImage: BufferedImage, fileName: String){
+        var bufferedImage = targetImage
 
         if(bufferedImage.colorModel.pixelSize == 32){
             val convert = BufferedImage(bufferedImage.width, bufferedImage.height, BufferedImage.TYPE_INT_RGB)
@@ -53,7 +102,7 @@ abstract class ImagePerformanceTemplate {
         val outputStream = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "jpg", outputStream)
 
-        val outFile = getOutputFile("${fileName}_to_resize_${getProcessorName()}.jpg")
+        val outFile = getOutputFile("$fileName.jpg")
 
         println("out file path: ${outFile.absolutePath}")
         outFile.createNewFile()

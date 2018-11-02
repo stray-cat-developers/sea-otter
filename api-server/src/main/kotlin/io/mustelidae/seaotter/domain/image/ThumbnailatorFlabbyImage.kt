@@ -12,6 +12,9 @@ class ThumbnailatorFlabbyImage(
         private val antiAliasing: Antialiasing = Antialiasing.ON
 ): FlabbyImage {
 
+    /**
+     * Resize the image while maintaining the ratio of the image based on the width.
+     */
     override fun resize(width: Int, height: Int) {
         val scalingMode = choiceScalingMode(width, height)
         bufferedImage = Thumbnails.of(bufferedImage)
@@ -22,6 +25,9 @@ class ThumbnailatorFlabbyImage(
                 .asBufferedImage()
     }
 
+    /**
+     * Resize the image.
+     */
     override fun resize(scale: Double) {
         val scalingMode = choiceScalingMode(scale)
         bufferedImage = Thumbnails.of(bufferedImage)
@@ -32,18 +38,21 @@ class ThumbnailatorFlabbyImage(
     }
 
     /**
-     * crop by the center
+     * Resize the size of the image to be cropped.
+     * Then crop the input size.
+     * At this time, the position to crop is centered.
      */
     override fun crop(width: Int, height: Int) {
         bufferedImage = Thumbnails.of(bufferedImage)
-                .antialiasing(antiAliasing)
+                .antialiasing(Antialiasing.OFF)
                 .size(width,height)
                 .crop(Positions.CENTER)
                 .asBufferedImage()
     }
 
     /**
-     * crop by the center
+     * Converts the coordinates to the size of the image.
+     * The image is then resized and cropped.
      */
     override fun crop(x1: Int, y1: Int, x2: Int, y2: Int) {
         val width = Math.abs(x1 - x2)
