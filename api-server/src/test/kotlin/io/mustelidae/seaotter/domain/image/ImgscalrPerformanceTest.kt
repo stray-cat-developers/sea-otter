@@ -3,8 +3,13 @@ package io.mustelidae.seaotter.domain.image
 import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage
 
+class ImgscalrPerformanceTest : ImagePerformanceTemplate() {
+    override fun crop(bufferedImage: BufferedImage, x1: Int, y1: Int, x2: Int, y2: Int): BufferedImage {
+        val flabbyImage = ImgscalrFlabbyImage(bufferedImage)
+        flabbyImage.crop(x1, y1, x2, y2)
+        return flabbyImage.getBufferedImage()
+    }
 
-class ImgscalrPerformanceTest: ImagePerformanceTemplate() {
     override fun crop(bufferedImage: BufferedImage, width: Int, height: Int): BufferedImage {
         val imgscalrFlabbyImage = ImgscalrFlabbyImage(bufferedImage)
         imgscalrFlabbyImage.crop(width, height)
@@ -26,17 +31,22 @@ class ImgscalrPerformanceTest: ImagePerformanceTemplate() {
     }
 
     @Test
-    fun resizePerformance(){
+    fun resizePerformance() {
         allImageAreScaledUsingProportions()
     }
 
     @Test
-    fun imageFixFrameTest(){
+    fun imageFixFrameTest() {
         allImageAreFrameUsingProportions()
     }
 
     @Test
     fun imageCropTest() {
         cropAllImagesToFixedSize()
+    }
+
+    @Test
+    fun imageCropTestByCoordinate() {
+        cropAllImagesToCoordinate()
     }
 }

@@ -9,7 +9,6 @@ import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 import kotlin.system.measureTimeMillis
 
-
 abstract class ImagePerformanceTemplate {
 
     private val imageFiles = listOf(
@@ -24,15 +23,16 @@ abstract class ImagePerformanceTemplate {
             "lena_RGB_512x512.bmp"
     )
 
-    abstract fun resize(bufferedImage:BufferedImage, scale:Double): BufferedImage
-    abstract fun resize(bufferedImage:BufferedImage, width: Int, height: Int): BufferedImage
+    abstract fun resize(bufferedImage: BufferedImage, scale: Double): BufferedImage
+    abstract fun resize(bufferedImage: BufferedImage, width: Int, height: Int): BufferedImage
     abstract fun crop(bufferedImage: BufferedImage, width: Int, height: Int): BufferedImage
+    abstract fun crop(bufferedImage: BufferedImage, x1: Int, y1: Int, x2: Int, y2: Int): BufferedImage
 
     abstract fun getProcessorName(): String
 
     fun allImageAreScaledUsingProportions() {
         val scale = 40.0
-        for(imageFileName in imageFiles){
+        for (imageFileName in imageFiles) {
             resizeUsingScale(imageFileName, scale)
         }
     }
@@ -40,7 +40,7 @@ abstract class ImagePerformanceTemplate {
     fun allImageAreFrameUsingProportions() {
         val width = 400
         val height = 350
-        for(imageFileName in imageFiles){
+        for (imageFileName in imageFiles) {
             resizeUsingFixFrame(imageFileName, width, height)
         }
     }
@@ -49,9 +49,32 @@ abstract class ImagePerformanceTemplate {
         val width = 500
         val height = 500
 
-        for(imageFileName in imageFiles){
+        for (imageFileName in imageFiles) {
             cropTheImage(imageFileName, width, height)
         }
+    }
+
+    fun cropAllImagesToCoordinate() {
+        val x1 = 150
+        val y1 = 150
+        val x2 = 400
+        val y2 = 400
+
+        for (imageFileName in imageFiles) {
+            cropTheImage(imageFileName, x1, y1, x2, y2)
+        }
+    }
+
+    private fun cropTheImage(fileName: String, x1: Int, y1: Int, x2: Int, y2: Int) {
+        val inputPath = getTestImageFileAsAbsolutePath(fileName)
+        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+
+        val time = measureTimeMillis {
+            bufferedImage = crop(bufferedImage, x1, y1, x2, y2)
+        }
+        println("crop the image time: $time")
+
+        write(bufferedImage, "${fileName}_to_crop_${getProcessorName()}")
     }
 
     private fun cropTheImage(fileName: String, width: Int, height: Int) {
@@ -61,7 +84,7 @@ abstract class ImagePerformanceTemplate {
         val time = measureTimeMillis {
             bufferedImage = crop(bufferedImage, width, height)
         }
-        println("resize process time: $time")
+        println("crop the image time: $time")
 
         write(bufferedImage, "${fileName}_to_crop_${getProcessorName()}")
     }
@@ -90,10 +113,10 @@ abstract class ImagePerformanceTemplate {
         write(bufferedImage, "${fileName}_to_frame_resize_${getProcessorName()}")
     }
 
-    private fun write(targetImage: BufferedImage, fileName: String){
+    private fun write(targetImage: BufferedImage, fileName: String) {
         var bufferedImage = targetImage
 
-        if(bufferedImage.colorModel.pixelSize == 32){
+        if (bufferedImage.colorModel.pixelSize == 32) {
             val convert = BufferedImage(bufferedImage.width, bufferedImage.height, BufferedImage.TYPE_INT_RGB)
             convert.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null)
             bufferedImage = convert

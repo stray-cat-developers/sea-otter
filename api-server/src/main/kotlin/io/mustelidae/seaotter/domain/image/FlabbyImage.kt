@@ -25,8 +25,8 @@ interface FlabbyImage {
 
     fun getBufferedImage(): BufferedImage
 
-    fun ratioToPixelSize(ratio:Double, width: Int, height: Int): Pair<Int, Int> {
-        if(ratio == 0.0 || ratio == 100.0)
+    fun ratioToPixelSize(ratio: Double, width: Int, height: Int): Pair<Int, Int> {
+        if (ratio == 0.0 || ratio == 100.0)
             return Pair(width, height)
 
         val fixedWidth = Math.round(width *(ratio * 0.01)).toInt()
@@ -58,9 +58,9 @@ interface FlabbyImage {
             return ImageIO.read(ByteArrayInputStream(multipartFile.bytes)) ?: throw IllegalArgumentException("No images uploaded.")
         }
 
-        fun getBufferedImage(path:String): BufferedImage {
+        fun getBufferedImage(path: String): BufferedImage {
             val file = File(path)
-            if(file.isFile.not())
+            if (file.isFile.not())
                 throw java.lang.IllegalArgumentException("Invalid image file path")
 
             return ImageIO.read(file)
