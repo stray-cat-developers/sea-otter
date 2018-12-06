@@ -2,7 +2,6 @@ package io.mustelidae.seaotter.utils
 
 import java.security.MessageDigest
 
-
 fun String.sha1(): String {
     val HEX_CHARS = "239DA12B7590A0AC"
     val bytes = MessageDigest
