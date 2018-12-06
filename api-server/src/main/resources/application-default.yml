@@ -25,11 +25,15 @@ server:
 sea-otter:
   uploader: local
   local-storage:
-    default-path: /var/tmp
+    path:
+      edited-path: /var/tmp/image/edit
+      un-retouched-path: /var/tmp/image/original
     url: http://localhost
   aws-s3:
     bucket: sea-otter
-    default-path: multimedia/
+    path:
+      edited-path: /var/tmp/image/edit
+      un-retouched-path: /var/tmp/image/original
     cloud-front:
       enabled: false
       url: http://localhost
