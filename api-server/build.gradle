@@ -110,9 +110,13 @@ dependencies {
     testCompile group: 'org.junit.platform', name: 'junit-platform-launcher', version: junitPlatformVersion
 
     //Image Processor
-    compile group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2' //https://github.com/rkalla/imgscalr
-    compile group: 'com.mortennobel', name: 'java-image-scaling', version: '0.8.6' //https://github.com/mortennobel/java-image-scaling
-    compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'   //https://github.com/coobird/thumbnailator
+    compile group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2' // https://github.com/rkalla/imgscalr
+    compile group: 'com.mortennobel', name: 'java-image-scaling', version: '0.8.6' // https://github.com/mortennobel/java-image-scaling
+    compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'   // https://github.com/coobird/thumbnailator
+    
+    //Uploader
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.462' // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
+
 }
 
 jar {
