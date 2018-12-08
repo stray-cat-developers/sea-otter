@@ -1,6 +1,7 @@
 package io.mustelidae.seaotter.domain.image
 
 import com.google.common.io.Files
+import io.mustelidae.seaotter.constant.ImageFileFormat
 import org.springframework.web.multipart.commons.CommonsMultipartFile
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
@@ -66,13 +67,7 @@ interface FlabbyImage {
             return ImageIO.read(file)
         }
 
-        private fun isSupportFormat(extension: String): Boolean {
-            return when (extension.toLowerCase()) {
-                "jpg", "jpeg", "png", "psd", "bmp", "pdf", "hdr" -> true
-                else -> {
-                    false
-                }
-            }
-        }
+        private fun isSupportFormat(extension: String): Boolean =
+                ImageFileFormat.valueOf(extension.toUpperCase()).support
     }
 }
