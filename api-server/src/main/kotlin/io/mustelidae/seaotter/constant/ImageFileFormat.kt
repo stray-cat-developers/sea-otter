@@ -1,7 +1,7 @@
 package io.mustelidae.seaotter.constant
 
 enum class ImageFileFormat(val support: Boolean) {
-    JPEG(true), JFIF(false), // JPEG (Joint Photographic Experts Group) is a lossy compression method; JPEG-compressed images are usually stored in the JFIF (JPEG File Interchange Format) file format.
+    JPG(true), JPEG(true), JFIF(false), // JPEG (Joint Photographic Experts Group) is a lossy compression method; JPEG-compressed images are usually stored in the JFIF (JPEG File Interchange Format) file format.
     JP2(false), // JPEG 2000 is a compression standard enabling both lossless and lossy storage
     TIFF(true), // The TIFF (Tagged Image File Format) format is a flexible format that normally saves eight bits or sixteen bits per color (red, green, blue) for 24-bit and 48-bit totals, respectively, usually using either the TIFF or TIF filename extension
     GIF(false), // GIF (Graphics Interchange Format) is in normal use limited to an 8-bit palette, or 256 colors (while 24-bit color depth is technically possible).

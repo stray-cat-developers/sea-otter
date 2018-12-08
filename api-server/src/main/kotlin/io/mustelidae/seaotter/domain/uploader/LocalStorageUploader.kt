@@ -1,6 +1,5 @@
 package io.mustelidae.seaotter.domain.uploader
 
-import com.google.common.io.FileWriteMode
 import com.google.common.io.Files
 import io.mustelidae.seaotter.config.OtterEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
@@ -43,10 +42,15 @@ class LocalStorageUploader(
     }
 
     override fun upload(bytes: ByteArray): String {
+        val path = File(prefixPath)
+        if (path.exists().not())
+            path.mkdir()
+
         val pathAndFileName = "$prefixPath/$fileName"
         val file = File(pathAndFileName)
-        val sink = Files.asByteSink(file, FileWriteMode.APPEND)
-        sink.write(bytes)
+
+        file.createNewFile()
+        Files.write(bytes, file)
 
         return makeImageUrl(pathAndFileName)
     }
