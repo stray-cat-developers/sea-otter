@@ -52,7 +52,7 @@ class LocalStorageUploader(
         file.createNewFile()
         Files.write(bytes, file)
 
-        return makeImageUrl(pathAndFileName)
+        return pathAndFileName
     }
 
     override fun upload(bufferedImage: BufferedImage): String {
@@ -61,7 +61,7 @@ class LocalStorageUploader(
         return upload(out.toByteArray())
     }
 
-    private fun makeImageUrl(pathAndFileName: String): String {
+    override fun makeFullUrl(pathAndFileName: String): String {
         return Paths.get(localStorage.url, pathAndFileName)
                 .toAbsolutePath()
                 .toString()

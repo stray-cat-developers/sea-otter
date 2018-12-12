@@ -61,16 +61,20 @@ class S3Uploader(
 
         s3Client.putObject(putObjectRequest)
 
-        return if (awsS3.cloudFront.enabled) {
-            "${awsS3.cloudFront.url}/$pathAndFileName"
-        } else {
-            s3Client.getUrl(awsS3.bucket, pathAndFileName).toString()
-        }
+        return pathAndFileName
     }
 
     override fun upload(bufferedImage: BufferedImage): String {
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, imageFileFormat.name.toLowerCase(), out)
         return upload(out.toByteArray())
+    }
+
+    override fun makeFullUrl(pathAndFileName: String): String {
+        return if (awsS3.cloudFront.enabled) {
+            "${awsS3.cloudFront.url}/$pathAndFileName"
+        } else {
+            s3Client.getUrl(awsS3.bucket, pathAndFileName).toString()
+        }
     }
 }

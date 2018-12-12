@@ -7,4 +7,6 @@ interface Uploader {
     fun upload(bytes: ByteArray): String
 
     fun upload(bufferedImage: BufferedImage): String
+
+    fun makeFullUrl(pathAndFileName: String): String
 }
