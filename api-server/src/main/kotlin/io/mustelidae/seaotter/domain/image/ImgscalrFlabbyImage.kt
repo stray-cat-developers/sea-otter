@@ -42,5 +42,17 @@ class ImgscalrFlabbyImage(
         bufferedImage = Scalr.crop(bufferedImage, x1, y1, width, height)
     }
 
+    fun cropByPointScale(x1: Int, y1: Int, width: Int, height: Int) {
+        bufferedImage = Scalr.crop(bufferedImage, x1, y1, width, height)
+    }
+
+    /**
+     * Rotate the image.
+     * It can only be right angled or reversed.
+     */
+    fun rotate(rotation: Scalr.Rotation) {
+        bufferedImage = Scalr.rotate(bufferedImage, rotation)
+    }
+
     override fun getBufferedImage(): BufferedImage = this.bufferedImage
 }

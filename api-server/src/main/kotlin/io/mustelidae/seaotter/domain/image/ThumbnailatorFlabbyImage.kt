@@ -8,21 +8,21 @@ import net.coobird.thumbnailator.resizers.configurations.ScalingMode
 import java.awt.image.BufferedImage
 
 class ThumbnailatorFlabbyImage(
-    private var bufferedImage: BufferedImage,
-    private val antiAliasing: Antialiasing = Antialiasing.ON
+    private val bufferedImage: BufferedImage,
+    antiAliasing: Antialiasing = Antialiasing.ON
 ) : FlabbyImage {
+
+    private val thumbnailsBuilder: Thumbnails.Builder<BufferedImage> = Thumbnails.of(bufferedImage).antialiasing(antiAliasing)
 
     /**
      * Resize the image while maintaining the ratio of the image based on the width.
      */
     override fun resize(width: Int, height: Int) {
         val scalingMode = choiceScalingMode(width, height)
-        bufferedImage = Thumbnails.of(bufferedImage)
-                .antialiasing(Antialiasing.ON)
+        thumbnailsBuilder
                 .width(width)
                 .height(height)
                 .scalingMode(scalingMode)
-                .asBufferedImage()
     }
 
     /**
@@ -30,11 +30,9 @@ class ThumbnailatorFlabbyImage(
      */
     override fun resize(scale: Double) {
         val scalingMode = choiceScalingMode(scale)
-        bufferedImage = Thumbnails.of(bufferedImage)
-                .antialiasing(antiAliasing)
+        thumbnailsBuilder
                 .scale(scale * 0.01)
                 .scalingMode(scalingMode)
-                .asBufferedImage()
     }
 
     /**
@@ -43,11 +41,14 @@ class ThumbnailatorFlabbyImage(
      * At this time, the position to crop is centered.
      */
     override fun crop(width: Int, height: Int) {
-        bufferedImage = Thumbnails.of(bufferedImage)
-                .antialiasing(Antialiasing.OFF)
+        thumbnailsBuilder
                 .size(width, height)
                 .crop(Positions.CENTER)
-                .asBufferedImage()
+    }
+
+    fun rotate(angle: Double) {
+        thumbnailsBuilder
+                .rotate(angle)
     }
 
     /**
@@ -60,22 +61,20 @@ class ThumbnailatorFlabbyImage(
         val width = Math.abs(x1 - x2)
         val height = Math.abs(y1 - y2)
 
-        bufferedImage = Thumbnails.of(bufferedImage)
-                .antialiasing(Antialiasing.OFF)
+        thumbnailsBuilder
                 .alphaInterpolation(AlphaInterpolation.QUALITY)
                 .crop(Positions.CENTER)
                 .size(width, height)
                 .keepAspectRatio(true)
-                .asBufferedImage()
     }
 
-    override fun getBufferedImage(): BufferedImage = bufferedImage
+    override fun getBufferedImage(): BufferedImage = thumbnailsBuilder.asBufferedImage()
 
     private fun choiceScalingMode(scale: Double): ScalingMode {
         return if (scale > 100.0) ScalingMode.BICUBIC else ScalingMode.BILINEAR
     }
 
     private fun choiceScalingMode(width: Int, height: Int): ScalingMode {
-        return if (this.getBufferedImage().width < width && this.getBufferedImage().height < height) ScalingMode.BICUBIC else ScalingMode.BILINEAR
+        return if (bufferedImage.width < width && bufferedImage.height < height) ScalingMode.BICUBIC else ScalingMode.BILINEAR
     }
 }

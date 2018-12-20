@@ -61,6 +61,8 @@ repositories {
 }
 
 dependencies {
+    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.462' // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
+    compile group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.6.2' // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
     compile group: 'com.github.kittinunf.fuel', name: 'fuel', version: '1.15.0'
 
     compile group: 'com.google.guava', name: 'guava', version: '26.0-jre'
@@ -112,8 +114,6 @@ dependencies {
     compile group: 'com.mortennobel', name: 'java-image-scaling', version: '0.8.6' // https://github.com/mortennobel/java-image-scaling
     compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'   // https://github.com/coobird/thumbnailator
 
-    //Uploader
-    compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.462' // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
 
 }
 
