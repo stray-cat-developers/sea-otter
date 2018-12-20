@@ -10,26 +10,27 @@ import java.time.LocalDateTime
 
 @Document
 class ImageSource(
-        @Indexed
-        var tags:List<String> = listOf(),
-        var description:String?,
-        val paths: List<Path> = listOf()
+    var description: String?,
+    val paths: List<Path> = listOf()
 ) {
     @Id
     var id: ObjectId = ObjectId()
         private set
 
+    @Indexed
+    var tags: List<String> = listOf()
+
     @CreatedDate
-    var created:LocalDateTime? = null
+    var created: LocalDateTime? = null
         private set
 
     data class Path(
-            val type:Type,
-            val path:String,
-            val width:Int,
-            val height: Int,
-            val format: ImageFileFormat
-    ){
+        val type: Type,
+        val path: String,
+        val width: Int,
+        val height: Int,
+        val format: ImageFileFormat
+    ) {
         enum class Type {
             THUMBNAIL,
             UN_RETOUCHED,

@@ -5,4 +5,4 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-internal interface ImageSourceRepository: MongoRepository<ImageSource, ObjectId>
+internal interface ImageSourceRepository : MongoRepository<ImageSource, ObjectId>
