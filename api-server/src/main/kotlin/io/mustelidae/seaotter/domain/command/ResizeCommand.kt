@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.editor
+package io.mustelidae.seaotter.domain.command
 
 import io.mustelidae.seaotter.domain.image.ImageScalingFlabbyImage
 import io.mustelidae.seaotter.domain.image.ImgscalrFlabbyImage

@@ -1,8 +1,8 @@
-package io.mustelidae.seaotter.domain.editor
+package io.mustelidae.seaotter.domain.command
 
-import io.mustelidae.seaotter.domain.editor.CropOption.Type.COORDINATES
-import io.mustelidae.seaotter.domain.editor.CropOption.Type.POINT_SCALE
-import io.mustelidae.seaotter.domain.editor.CropOption.Type.POSITION
+import io.mustelidae.seaotter.domain.command.CropOption.Type.COORDINATES
+import io.mustelidae.seaotter.domain.command.CropOption.Type.POINT_SCALE
+import io.mustelidae.seaotter.domain.command.CropOption.Type.POSITION
 import io.mustelidae.seaotter.domain.image.ImageScalingFlabbyImage
 import io.mustelidae.seaotter.domain.image.ImgscalrFlabbyImage
 import java.awt.image.BufferedImage

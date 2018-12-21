@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.editor
+package io.mustelidae.seaotter.domain.command
 
 import com.google.common.truth.Truth.assertThat
 import io.mustelidae.seaotter.domain.image.FlabbyImage
