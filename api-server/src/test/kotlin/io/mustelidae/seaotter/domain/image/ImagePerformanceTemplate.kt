@@ -1,12 +1,8 @@
 package io.mustelidae.seaotter.domain.image
 
-import com.google.common.io.Files
-import io.mustelidae.seaotter.utils.getOutputFile
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
-import java.awt.Color
+import io.mustelidae.seaotter.utils.write
 import java.awt.image.BufferedImage
-import java.io.ByteArrayOutputStream
-import javax.imageio.ImageIO
 import kotlin.system.measureTimeMillis
 
 abstract class ImagePerformanceTemplate {
@@ -111,24 +107,5 @@ abstract class ImagePerformanceTemplate {
         println("resize process time: $time")
 
         write(bufferedImage, "${fileName}_to_frame_resize_${getProcessorName()}")
-    }
-
-    private fun write(targetImage: BufferedImage, fileName: String) {
-        var bufferedImage = targetImage
-
-        if (bufferedImage.colorModel.pixelSize == 32) {
-            val convert = BufferedImage(bufferedImage.width, bufferedImage.height, BufferedImage.TYPE_INT_RGB)
-            convert.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null)
-            bufferedImage = convert
-        }
-
-        val outputStream = ByteArrayOutputStream()
-        ImageIO.write(bufferedImage, "jpg", outputStream)
-
-        val outFile = getOutputFile("$fileName.jpg")
-
-        println("out file path: ${outFile.absolutePath}")
-        outFile.createNewFile()
-        Files.write(outputStream.toByteArray(), outFile)
     }
 }
