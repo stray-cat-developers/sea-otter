@@ -10,7 +10,7 @@ import java.io.File
 import java.nio.file.Paths
 import javax.imageio.ImageIO
 
-class LocalStorageUploader(
+internal class LocalStorageUploader(
     private val localStorage: OtterEnvironment.LocalStorage
 ) : Uploader {
 

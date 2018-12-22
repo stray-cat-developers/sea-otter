@@ -16,7 +16,7 @@ import javax.imageio.ImageIO
  * Upload images to google s3.
  * If the use of the cloud front is enabled, make url the cloud front url.
  */
-class S3Uploader(
+internal class S3Uploader(
     private val awsS3: OtterEnvironment.AwsS3
 ) : Uploader {
 
