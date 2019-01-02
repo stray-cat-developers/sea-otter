@@ -150,9 +150,3 @@ sourceSets {
 }
 
 compileKotlin.dependsOn formatKotlin
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
