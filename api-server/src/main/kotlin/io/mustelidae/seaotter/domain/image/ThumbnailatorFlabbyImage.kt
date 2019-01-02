@@ -48,6 +48,7 @@ class ThumbnailatorFlabbyImage(
 
     fun rotate(angle: Double) {
         thumbnailsBuilder
+                .scale(1.0)
                 .rotate(angle)
     }
 
