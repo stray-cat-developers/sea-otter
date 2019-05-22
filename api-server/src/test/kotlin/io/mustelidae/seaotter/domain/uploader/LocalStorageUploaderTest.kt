@@ -4,6 +4,7 @@ import io.mustelidae.seaotter.config.OtterEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import io.mustelidae.seaotter.domain.image.FlabbyImage
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -23,12 +24,12 @@ internal class LocalStorageUploaderTest {
         val bufferedImage = FlabbyImage.getBufferedImage(inputPath)
 
         val file = File("${localStorage.path.editedPath}/sample.txt")
-        if (file.exists().not()) file.mkdir()
+        if (file.exists().not()) file.mkdirs()
 
         // When
         val uploader = LocalStorageUploader(localStorage)
-        uploader.defineEditPath()
-        uploader.defineFile(ImageFileFormat.JPG)
+        uploader.initPath(localStorage.path.unRetouchedPath)
+        uploader.initFile(ImageFileFormat.JPG, ObjectId().toString())
         uploader.upload(bufferedImage)
     }
 }

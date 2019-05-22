@@ -29,6 +29,7 @@ sea-otter:
       edited-path: /var/tmp/image/edit
       un-retouched-path: /var/tmp/image/original
     url: http://localhost
+    shard-type: date
   aws-s3:
     bucket: sea-otter
     path:

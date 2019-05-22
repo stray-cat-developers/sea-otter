@@ -18,7 +18,7 @@ fun getTestImageFileAsAbsolutePath(fileName: String): String {
 fun getOutputFile(fileName: String): File {
     val file = File("out/image")
     if (file.exists().not()) {
-        file.mkdir()
+        file.mkdirs()
     }
     return File(file.absolutePath, fileName)
 }
