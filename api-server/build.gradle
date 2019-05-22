@@ -86,8 +86,10 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-undertow'
     compile group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
     compile group: 'org.springframework.hateoas', name: 'spring-hateoas', version: '0.25.0.RELEASE'
+    
 
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: kotlinVersion
     compile group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: kotlinVersion
@@ -114,7 +116,14 @@ dependencies {
     compile group: 'com.mortennobel', name: 'java-image-scaling', version: '0.8.6' // https://github.com/mortennobel/java-image-scaling
     compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'   // https://github.com/coobird/thumbnailator
 
+    
+}
 
+configurations {
+    all*.exclude module: 'spring-boot-starter-tomcat'
+    implementation {
+        exclude group: 'io.undertow', module: 'undertow-websockets-jsr'
+    }
 }
 
 jar {
