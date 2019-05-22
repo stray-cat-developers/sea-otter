@@ -3,7 +3,6 @@ package io.mustelidae.seaotter.domain.uploader
 import com.google.common.io.Files
 import io.mustelidae.seaotter.config.OtterEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
-import org.bson.types.ObjectId
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -18,35 +17,22 @@ internal class LocalStorageUploader(
     private lateinit var imageFileFormat: ImageFileFormat
     private lateinit var fileName: String
 
-    /**
-     * Define the file you want to save.
-     */
-    fun defineFile(imageFileFormat: ImageFileFormat, name: String = ObjectId().toString()) {
+    override fun initFile(imageFileFormat: ImageFileFormat, name: String) {
         this.imageFileFormat = imageFileFormat
         this.fileName = "$name.${imageFileFormat.name.toLowerCase()}"
     }
 
-    /**
-     * Set storage location.
-     */
-    fun definePath(path: String) {
+    override fun initPath(path: String) {
         prefixPath = path
     }
 
-    fun defineEditPath() {
-        prefixPath = localStorage.path.editedPath
-    }
-
-    fun defineUnRetouchedPath() {
-        prefixPath = localStorage.path.unRetouchedPath
-    }
-
     override fun upload(bytes: ByteArray): String {
-        val path = File(prefixPath)
+        val basePath = getPath(prefixPath)
+        val path = File(basePath)
         if (path.exists().not())
-            path.mkdir()
+            path.mkdirs()
 
-        val pathAndFileName = "$prefixPath/$fileName"
+        val pathAndFileName = "$basePath/$fileName"
         val file = File(pathAndFileName)
 
         file.createNewFile()
@@ -65,5 +51,12 @@ internal class LocalStorageUploader(
         return Paths.get(localStorage.url, pathAndFileName)
                 .toAbsolutePath()
                 .toString()
+    }
+
+    private fun getPath(prefixPath: String): String {
+        return when (localStorage.shardType) {
+            "date" -> PathGenerator.getPathByDate(prefixPath)
+            else -> ""
+        }
     }
 }

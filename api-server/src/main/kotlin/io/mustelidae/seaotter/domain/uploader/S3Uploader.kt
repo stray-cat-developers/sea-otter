@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import io.mustelidae.seaotter.config.OtterEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
-import org.bson.types.ObjectId
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -26,27 +25,13 @@ internal class S3Uploader(
 
     private val s3Client = AmazonS3ClientBuilder.defaultClient()
 
-    /**
-     * Define the file you want to save.
-     */
-    fun defineFile(imageFileFormat: ImageFileFormat, name: String = ObjectId().toString()) {
+    override fun initFile(imageFileFormat: ImageFileFormat, name: String) {
         this.imageFileFormat = imageFileFormat
         this.fileName = "$name.${imageFileFormat.name.toLowerCase()}"
     }
 
-    /**
-     * Set storage location.
-     */
-    fun definePath(path: String) {
+    override fun initPath(path: String) {
         prefixPath = path
-    }
-
-    fun defineEditPath() {
-        prefixPath = awsS3.path.editedPath
-    }
-
-    fun defineUnRetouchedPath() {
-        prefixPath = awsS3.path.unRetouchedPath
     }
 
     override fun upload(bytes: ByteArray): String {

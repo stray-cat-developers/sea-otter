@@ -12,13 +12,13 @@ class OtterEnvironment {
 
     class LocalStorage {
         var path = Path()
-        var url: String = "http://localhost"
+        var url: String? = "http://localhost"
+        var shardType: String? = "date"
     }
 
     class AwsS3 {
         var bucket: String = "sea-otter"
         var cloudFront = CloudFront()
-        var enabledSavingUnRetouchImage: Boolean = true
         var path = Path()
 
         class CloudFront {
