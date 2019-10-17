@@ -6,10 +6,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     repositories {
         mavenLocal()
+        mavenCentral()
         jcenter()
         maven("https://palantir.bintray.com/releases/")
-        mavenCentral()
-
     }
     dependencies {
         classpath(kotlin("gradle-plugin", version = "1.3.31"))
@@ -39,7 +38,7 @@ apply {
     plugin("com.palantir.configuration-resolver")
 }
 
-group 'io.mustelidae.seaotter'
+group = "io.mustelidae.seaotter"
 version = "1.0.0-SNAPSHOT"
 
 tasks.withType<Test> {
@@ -53,9 +52,9 @@ tasks.withType<KotlinCompile> {
 
 repositories {
     mavenLocal()
+    mavenCentral()
     jcenter()
     maven("https://palantir.bintray.com/releases/")
-    mavenCentral()
 }
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
@@ -81,13 +80,9 @@ dependencies {
     compile("com.twelvemonkeys.servlet:servlet:3.4.1")
 
     compile("com.github.kittinunf.fuel:fuel:2.0.1")
-    testCompile("com.github.sbrannen:spring-test-junit5:1.3.1")
 
     compile("com.google.guava:guava:27.0.1-jre")
     testCompile("com.google.truth:truth:0.42")
-    
-    compile("com.zaxxer:HikariCP:3.3.0")
-    compile("com.h2database:h2:1.4.197")
 
     compile("io.springfox:springfox-swagger2:2.9.2")
     compile("io.springfox:springfox-swagger-ui:2.9.2")
@@ -108,9 +103,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0")
     testCompile("org.springframework.boot:spring-boot-starter-test")
-    
+
     compile("javax.interceptor:javax.interceptor-api:1.2.2")
-    
+
     testCompile("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
     testCompile("org.junit.platform:junit-platform-launcher:1.3.1")
