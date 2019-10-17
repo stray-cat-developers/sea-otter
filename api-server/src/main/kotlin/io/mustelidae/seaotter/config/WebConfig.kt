@@ -13,10 +13,10 @@ import org.springframework.http.converter.ResourceHttpMessageConverter
 import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
 
 @Configuration
-class WebConfig : WebMvcConfigurerAdapter() {
+class WebConfig : WebMvcConfigurationSupport() {
     @Bean
     fun objectMapper(): ObjectMapper {
         return Jackson.getMapper()
@@ -28,7 +28,7 @@ class WebConfig : WebMvcConfigurerAdapter() {
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         converters.add(BufferedImageHttpMessageConverter())
         converters.add(FormHttpMessageConverter())
-        converters.add(MappingJackson2HttpMessageConverter())
+        converters.add(MappingJackson2HttpMessageConverter(objectMapper()))
         converters.add(StringHttpMessageConverter())
         converters.add(ByteArrayHttpMessageConverter())
         converters.add(ResourceHttpMessageConverter())
