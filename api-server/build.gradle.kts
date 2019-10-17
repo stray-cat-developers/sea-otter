@@ -106,6 +106,8 @@ dependencies {
 
     compile("javax.interceptor:javax.interceptor-api:1.2.2")
 
+    compile("org.mongodb:bson:3.10.2")
+
     testCompile("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
     testCompile("org.junit.platform:junit-platform-launcher:1.3.1")
