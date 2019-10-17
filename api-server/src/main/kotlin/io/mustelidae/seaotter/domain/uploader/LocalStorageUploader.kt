@@ -1,7 +1,7 @@
 package io.mustelidae.seaotter.domain.uploader
 
 import com.google.common.io.Files
-import io.mustelidae.seaotter.config.OtterEnvironment
+import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
@@ -10,7 +10,7 @@ import java.nio.file.Paths
 import javax.imageio.ImageIO
 
 internal class LocalStorageUploader(
-    private val localStorage: OtterEnvironment.LocalStorage
+    private val localStorage: AppEnvironment.LocalStorage
 ) : Uploader {
 
     private lateinit var prefixPath: String

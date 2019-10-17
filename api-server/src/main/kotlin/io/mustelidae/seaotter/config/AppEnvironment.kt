@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @ConfigurationProperties(prefix = "app")
-class OtterEnvironment {
+class AppEnvironment {
     var uploader: String = "local"
     var localStorage = LocalStorage()
     var awsS3 = AwsS3()

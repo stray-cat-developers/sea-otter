@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.domain.uploader
 
-import io.mustelidae.seaotter.config.OtterEnvironment
+import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import io.mustelidae.seaotter.domain.image.FlabbyImage
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
@@ -12,11 +12,11 @@ internal class UploadHandlerTest {
     @Test
     fun upload() {
         // Given
-        val otterEnvironment = OtterEnvironment().apply {
+        val otterEnvironment = AppEnvironment().apply {
             this.uploader = "local"
-            this.localStorage = OtterEnvironment.LocalStorage().apply {
+            this.localStorage = AppEnvironment.LocalStorage().apply {
                 url = "http://localhost:1111/test"
-                path = OtterEnvironment.Path().apply {
+                path = AppEnvironment.Path().apply {
                     editedPath = File("out/image/edit").absolutePath
                     unRetouchedPath = File("out/image/un-retouch").absolutePath
                 }

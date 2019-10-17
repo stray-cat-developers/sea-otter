@@ -1,16 +1,16 @@
 package io.mustelidae.seaotter.domain.uploader
 
-import io.mustelidae.seaotter.config.OtterEnvironment
+import io.mustelidae.seaotter.config.AppEnvironment
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
 class UploadHandler
 @Autowired constructor(
-    private val otterEnvironment: OtterEnvironment
+    private val appEnvironment: AppEnvironment
 ) {
 
-    private val uploader = UploadTarget.valueOf(otterEnvironment.uploader.toUpperCase())
+    private val uploader = UploadTarget.valueOf(appEnvironment.uploader.toUpperCase())
 
     fun upload(uploadFile: UploadFile): String {
         val uploader = getUploader().apply {
@@ -23,10 +23,10 @@ class UploadHandler
     private fun getUploader(): Uploader {
         return when (uploader) {
             UploadTarget.S3 -> {
-                S3Uploader(otterEnvironment.awsS3)
+                S3Uploader(appEnvironment.awsS3)
             }
             UploadTarget.LOCAL -> {
-                LocalStorageUploader(otterEnvironment.localStorage)
+                LocalStorageUploader(appEnvironment.localStorage)
             }
         }
     }
@@ -35,15 +35,15 @@ class UploadHandler
         return when (uploader) {
             UploadTarget.S3 -> {
                 if (isOriginal)
-                    otterEnvironment.awsS3.path.unRetouchedPath
+                    appEnvironment.awsS3.path.unRetouchedPath
                 else
-                    otterEnvironment.awsS3.path.editedPath
+                    appEnvironment.awsS3.path.editedPath
             }
             UploadTarget.LOCAL -> {
                 if (isOriginal)
-                    otterEnvironment.localStorage.path.unRetouchedPath
+                    appEnvironment.localStorage.path.unRetouchedPath
                 else
-                    otterEnvironment.localStorage.path.editedPath
+                    appEnvironment.localStorage.path.editedPath
             }
         }
     }

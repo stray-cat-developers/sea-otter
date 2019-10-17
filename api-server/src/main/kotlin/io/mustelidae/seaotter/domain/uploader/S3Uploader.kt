@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import com.amazonaws.services.s3.model.CannedAccessControlList
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
-import io.mustelidae.seaotter.config.OtterEnvironment
+import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
@@ -16,7 +16,7 @@ import javax.imageio.ImageIO
  * If the use of the cloud front is enabled, make url the cloud front url.
  */
 internal class S3Uploader(
-    private val awsS3: OtterEnvironment.AwsS3
+    private val awsS3: AppEnvironment.AwsS3
 ) : Uploader {
 
     private lateinit var prefixPath: String
