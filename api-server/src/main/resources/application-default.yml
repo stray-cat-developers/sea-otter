@@ -1,9 +1,10 @@
 logging:
   level:
-    org.springframework.web: info
+    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
+    org.springframework.boot.actuate: off
+    org.springframework.web: debug
     org.springframework.boot: info
-    io.musteliadae.seaotter: trace
-  config: classpath:logback-spring.xml
+    io.swagger.models.parameters.AbstractSerializableParameter: error
 
 
 spring:
@@ -22,7 +23,7 @@ server:
     enabled: true
     mime-types: application/json,text/html,text/plain,text/css,text/javascript,application/javascript,image/jpeg,image/png
 
-sea-otter:
+app:
   uploader: local
   local-storage:
     path:

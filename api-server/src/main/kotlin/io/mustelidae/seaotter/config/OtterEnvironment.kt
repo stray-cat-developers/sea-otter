@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@ConfigurationProperties(prefix = "sea-otter")
+@ConfigurationProperties(prefix = "app")
 class OtterEnvironment {
     var uploader: String = "local"
     var localStorage = LocalStorage()
