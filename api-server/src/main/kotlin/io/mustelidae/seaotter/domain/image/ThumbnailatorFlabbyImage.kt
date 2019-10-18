@@ -2,6 +2,7 @@ package io.mustelidae.seaotter.domain.image
 
 import net.coobird.thumbnailator.Thumbnails
 import net.coobird.thumbnailator.geometry.Positions
+import net.coobird.thumbnailator.resizers.BicubicResizer
 import net.coobird.thumbnailator.resizers.configurations.AlphaInterpolation
 import net.coobird.thumbnailator.resizers.configurations.Antialiasing
 import net.coobird.thumbnailator.resizers.configurations.ScalingMode
@@ -67,6 +68,13 @@ class ThumbnailatorFlabbyImage(
                 .crop(Positions.CENTER)
                 .size(width, height)
                 .keepAspectRatio(true)
+    }
+
+    fun compress(quality:Double) {
+        thumbnailsBuilder
+                .scale(1.0)
+                .resizer(BicubicResizer())
+                .outputQuality(quality)
     }
 
     override fun getBufferedImage(): BufferedImage = thumbnailsBuilder.asBufferedImage()
