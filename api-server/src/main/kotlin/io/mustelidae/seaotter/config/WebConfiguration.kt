@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 import org.springframework.web.servlet.view.InternalResourceViewResolver
 
 @Configuration
-class WebConfig : WebMvcConfigurationSupport() {
+class WebConfiguration : WebMvcConfigurationSupport() {
     @Bean
     fun objectMapper(): ObjectMapper {
         return Jackson.getMapper()
