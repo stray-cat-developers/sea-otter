@@ -1,7 +1,7 @@
-package io.mustelidae.seaotter.domain.command
+package io.mustelidae.seaotter.domain.editor.command
 
 import com.google.common.truth.Truth.assertThat
-import io.mustelidae.seaotter.domain.image.FlabbyImage
+import io.mustelidae.seaotter.domain.editor.image.FlabbyImage
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

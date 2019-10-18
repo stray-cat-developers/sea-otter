@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.image
+package io.mustelidae.seaotter.domain.editor.image
 
 import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage

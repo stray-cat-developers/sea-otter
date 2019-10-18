@@ -1,9 +1,9 @@
-package io.mustelidae.seaotter.domain.processor
+package io.mustelidae.seaotter.domain.editor.processor
 
-import io.mustelidae.seaotter.domain.command.CropOption
-import io.mustelidae.seaotter.domain.command.Option
-import io.mustelidae.seaotter.domain.command.ResizeOption
-import io.mustelidae.seaotter.domain.command.RotateOption
+import io.mustelidae.seaotter.domain.editor.command.CropOption
+import io.mustelidae.seaotter.domain.editor.command.Option
+import io.mustelidae.seaotter.domain.editor.command.ResizeOption
+import io.mustelidae.seaotter.domain.editor.command.RotateOption
 import java.util.ArrayDeque
 import java.util.Queue
 

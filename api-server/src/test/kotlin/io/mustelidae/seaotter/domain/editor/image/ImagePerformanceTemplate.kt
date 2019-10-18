@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.image
+package io.mustelidae.seaotter.domain.editor.image
 
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import io.mustelidae.seaotter.utils.write

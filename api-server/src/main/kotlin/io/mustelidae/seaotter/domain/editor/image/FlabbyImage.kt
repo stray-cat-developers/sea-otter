@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.image
+package io.mustelidae.seaotter.domain.editor.image
 
 import com.google.common.io.Files
 import io.mustelidae.seaotter.constant.ImageFileFormat

@@ -1,8 +1,8 @@
-package io.mustelidae.seaotter.domain.processor
+package io.mustelidae.seaotter.domain.editor.processor
 
-import io.mustelidae.seaotter.domain.command.CropOption
-import io.mustelidae.seaotter.domain.command.RotateOption
-import io.mustelidae.seaotter.domain.image.FlabbyImage
+import io.mustelidae.seaotter.domain.editor.command.CropOption
+import io.mustelidae.seaotter.domain.editor.command.RotateOption
+import io.mustelidae.seaotter.domain.editor.image.FlabbyImage
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import io.mustelidae.seaotter.utils.write
 import org.junit.jupiter.api.Test

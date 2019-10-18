@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.command
+package io.mustelidae.seaotter.domain.editor.command
 
 import java.awt.image.BufferedImage
 

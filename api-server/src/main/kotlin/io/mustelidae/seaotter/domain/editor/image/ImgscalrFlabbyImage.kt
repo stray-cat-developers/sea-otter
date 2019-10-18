@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.image
+package io.mustelidae.seaotter.domain.editor.image
 
 import org.imgscalr.Scalr
 import java.awt.image.BufferedImage

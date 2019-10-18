@@ -1,7 +1,7 @@
-package io.mustelidae.seaotter.domain.command
+package io.mustelidae.seaotter.domain.editor.command
 
-import io.mustelidae.seaotter.domain.image.ImageScalingFlabbyImage
-import io.mustelidae.seaotter.domain.image.ImgscalrFlabbyImage
+import io.mustelidae.seaotter.domain.editor.image.ImageScalingFlabbyImage
+import io.mustelidae.seaotter.domain.editor.image.ImgscalrFlabbyImage
 import java.awt.image.BufferedImage
 
 class ResizeCommand(private var bufferedImage: BufferedImage) : EditCommand<ResizeOption> {

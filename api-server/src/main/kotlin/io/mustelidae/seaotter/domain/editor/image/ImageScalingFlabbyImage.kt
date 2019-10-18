@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.image
+package io.mustelidae.seaotter.domain.editor.image
 
 import com.mortennobel.imagescaling.AdvancedResizeOp
 import com.mortennobel.imagescaling.ResampleFilter

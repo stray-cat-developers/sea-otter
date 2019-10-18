@@ -1,4 +1,4 @@
-package io.mustelidae.seaotter.domain.command
+package io.mustelidae.seaotter.domain.editor.command
 
 class RotateOption(
     val angle: Double?,

@@ -1,7 +1,7 @@
-package io.mustelidae.seaotter.domain.command
+package io.mustelidae.seaotter.domain.editor.command
 
-import io.mustelidae.seaotter.domain.image.ImgscalrFlabbyImage
-import io.mustelidae.seaotter.domain.image.ThumbnailatorFlabbyImage
+import io.mustelidae.seaotter.domain.editor.image.ImgscalrFlabbyImage
+import io.mustelidae.seaotter.domain.editor.image.ThumbnailatorFlabbyImage
 import org.imgscalr.Scalr
 import java.awt.image.BufferedImage
 

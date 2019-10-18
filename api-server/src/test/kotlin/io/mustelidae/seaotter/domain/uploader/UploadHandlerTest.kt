@@ -2,7 +2,7 @@ package io.mustelidae.seaotter.domain.uploader
 
 import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.constant.ImageFileFormat
-import io.mustelidae.seaotter.domain.image.FlabbyImage
+import io.mustelidae.seaotter.domain.editor.image.FlabbyImage
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import org.junit.jupiter.api.Test
 import java.io.File
