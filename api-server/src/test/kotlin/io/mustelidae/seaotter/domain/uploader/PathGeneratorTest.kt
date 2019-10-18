@@ -15,7 +15,7 @@ internal class PathGeneratorTest {
         // When
         val basePath = PathGenerator.getPathByDate(path)
         // Then
-        Truth.assertThat("/$date/apple").isEqualTo(basePath)
+        Truth.assertThat("$date/apple").isEqualTo(basePath)
     }
 
     @Test
@@ -26,6 +26,6 @@ internal class PathGeneratorTest {
         // When
         val basePath = PathGenerator.getPathByDate(path)
         // Then
-        Truth.assertThat("/$date/apple").isEqualTo(basePath)
+        Truth.assertThat("$date/apple").isEqualTo(basePath)
     }
 }

@@ -12,6 +12,6 @@ object PathGenerator {
 
     fun getPathByDate(prefixPath: String): String {
         val date = LocalDate.now().format(DateTimeFormatter.ISO_DATE)
-        return "$prefixPath/$date".replace("//", "/")
+        return "$date/$prefixPath".replace("//", "/")
     }
 }
