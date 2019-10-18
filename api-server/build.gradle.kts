@@ -23,7 +23,6 @@ plugins {
     kotlin("kapt") version "1.3.31"
     kotlin("plugin.allopen") version "1.3.31"
     kotlin("plugin.noarg") version "1.3.31"
-    kotlin("plugin.jpa") version "1.3.31"
     kotlin("plugin.spring") version "1.3.31"
     id("org.springframework.boot") version "2.1.3.RELEASE"
     id("org.jmailen.kotlinter") version "1.26.0"
@@ -59,7 +58,6 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     compile(kotlin("reflect"))
-    compile("au.com.console:kotlin-jpa-specification-dsl:1.0.0")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
     compile("com.amazonaws:aws-java-sdk-s3:1.11.462")
 
@@ -81,7 +79,7 @@ dependencies {
 
     compile("com.github.kittinunf.fuel:fuel:2.0.1")
 
-    compile("com.google.guava:guava:27.0.1-jre")
+    compile("com.google.guava:guava:28.1-jre")
     testCompile("com.google.truth:truth:0.42")
 
     compile("io.springfox:springfox-swagger2:2.9.2")
