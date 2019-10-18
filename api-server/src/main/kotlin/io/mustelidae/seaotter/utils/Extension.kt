@@ -1,5 +1,8 @@
 package io.mustelidae.seaotter.utils
 
+import com.google.common.io.Files
+import io.mustelidae.seaotter.constant.ImageFileFormat
+import org.springframework.web.multipart.MultipartFile
 import java.security.MessageDigest
 
 fun String.sha1(): String {
@@ -16,4 +19,15 @@ fun String.sha1(): String {
     }
 
     return result.toString()
+}
+
+fun MultipartFile.isSupport(): Boolean {
+    @Suppress("UnstableApiUsage")
+    val extension = Files.getFileExtension(this.originalFilename!!)
+    return try {
+        val format = ImageFileFormat.valueOf(extension.toUpperCase())
+        format.support
+    } catch (e: Exception) {
+        false
+    }
 }
