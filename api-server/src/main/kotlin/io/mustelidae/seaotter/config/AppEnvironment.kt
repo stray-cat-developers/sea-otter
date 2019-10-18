@@ -12,7 +12,7 @@ class AppEnvironment {
 
     class LocalStorage {
         var path = Path()
-        var url: String? = "http://localhost"
+        var url: String = "http://localhost"
         var shardType: String? = "date"
     }
 

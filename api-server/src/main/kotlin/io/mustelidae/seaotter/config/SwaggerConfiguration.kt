@@ -28,15 +28,14 @@ class SwaggerConfiguration {
             .additionalModels(typeResolver.resolve(GlobalErrorFormat::class.java))
 }
 
-
 @ApiModel(description = "default error format")
 data class GlobalErrorFormat(
-        val timestamp: String,
+    val timestamp: String,
 
-        @ApiModelProperty(value = "Http Status Code")
-        val status: Int,
-        @ApiModelProperty(value = "error code")
-        val code: String,
-        @ApiModelProperty(value = "exception message")
-        val message: String
+    @ApiModelProperty(value = "Http Status Code")
+    val status: Int,
+    @ApiModelProperty(value = "error code")
+    val code: String,
+    @ApiModelProperty(value = "exception message")
+    val message: String
 )
