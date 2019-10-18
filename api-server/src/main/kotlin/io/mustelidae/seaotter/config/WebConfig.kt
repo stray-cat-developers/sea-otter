@@ -13,7 +13,10 @@ import org.springframework.http.converter.ResourceHttpMessageConverter
 import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
+import org.springframework.web.servlet.view.InternalResourceViewResolver
 
 @Configuration
 class WebConfig : WebMvcConfigurationSupport() {
@@ -39,5 +42,21 @@ class WebConfig : WebMvcConfigurationSupport() {
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
                 .allowCredentials(true)
+    }
+
+    override fun configureViewResolvers(registry: ViewResolverRegistry) {
+        val resolver = InternalResourceViewResolver()
+        resolver.setPrefix("/WEB-INF/")
+        resolver.setSuffix(".html")
+        registry.viewResolver(resolver)
+
+        super.configureViewResolvers(registry)
+    }
+
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        registry.addResourceHandler("/swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/")
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/")
     }
 }
