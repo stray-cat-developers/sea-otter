@@ -60,10 +60,7 @@ dependencies {
     compile(kotlin("reflect"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
     compile("com.amazonaws:aws-java-sdk-s3:1.11.462")
-
-    compile("com.querydsl:querydsl-jpa:4.2.1")
     compile("org.apache.commons:commons-lang3:3.9")
-    kapt("com.querydsl:querydsl-apt:4.2.1:jpa")
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8")
@@ -93,7 +90,6 @@ dependencies {
     }
     compile("org.springframework.boot:spring-boot-starter-validation")
     compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-configuration-processor")
     compile("org.springframework.boot:spring-boot-starter-undertow"){
         exclude("io.undertow","undertow-websockets-jsr")
