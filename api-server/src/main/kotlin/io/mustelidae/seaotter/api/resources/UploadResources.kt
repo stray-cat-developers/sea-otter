@@ -1,38 +1,28 @@
 package io.mustelidae.seaotter.api.resources
 
 import io.mustelidae.seaotter.domain.delivery.Image
-import io.mustelidae.seaotter.domain.delivery.ShippingItem
 import java.net.URL
 
 class UploadResources {
 
-    data class Reply(
-        val images: List<ImageMetaData>
-    ) {
-        companion object {
-            fun from(shippingItem: ShippingItem): Reply {
-                val images = shippingItem.shippedImages.map { ImageMetaData.from(it.first, it.second) }
-                return Reply(images)
-            }
-        }
-    }
-
-    data class ImageMetaData(
+    data class ReplyOnImage(
         val width: Int,
         val height: Int,
         val path: String,
-        val format: String
+        val format: String,
+        val original: Boolean
     ) {
         companion object {
-            fun from(image: Image, url: URL): ImageMetaData {
-                return image.run {
-                    ImageMetaData(
-                        image.getMeta().width,
-                        image.getMeta().height,
-                        url.toString(),
-                        image.getExtension()
-                    )
-                }
+            fun from(pair: Pair<Image, URL>): ReplyOnImage {
+                val image = peair.first
+                val url = pair.second.toString()
+                return ReplyOnImage(
+                    image.getMeta().width,
+                    image.getMeta().height,
+                    url,
+                    image.getExtension(),
+                    image.isOriginal
+                )
             }
         }
     }

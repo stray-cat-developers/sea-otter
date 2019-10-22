@@ -38,7 +38,7 @@ data class Image(
             return Image(
                 ImageIO.read(file),
                 file.nameWithoutExtension,
-                ImageFileFormat.valueOf(file.extension),
+                ImageFileFormat.valueOf(file.extension.toUpperCase()),
                 true
             )
         }

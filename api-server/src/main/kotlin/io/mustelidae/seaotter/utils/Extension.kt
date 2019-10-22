@@ -35,7 +35,11 @@ fun MultipartFile.extension(): ImageFileFormat {
 }
 
 fun MultipartFile.isSupport(): Boolean {
-    return this.extension().support
+    return try {
+        this.extension().support
+    } catch (e: UnSupportException) {
+        false
+    }
 }
 
 fun <T> List<T>.toReplies(): Replies<T> = Replies(this)

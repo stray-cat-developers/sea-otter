@@ -1,10 +1,10 @@
 package io.mustelidae.seaotter.api.controller
 
 import io.mustelidae.seaotter.api.resources.UploadResources
-import io.mustelidae.seaotter.common.Reply
+import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.domain.delivery.PureDelivery
-import io.mustelidae.seaotter.utils.toReply
+import io.mustelidae.seaotter.utils.toReplies
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
@@ -29,12 +29,14 @@ class SimpleUploadController
     fun upload(
         @RequestPart(required = true) multiPartFile: MultipartFile,
         @RequestParam(required = false) hasOriginal: Boolean?
-    ): Reply<UploadResources.Reply> {
+    ): Replies<UploadResources.ReplyOnImage> {
 
         val image = Image.from(multiPartFile)
 
         val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
 
-        return UploadResources.Reply.from(shippingItem).toReply()
+        return shippingItem.shippedImages
+            .map { UploadResources.ReplyOnImage.from(it) }
+            .toReplies()
     }
 }
