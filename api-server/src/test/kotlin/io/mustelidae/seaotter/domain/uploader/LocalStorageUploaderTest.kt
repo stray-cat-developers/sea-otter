@@ -17,7 +17,7 @@ internal class LocalStorageUploaderTest {
         }
 
         val inputPath = getTestImageFileAsAbsolutePath("denden_CMYK_2784x1856.jpg")
-        val image = Image.from(inputPath)
+        val image = Image.from(File(inputPath))
 
         val directoryPath = DirectoryPath(localStorage.path, null).apply {
             append(true)

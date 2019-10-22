@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
@@ -40,6 +41,43 @@ class SimpleUploadController
         }
 
         val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
+
+        return shippingItem.shippedImages
+            .map { UploadResources.ReplyOnImage.from(it) }
+            .toReplies()
+    }
+
+    @ApiOperation("upload by base64")
+    @PostMapping(
+        "base64/form",
+        consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun upload(
+        @RequestParam base64OfImage: String,
+        @RequestParam(required = false) hasOriginal: Boolean?
+    ): Replies<UploadResources.ReplyOnImage> {
+
+        val image = Image.from(base64OfImage)
+
+        val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
+
+        return shippingItem.shippedImages
+            .map { UploadResources.ReplyOnImage.from(it) }
+            .toReplies()
+    }
+
+    @ApiOperation("upload by base64 using json")
+    @PostMapping(
+        "base64/json",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun upload(
+        @RequestBody request: UploadResources.Request
+    ): Replies<UploadResources.ReplyOnImage> {
+        val image = Image.from(request.convertBase64SafeUrlToBase64())
+        val shippingItem = pureDelivery.delivery(image, request.hasOriginal ?: false)
 
         return shippingItem.shippedImages
             .map { UploadResources.ReplyOnImage.from(it) }

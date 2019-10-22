@@ -5,6 +5,7 @@ import io.mustelidae.seaotter.constant.ImageFileFormat
 import io.mustelidae.seaotter.utils.extension
 import io.mustelidae.seaotter.utils.isSupport
 import org.bson.types.ObjectId
+import org.springframework.util.Base64Utils
 import org.springframework.web.multipart.MultipartFile
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
@@ -23,6 +24,8 @@ data class Image(
     }
 
     companion object {
+        private val base64Regex = Regex("(data:image/)(.*);base64")
+
         fun from(multipartFile: MultipartFile): Image {
             if (multipartFile.isSupport().not())
                 throw UnSupportException()
@@ -35,8 +38,7 @@ data class Image(
             )
         }
 
-        fun from(filePath: String): Image {
-            val file = File(filePath)
+        fun from(file: File): Image {
             if (file.isFile.not())
                 throw java.lang.IllegalArgumentException("Invalid image file path")
 
@@ -44,6 +46,32 @@ data class Image(
                 ImageIO.read(file),
                 file.nameWithoutExtension,
                 ImageFileFormat.valueOf(file.extension.toUpperCase()),
+                true
+            )
+        }
+
+        fun from(base64: String): Image {
+            val index = base64.lastIndexOf(',')
+            val byteArray = Base64Utils.decodeFromString(base64.substring(index + 1))
+            val bufferedImage = ImageIO.read(ByteArrayInputStream(byteArray))
+            val format: ImageFileFormat
+
+            try {
+                val extension = base64Regex.find(base64.substring(0, index))!!.groupValues[2]
+                format = ImageFileFormat.valueOf(extension.toUpperCase())
+            } catch (e: NullPointerException) {
+                throw java.lang.IllegalArgumentException("invalid base 64 image format")
+            } catch (e: java.lang.IllegalArgumentException) {
+                throw UnSupportException()
+            }
+
+            if (format.support.not())
+                throw UnSupportException()
+
+            return Image(
+                bufferedImage,
+                ObjectId().toString(),
+                format,
                 true
             )
         }
