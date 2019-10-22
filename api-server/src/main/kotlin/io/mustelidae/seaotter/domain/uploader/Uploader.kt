@@ -1,19 +1,9 @@
 package io.mustelidae.seaotter.domain.uploader
 
-import io.mustelidae.seaotter.constant.ImageFileFormat
-import java.awt.image.BufferedImage
+import io.mustelidae.seaotter.domain.delivery.Image
 
 interface Uploader {
-
-    fun initFile(imageFileFormat: ImageFileFormat, name: String)
-
-    fun initPath(path: String)
-
-    fun upload(bytes: ByteArray): String
-
-    fun upload(bufferedImage: BufferedImage): String
-
-    fun makeFullUrl(pathAndFileName: String): String
+    fun upload(image: Image): String
 }
 
 enum class UploadTarget {

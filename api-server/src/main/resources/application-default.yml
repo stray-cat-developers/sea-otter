@@ -1,13 +1,14 @@
 logging:
   level:
-    org.springframework.web: info
+    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
+    org.springframework.boot.actuate: off
+    org.springframework.web: debug
     org.springframework.boot: info
-    io.musteliadae.seaotter: trace
-  config: classpath:logback-spring.xml
+    io.swagger.models.parameters.AbstractSerializableParameter: error
 
 
 spring:
-  http:
+  servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
@@ -22,19 +23,16 @@ server:
     enabled: true
     mime-types: application/json,text/html,text/plain,text/css,text/javascript,application/javascript,image/jpeg,image/png
 
-sea-otter:
+app:
   uploader: local
   local-storage:
-    path:
-      edited-path: /var/tmp/image/edit
-      un-retouched-path: /var/tmp/image/original
+    path: /var/tmp/image
     url: http://localhost
     shard-type: date
   aws-s3:
     bucket: sea-otter
-    path:
-      edited-path: /var/tmp/image/edit
-      un-retouched-path: /var/tmp/image/original
+    path: /edit
     cloud-front:
       enabled: false
       url: http://localhost
+    shard-type: date

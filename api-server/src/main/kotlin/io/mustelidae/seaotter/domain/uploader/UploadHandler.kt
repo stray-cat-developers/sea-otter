@@ -1,49 +1,43 @@
 package io.mustelidae.seaotter.domain.uploader
 
-import io.mustelidae.seaotter.config.OtterEnvironment
+import io.mustelidae.seaotter.config.AppEnvironment
+import io.mustelidae.seaotter.domain.delivery.Image
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.net.URL
 
 @Service
 class UploadHandler
 @Autowired constructor(
-    private val otterEnvironment: OtterEnvironment
+    private val appEnvironment: AppEnvironment
 ) {
 
-    private val uploader = UploadTarget.valueOf(otterEnvironment.uploader.toUpperCase())
+    private val uploader = UploadTarget.valueOf(appEnvironment.uploader.toUpperCase())
 
-    fun upload(uploadFile: UploadFile): String {
+    fun upload(image: Image): URL {
         val uploader = getUploader().apply {
-            initPath(getSavePath(false))
-            initFile(uploadFile.fileFormat, uploadFile.name)
         }
-        return uploader.upload(uploadFile.bufferedImage)
+        val pathOfImage = uploader.upload(image)
+        return makeUrl(pathOfImage)
     }
 
     private fun getUploader(): Uploader {
         return when (uploader) {
             UploadTarget.S3 -> {
-                S3Uploader(otterEnvironment.awsS3)
+                S3Uploader(appEnvironment.awsS3)
             }
             UploadTarget.LOCAL -> {
-                LocalStorageUploader(otterEnvironment.localStorage)
+                LocalStorageUploader(appEnvironment.localStorage)
             }
         }
     }
-
-    private fun getSavePath(isOriginal: Boolean): String {
+    private fun makeUrl(pathOfImage: String): URL {
         return when (uploader) {
             UploadTarget.S3 -> {
-                if (isOriginal)
-                    otterEnvironment.awsS3.path.unRetouchedPath
-                else
-                    otterEnvironment.awsS3.path.editedPath
+                S3Uploader.makeUrl(appEnvironment.awsS3, pathOfImage)
             }
             UploadTarget.LOCAL -> {
-                if (isOriginal)
-                    otterEnvironment.localStorage.path.unRetouchedPath
-                else
-                    otterEnvironment.localStorage.path.editedPath
+                LocalStorageUploader.makeUrl(appEnvironment.localStorage, pathOfImage)
             }
         }
     }
