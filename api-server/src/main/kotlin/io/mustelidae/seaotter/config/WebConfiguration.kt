@@ -31,7 +31,7 @@ class WebConfiguration : WebMvcConfigurationSupport() {
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         converters.add(BufferedImageHttpMessageConverter())
         converters.add(FormHttpMessageConverter())
-        converters.add(MappingJackson2HttpMessageConverter(objectMapper()))
+        converters.add(MappingJackson2HttpMessageConverter(objectMapper()) as HttpMessageConverter<*>)
         converters.add(StringHttpMessageConverter())
         converters.add(ByteArrayHttpMessageConverter())
         converters.add(ResourceHttpMessageConverter())
