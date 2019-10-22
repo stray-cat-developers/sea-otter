@@ -14,7 +14,7 @@ class UploadResources {
     ) {
         companion object {
             fun from(pair: Pair<Image, URL>): ReplyOnImage {
-                val image = peair.first
+                val image = pair.first
                 val url = pair.second.toString()
                 return ReplyOnImage(
                     image.getMeta().width,
