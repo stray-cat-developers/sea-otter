@@ -28,7 +28,7 @@ class SwaggerConfiguration {
         .directModelSubstitute(LocalDateTime::class.java, String::class.java)
         .directModelSubstitute(LocalTime::class.java, String::class.java)
         .select()
-        .paths(Predicates.not(PathSelectors.regex("/error.*|/actuator.*")))
+        .paths(Predicates.and(PathSelectors.regex("/upload.*")))
         .build()
         .additionalModels(typeResolver.resolve(GlobalErrorFormat::class.java))
 }
