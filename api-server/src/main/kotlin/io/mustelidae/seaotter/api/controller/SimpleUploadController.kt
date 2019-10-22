@@ -5,6 +5,8 @@ import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.domain.delivery.PureDelivery
 import io.mustelidae.seaotter.utils.toReplies
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
+@Api(tags = ["Image Uploader"])
 @RestController
 @RequestMapping("/upload/simple")
 class SimpleUploadController
@@ -21,6 +24,7 @@ class SimpleUploadController
     private val pureDelivery: PureDelivery
 ) {
 
+    @ApiOperation("upload by multipart")
     @PostMapping(
         "multipart",
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
@@ -31,7 +35,9 @@ class SimpleUploadController
         @RequestParam(required = false) hasOriginal: Boolean?
     ): Replies<UploadResources.ReplyOnImage> {
 
-        val image = Image.from(multiPartFile)
+        val image = Image.from(multiPartFile).apply {
+            randomizeName()
+        }
 
         val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
 

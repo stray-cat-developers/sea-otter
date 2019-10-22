@@ -26,7 +26,7 @@ class DirectoryPath(
     }
 
     fun append(name: String, format: ImageFileFormat) {
-        this.path += "$name.${format.name.toLowerCase()}"
+        this.path += "/$name.${format.name.toLowerCase()}"
     }
 
     fun getPath(): String {

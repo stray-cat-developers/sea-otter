@@ -17,6 +17,11 @@ data class Image(
     val imageFileFormat: ImageFileFormat,
     val isOriginal: Boolean
 ) {
+
+    fun randomizeName() {
+        name = ObjectId().toString()
+    }
+
     companion object {
         fun from(multipartFile: MultipartFile): Image {
             if (multipartFile.isSupport().not())
@@ -24,7 +29,7 @@ data class Image(
 
             return Image(
                 ImageIO.read(ByteArrayInputStream(multipartFile.bytes)) ?: throw IllegalArgumentException("No images uploaded."),
-                multipartFile.originalFilename ?: ObjectId().toString(),
+                multipartFile.name ?: ObjectId().toString(),
                 multipartFile.extension(),
                 true
             )
