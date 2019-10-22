@@ -54,6 +54,7 @@ interface FlabbyImage {
             return ImageIO.read(url) ?: throw IllegalArgumentException("Invalid image url.")
         }
 
+        @Deprecated("change Image companion object")
         fun getBufferedImage(path: String): BufferedImage {
             val file = File(path)
             if (file.isFile.not())
