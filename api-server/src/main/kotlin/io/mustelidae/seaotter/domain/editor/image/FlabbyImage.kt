@@ -2,7 +2,6 @@ package io.mustelidae.seaotter.domain.editor.image
 
 import com.google.common.io.Files
 import io.mustelidae.seaotter.constant.ImageFileFormat
-import org.springframework.web.multipart.commons.CommonsMultipartFile
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -53,10 +52,6 @@ interface FlabbyImage {
                 throw IllegalArgumentException("Unsupported image format.")
 
             return ImageIO.read(url) ?: throw IllegalArgumentException("Invalid image url.")
-        }
-
-        fun getBufferedImage(multipartFile: CommonsMultipartFile): BufferedImage {
-            return ImageIO.read(ByteArrayInputStream(multipartFile.bytes)) ?: throw IllegalArgumentException("No images uploaded.")
         }
 
         fun getBufferedImage(path: String): BufferedImage {

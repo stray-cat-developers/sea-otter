@@ -1,8 +1,10 @@
 package io.mustelidae.seaotter.domain.uploader
 
 import io.mustelidae.seaotter.config.AppEnvironment
+import io.mustelidae.seaotter.domain.delivery.Image
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.net.URL
 
 @Service
 class UploadHandler
@@ -12,12 +14,11 @@ class UploadHandler
 
     private val uploader = UploadTarget.valueOf(appEnvironment.uploader.toUpperCase())
 
-    fun upload(uploadFile: UploadFile): String {
+    fun upload(image: Image): URL {
         val uploader = getUploader().apply {
-            initPath(getSavePath(false))
-            initFile(uploadFile.fileFormat, uploadFile.name)
         }
-        return uploader.upload(uploadFile.bufferedImage)
+        val pathOfImage = uploader.upload(image)
+        return makeUrl(pathOfImage)
     }
 
     private fun getUploader(): Uploader {
@@ -30,20 +31,13 @@ class UploadHandler
             }
         }
     }
-
-    private fun getSavePath(isOriginal: Boolean): String {
+    private fun makeUrl(pathOfImage: String): URL {
         return when (uploader) {
             UploadTarget.S3 -> {
-                if (isOriginal)
-                    appEnvironment.awsS3.path.unRetouchedPath
-                else
-                    appEnvironment.awsS3.path.editedPath
+                S3Uploader.makeUrl(appEnvironment.awsS3, pathOfImage)
             }
             UploadTarget.LOCAL -> {
-                if (isOriginal)
-                    appEnvironment.localStorage.path.unRetouchedPath
-                else
-                    appEnvironment.localStorage.path.editedPath
+                LocalStorageUploader.makeUrl(appEnvironment.localStorage, pathOfImage)
             }
         }
     }

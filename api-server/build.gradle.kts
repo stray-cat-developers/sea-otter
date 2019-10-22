@@ -60,7 +60,9 @@ dependencies {
     compile(kotlin("reflect"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
     compile("com.amazonaws:aws-java-sdk-s3:1.11.462")
-    compile("org.apache.commons:commons-lang3:3.9")
+
+    // https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
+    compile("commons-fileupload:commons-fileupload:1.4")
 
     compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8")

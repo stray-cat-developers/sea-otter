@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter
  * Simply set the default path.
  * If there are more files, fix them here. And let's do sharding.
  */
+@Deprecated("remove")
 object PathGenerator {
 
     fun getPathByDate(prefixPath: String): String {

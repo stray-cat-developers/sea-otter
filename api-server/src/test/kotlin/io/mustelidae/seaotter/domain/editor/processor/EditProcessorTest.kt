@@ -19,7 +19,7 @@ internal class EditProcessorTest {
             rotateByFlip(RotateOption.Flip.HORZ)
             resizeByScale(90.0)
         }.queue
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        val bufferedImage = FlabbyImage.getBufferedImage(inputPath)
         // When
         val processor = EditProcessor()
         val touchBufferedImage = processor.edit(bufferedImage, stepQueue)

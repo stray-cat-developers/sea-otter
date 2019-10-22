@@ -1,6 +1,9 @@
 package io.mustelidae.seaotter.utils
 
 import com.google.common.io.Files
+import io.mustelidae.seaotter.common.Replies
+import io.mustelidae.seaotter.common.Reply
+import io.mustelidae.seaotter.config.UnSupportException
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import org.springframework.web.multipart.MultipartFile
 import java.security.MessageDigest
@@ -21,13 +24,19 @@ fun String.sha1(): String {
     return result.toString()
 }
 
-fun MultipartFile.isSupport(): Boolean {
+fun MultipartFile.extension(): ImageFileFormat {
     @Suppress("UnstableApiUsage")
     val extension = Files.getFileExtension(this.originalFilename!!)
     return try {
-        val format = ImageFileFormat.valueOf(extension.toUpperCase())
-        format.support
-    } catch (e: Exception) {
-        false
+        ImageFileFormat.valueOf(extension.toUpperCase())
+    } catch (e: IllegalArgumentException) {
+        throw UnSupportException()
     }
 }
+
+fun MultipartFile.isSupport(): Boolean {
+    return this.extension().support
+}
+
+fun <T> List<T>.toReplies(): Replies<T> = Replies(this)
+fun <T> T.toReply(): Reply<T> = Reply(this)

@@ -70,7 +70,7 @@ class ThumbnailatorFlabbyImage(
                 .keepAspectRatio(true)
     }
 
-    fun compress(quality:Double) {
+    fun compress(quality: Double) {
         thumbnailsBuilder
                 .scale(1.0)
                 .resizer(BicubicResizer())

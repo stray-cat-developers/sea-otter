@@ -2,61 +2,46 @@ package io.mustelidae.seaotter.domain.uploader
 
 import com.google.common.io.Files
 import io.mustelidae.seaotter.config.AppEnvironment
-import io.mustelidae.seaotter.constant.ImageFileFormat
-import java.awt.image.BufferedImage
+import io.mustelidae.seaotter.domain.delivery.Image
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.nio.file.Paths
+import java.net.URL
 import javax.imageio.ImageIO
 
 internal class LocalStorageUploader(
     private val localStorage: AppEnvironment.LocalStorage
 ) : Uploader {
 
-    private lateinit var prefixPath: String
-    private lateinit var imageFileFormat: ImageFileFormat
-    private lateinit var fileName: String
+    override fun upload(image: Image): String {
+        val directoryPath: DirectoryPath = newPath(image.isOriginal)
 
-    override fun initFile(imageFileFormat: ImageFileFormat, name: String) {
-        this.imageFileFormat = imageFileFormat
-        this.fileName = "$name.${imageFileFormat.name.toLowerCase()}"
-    }
+        val out = ByteArrayOutputStream()
+        ImageIO.write(image.bufferedImage, image.getExtension(), out)
 
-    override fun initPath(path: String) {
-        prefixPath = path
-    }
-
-    override fun upload(bytes: ByteArray): String {
-        val basePath = getPath(prefixPath)
-        val path = File(basePath)
+        val path = File(directoryPath.getPath())
         if (path.exists().not())
             path.mkdirs()
 
-        val pathAndFileName = "$basePath/$fileName"
-        val file = File(pathAndFileName)
+        directoryPath.append(image.name, image.imageFileFormat)
+        val file = File(directoryPath.getPath())
 
         file.createNewFile()
-        Files.write(bytes, file)
+        @Suppress("UnstableApiUsage")
+        Files.write(out.toByteArray(), file)
 
-        return pathAndFileName
+        return directoryPath.getPath()
     }
 
-    override fun upload(bufferedImage: BufferedImage): String {
-        val out = ByteArrayOutputStream()
-        ImageIO.write(bufferedImage, imageFileFormat.name.toLowerCase(), out)
-        return upload(out.toByteArray())
+    private fun newPath(isOriginal: Boolean): DirectoryPath {
+        return DirectoryPath(localStorage.path, localStorage.shardType).apply {
+            append(isOriginal)
+        }
     }
 
-    override fun makeFullUrl(pathAndFileName: String): String {
-        return Paths.get(localStorage.url, pathAndFileName)
-                .toAbsolutePath()
-                .toString()
-    }
-
-    private fun getPath(prefixPath: String): String {
-        return when (localStorage.shardType) {
-            "date" -> PathGenerator.getPathByDate(prefixPath)
-            else -> ""
+    companion object {
+        fun makeUrl(localStorage: AppEnvironment.LocalStorage, uploadedPath: String): URL {
+            val url = localStorage.url + uploadedPath.removePrefix(localStorage.path)
+            return URL(url)
         }
     }
 }

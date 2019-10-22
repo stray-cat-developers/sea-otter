@@ -7,7 +7,7 @@ import org.springframework.mock.web.MockMultipartFile
 internal class ExtensionKtTest {
 
     @Test
-    fun isSupport(){
+    fun isSupport() {
         // Given
         val multipartFile = MockMultipartFile("test", "/abcd/test.jpg", "", "".toByteArray())
         // When
@@ -17,7 +17,7 @@ internal class ExtensionKtTest {
     }
 
     @Test
-    fun isNotSupport(){
+    fun isNotSupport() {
         // Given
         val multipartFile = MockMultipartFile("test", "/abcd/test.text", "", "".toByteArray())
         // When
