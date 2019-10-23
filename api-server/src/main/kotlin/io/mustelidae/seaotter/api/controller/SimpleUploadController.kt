@@ -59,7 +59,6 @@ class SimpleUploadController
     ): Replies<UploadResources.ReplyOnImage> {
 
         val image = Image.from(base64)
-
         val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
 
         return shippingItem.shippedImages
