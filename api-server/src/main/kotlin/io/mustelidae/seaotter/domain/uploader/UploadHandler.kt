@@ -15,8 +15,8 @@ class UploadHandler
     private val uploader = UploadTarget.valueOf(appEnvironment.uploader.toUpperCase())
 
     fun upload(image: Image): URL {
-        val uploader = getUploader().apply {
-        }
+        image.reviseFormat()
+        val uploader = getUploader()
         val pathOfImage = uploader.upload(image)
         return makeUrl(pathOfImage)
     }

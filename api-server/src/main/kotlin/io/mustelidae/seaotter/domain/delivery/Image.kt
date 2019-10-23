@@ -7,20 +7,30 @@ import io.mustelidae.seaotter.utils.isSupport
 import org.bson.types.ObjectId
 import org.springframework.util.Base64Utils
 import org.springframework.web.multipart.MultipartFile
+import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.File
 import javax.imageio.ImageIO
 
 data class Image(
-    val bufferedImage: BufferedImage,
+    var bufferedImage: BufferedImage,
     var name: String,
-    val imageFileFormat: ImageFileFormat,
+    var imageFileFormat: ImageFileFormat,
     val isOriginal: Boolean
 ) {
 
     fun randomizeName() {
         name = ObjectId().toString()
+    }
+
+    fun reviseFormat() {
+        if (isOriginal.not() && bufferedImage.colorModel.pixelSize == 32) {
+            val convert = BufferedImage(bufferedImage.width, bufferedImage.height, BufferedImage.TYPE_INT_RGB)
+            convert.createGraphics().drawImage(bufferedImage, 0, 0, Color.WHITE, null)
+            bufferedImage = convert
+            imageFileFormat = ImageFileFormat.JPG
+        }
     }
 
     companion object {

@@ -54,11 +54,11 @@ class SimpleUploadController
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun upload(
-        @RequestParam base64OfImage: String,
+        @RequestParam base64: String,
         @RequestParam(required = false) hasOriginal: Boolean?
     ): Replies<UploadResources.ReplyOnImage> {
 
-        val image = Image.from(base64OfImage)
+        val image = Image.from(base64)
 
         val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
 
@@ -67,7 +67,7 @@ class SimpleUploadController
             .toReplies()
     }
 
-    @ApiOperation("upload by base64 using json")
+    @ApiOperation("upload by base64 using json", notes = "To send base64 to json, convert it to base64 safe url")
     @PostMapping(
         "base64/json",
         consumes = [MediaType.APPLICATION_JSON_VALUE],

@@ -1,13 +1,15 @@
 package io.mustelidae.seaotter.domain.editor.image
 
+import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import io.mustelidae.seaotter.utils.write
 import java.awt.image.BufferedImage
+import java.io.File
 import kotlin.system.measureTimeMillis
 
 abstract class ImagePerformanceTemplate {
 
-    private val imageFiles = listOf(
+    val imageFiles = listOf(
             "denden_CMYK_2784x1856.jpg",
             "denden_RGB_2784x1856.jpg",
             "night_RGB_2784x1856.jpg",
@@ -63,7 +65,7 @@ abstract class ImagePerformanceTemplate {
 
     private fun cropTheImage(fileName: String, x1: Int, y1: Int, x2: Int, y2: Int) {
         val inputPath = getTestImageFileAsAbsolutePath(fileName)
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
 
         val time = measureTimeMillis {
             bufferedImage = crop(bufferedImage, x1, y1, x2, y2)
@@ -75,7 +77,7 @@ abstract class ImagePerformanceTemplate {
 
     private fun cropTheImage(fileName: String, width: Int, height: Int) {
         val inputPath = getTestImageFileAsAbsolutePath(fileName)
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
 
         val time = measureTimeMillis {
             bufferedImage = crop(bufferedImage, width, height)
@@ -99,7 +101,7 @@ abstract class ImagePerformanceTemplate {
 
     private fun resizeUsingFixFrame(fileName: String, width: Int, height: Int) {
         val inputPath = getTestImageFileAsAbsolutePath(fileName)
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
 
         val time = measureTimeMillis {
             bufferedImage = resize(bufferedImage, width, height)
