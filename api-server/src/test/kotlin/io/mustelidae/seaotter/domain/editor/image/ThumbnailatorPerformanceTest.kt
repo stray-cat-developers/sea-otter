@@ -1,7 +1,11 @@
 package io.mustelidae.seaotter.domain.editor.image
 
+import io.mustelidae.seaotter.domain.delivery.Image
+import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
+import io.mustelidae.seaotter.utils.write
 import org.junit.jupiter.api.Test
 import java.awt.image.BufferedImage
+import java.io.File
 
 class ThumbnailatorPerformanceTest : ImagePerformanceTemplate() {
 
@@ -49,5 +53,19 @@ class ThumbnailatorPerformanceTest : ImagePerformanceTemplate() {
     @Test
     fun imageCropTestByCoordinate() {
         cropAllImagesToCoordinate()
+    }
+
+    @Test
+    fun compressTest() {
+        val fileName = super.imageFiles.first()
+        val inputPath = getTestImageFileAsAbsolutePath(fileName)
+        val image = Image.from(File(inputPath))
+
+        val flabbyImage = ThumbnailatorFlabbyImage(image.bufferedImage)
+
+        flabbyImage.compress(0.9)
+        val compressedBufferedImage = flabbyImage.getBufferedImage()
+
+        write(compressedBufferedImage, "${fileName}_to_compress_${getProcessorName()}")
     }
 }
