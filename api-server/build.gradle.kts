@@ -79,7 +79,7 @@ dependencies {
     compile("com.github.kittinunf.fuel:fuel:2.0.1")
 
     compile("com.google.guava:guava:28.1-jre")
-    testCompile("com.google.truth:truth:0.42")
+    testCompile("com.google.truth:truth:1.0")
 
     compile("io.springfox:springfox-swagger2:2.9.2")
     compile("io.springfox:springfox-swagger-ui:2.9.2")
