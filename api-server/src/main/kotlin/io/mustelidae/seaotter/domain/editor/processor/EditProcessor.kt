@@ -10,33 +10,33 @@ import io.mustelidae.seaotter.domain.editor.command.RotateOption
 import java.awt.image.BufferedImage
 import java.util.Queue
 
-class EditProcessor {
-    fun edit(bufferedImage: BufferedImage, queue: Queue<Option>): BufferedImage {
+class EditProcessor(
+    var bufferedImage: BufferedImage,
+    val queue: Queue<Option>
+) {
 
-        var touchImage = bufferedImage
-
+    fun processing() {
         for (option in queue) {
-            touchImage = when (option) {
+            bufferedImage = when (option) {
                 is CropOption -> {
-                    CropCommand(touchImage)
-                            .apply { execute(option) }
-                            .getBufferedImage()
+                    CropCommand(bufferedImage)
+                        .apply { execute(option) }
+                        .getBufferedImage()
                 }
                 is ResizeOption -> {
-                    ResizeCommand(touchImage)
-                            .apply { execute(option) }
-                            .getBufferedImage()
+                    ResizeCommand(bufferedImage)
+                        .apply { execute(option) }
+                        .getBufferedImage()
                 }
                 is RotateOption -> {
-                    RotateCommand(touchImage)
-                            .apply { execute(option) }
-                            .getBufferedImage()
+                    RotateCommand(bufferedImage)
+                        .apply { execute(option) }
+                        .getBufferedImage()
                 }
                 else -> {
                     throw IllegalStateException("execute command is not define.")
                 }
             }
         }
-        return touchImage
     }
 }

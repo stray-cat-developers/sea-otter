@@ -27,6 +27,7 @@ class SwaggerConfiguration {
         .directModelSubstitute(LocalDate::class.java, String::class.java)
         .directModelSubstitute(LocalDateTime::class.java, String::class.java)
         .directModelSubstitute(LocalTime::class.java, String::class.java)
+        .ignoredParameterTypes(Map::class.java)
         .select()
         .paths(Predicates.and(PathSelectors.regex("/upload.*")))
         .build()
