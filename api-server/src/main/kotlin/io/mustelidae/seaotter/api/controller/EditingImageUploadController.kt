@@ -31,26 +31,53 @@ class EditingImageUploadController
     private val editingStepValueDeserializer = EditingStepValueDeserializer()
 
     @ApiOperation("upload by multipart")
-    @PostMapping(
-        "multipart",
-        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
-    )
     @ApiImplicitParams(value = [
         ApiImplicitParam(paramType = "query", name = "crop"),
         ApiImplicitParam(paramType = "query", name = "resize"),
         ApiImplicitParam(paramType = "query", name = "rotate")
     ])
+    @PostMapping(
+        "multipart",
+        consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
     fun upload(
         @RequestPart(required = true) multiPartFile: MultipartFile,
-        @RequestParam(required = false) hasOriginal: Boolean?,
-        @RequestParam allParams: Map<String, String>
+        @RequestParam allParams: Map<String, String>,
+        @RequestParam(required = false) hasOriginal: Boolean?
     ): Replies<UploadResources.ReplyOnImage> {
         val operations = editingStepValueDeserializer.deserialize(allParams)
         val editOperation = EditOperation.from(operations)
         val image = Image.from(multiPartFile).apply {
             randomizeName()
         }
+
+        val shippingItem = editImageDelivery.delivery(image, hasOriginal ?: false, editOperation)
+
+        return shippingItem.shippedImages
+            .map { UploadResources.ReplyOnImage.from(it) }
+            .toReplies()
+    }
+
+    @ApiOperation("upload by base64")
+    @ApiImplicitParams(value = [
+        ApiImplicitParam(paramType = "query", name = "crop"),
+        ApiImplicitParam(paramType = "query", name = "resize"),
+        ApiImplicitParam(paramType = "query", name = "rotate")
+    ])
+    @PostMapping(
+        "base64/form",
+        consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun upload(
+        @RequestParam base64: String,
+        @RequestParam allParams: Map<String, String>,
+        @RequestParam(required = false) hasOriginal: Boolean?
+    ): Replies<UploadResources.ReplyOnImage> {
+        val operations = editingStepValueDeserializer.deserialize(allParams)
+        val editOperation = EditOperation.from(operations)
+        val image = Image.from(base64)
 
         val shippingItem = editImageDelivery.delivery(image, hasOriginal ?: false, editOperation)
 
