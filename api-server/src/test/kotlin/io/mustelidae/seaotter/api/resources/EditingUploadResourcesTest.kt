@@ -33,11 +33,4 @@ internal class EditingUploadResourcesTest {
         assertThat(coordinate.x1).isEqualTo(1)
         assertThat(coordinate.y1).isEqualTo(2)
     }
-
-    @Test
-    fun cropParse() {
-        val value = "coordinate:1,2,3,4"
-
-        value.split(":")
-    }
 }

@@ -10,7 +10,8 @@ import java.util.ArrayDeque
 import java.util.Queue
 
 class EditOperation {
-    var queue: Queue<Option> = ArrayDeque()
+    val queue: Queue<Option> = ArrayDeque()
+    val histories = mutableListOf<String>()
 
     fun cropByCoordinates(x1: Int, y1: Int, x2: Int, y2: Int) {
         queue.offer(CropOption.Builder()
@@ -52,6 +53,10 @@ class EditOperation {
         queue.offer(RotateOption.Builder()
                 .flip(flip)
                 .build())
+    }
+
+    fun addHistory(description: String) {
+        this.histories.add(description)
     }
 
     companion object {

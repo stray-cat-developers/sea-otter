@@ -22,7 +22,7 @@ class EditImageDelivery
             shippingItem.shippedImages.add(upload(image))
         }
 
-        val processor = EditProcessor(image.bufferedImage, editOperation.queue)
+        val processor = EditProcessor(image.bufferedImage, editOperation)
         processor.processing()
 
         val touchedImage = Image(processor.bufferedImage, ObjectId().toString(), ImageFileFormat.JPG, false).apply {

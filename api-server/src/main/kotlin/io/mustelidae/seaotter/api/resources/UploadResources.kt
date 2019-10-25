@@ -2,11 +2,13 @@ package io.mustelidae.seaotter.api.resources
 
 import com.github.kittinunf.fuel.util.encodeBase64
 import io.mustelidae.seaotter.domain.delivery.Image
+import io.swagger.annotations.ApiModel
 import org.springframework.util.Base64Utils
 import java.net.URL
 
 class UploadResources {
 
+    @ApiModel("Upload.Request")
     data class Request(
         val base64: String,
         val hasOriginal: Boolean?
@@ -23,6 +25,7 @@ class UploadResources {
         }
     }
 
+    @ApiModel("Upload.ReplyOnImage")
     data class ReplyOnImage(
         val width: Int,
         val height: Int,

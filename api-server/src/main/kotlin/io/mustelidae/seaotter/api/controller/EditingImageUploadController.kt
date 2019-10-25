@@ -1,11 +1,12 @@
 package io.mustelidae.seaotter.api.controller
 
 import io.mustelidae.seaotter.api.resources.EditingStepValueDeserializer
-import io.mustelidae.seaotter.api.resources.UploadResources
+import io.mustelidae.seaotter.api.resources.EditingUploadResources
 import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.domain.delivery.EditImageDelivery
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.domain.editor.processor.EditOperation
+import io.mustelidae.seaotter.utils.decodeFromUrlSafe
 import io.mustelidae.seaotter.utils.toReplies
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam
@@ -14,6 +15,7 @@ import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
@@ -45,7 +47,7 @@ class EditingImageUploadController
         @RequestPart(required = true) multiPartFile: MultipartFile,
         @RequestParam allParams: Map<String, String>,
         @RequestParam(required = false) hasOriginal: Boolean?
-    ): Replies<UploadResources.ReplyOnImage> {
+    ): Replies<EditingUploadResources.ReplyOnImage> {
         val operations = editingStepValueDeserializer.deserialize(allParams)
         val editOperation = EditOperation.from(operations)
         val image = Image.from(multiPartFile).apply {
@@ -55,7 +57,7 @@ class EditingImageUploadController
         val shippingItem = editImageDelivery.delivery(image, hasOriginal ?: false, editOperation)
 
         return shippingItem.shippedImages
-            .map { UploadResources.ReplyOnImage.from(it) }
+            .map { EditingUploadResources.ReplyOnImage.from(it, editOperation.histories) }
             .toReplies()
     }
 
@@ -74,7 +76,7 @@ class EditingImageUploadController
         @RequestParam base64: String,
         @RequestParam allParams: Map<String, String>,
         @RequestParam(required = false) hasOriginal: Boolean?
-    ): Replies<UploadResources.ReplyOnImage> {
+    ): Replies<EditingUploadResources.ReplyOnImage> {
         val operations = editingStepValueDeserializer.deserialize(allParams)
         val editOperation = EditOperation.from(operations)
         val image = Image.from(base64)
@@ -82,7 +84,27 @@ class EditingImageUploadController
         val shippingItem = editImageDelivery.delivery(image, hasOriginal ?: false, editOperation)
 
         return shippingItem.shippedImages
-            .map { UploadResources.ReplyOnImage.from(it) }
+            .map { EditingUploadResources.ReplyOnImage.from(it, editOperation.histories) }
+            .toReplies()
+    }
+
+    @ApiOperation("upload by safe url base64 using json")
+    @PostMapping(
+        "base64/json",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun upload(
+        @RequestBody request: EditingUploadResources.Request
+    ): Replies<EditingUploadResources.ReplyOnImage> {
+        val base64 = request.base64.decodeFromUrlSafe()
+        val editOperation = EditOperation.from(request.edits)
+        val image = Image.from(base64)
+
+        val shippingItem = editImageDelivery.delivery(image, request.hasOriginal ?: false, editOperation)
+
+        return shippingItem.shippedImages
+            .map { EditingUploadResources.ReplyOnImage.from(it, editOperation.histories) }
             .toReplies()
     }
 }
