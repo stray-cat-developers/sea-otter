@@ -16,15 +16,15 @@ internal class EditProcessorTest {
     fun edit() {
         // Given
 
-        val stepQueue = EditOperation().apply {
+        val editOperation = EditOperation().apply {
             cropByPosition(CropOption.Position.CENTER, 1000, 1000)
             rotateByFlip(RotateOption.Flip.HORZ)
             resizeByScale(90.0)
-        }.queue
+        }
 
         val bufferedImage = Image.from(File(inputPath)).bufferedImage
         // When
-        val processor = EditProcessor(bufferedImage, stepQueue)
+        val processor = EditProcessor(bufferedImage, editOperation)
         processor.processing()
         // Then
         write(processor.bufferedImage, "touched-process-image.jpg")
