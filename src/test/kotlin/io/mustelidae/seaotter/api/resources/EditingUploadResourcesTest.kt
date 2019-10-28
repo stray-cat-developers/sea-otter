@@ -10,6 +10,7 @@ internal class EditingUploadResourcesTest {
     fun jsonParse() {
         val json = """ 
             {
+               "base64": "asdf",
                "edits":[
                      {
                         "crop":{

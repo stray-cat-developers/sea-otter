@@ -4,7 +4,6 @@ import com.google.common.io.Files
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
-import java.io.File
 import java.io.IOException
 import java.net.URL
 import javax.imageio.ImageIO
@@ -52,15 +51,6 @@ interface FlabbyImage {
                 throw IllegalArgumentException("Unsupported image format.")
 
             return ImageIO.read(url) ?: throw IllegalArgumentException("Invalid image url.")
-        }
-
-        @Deprecated("change Image companion object")
-        fun getBufferedImage(path: String): BufferedImage {
-            val file = File(path)
-            if (file.isFile.not())
-                throw java.lang.IllegalArgumentException("Invalid image file path")
-
-            return ImageIO.read(file)
         }
 
         private fun isSupportFormat(extension: String): Boolean =

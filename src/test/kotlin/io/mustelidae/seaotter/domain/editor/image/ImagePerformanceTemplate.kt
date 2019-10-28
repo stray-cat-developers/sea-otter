@@ -89,7 +89,7 @@ abstract class ImagePerformanceTemplate {
 
     private fun resizeUsingScale(fileName: String, scale: Double) {
         val inputPath = getTestImageFileAsAbsolutePath(fileName)
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
 
         val time = measureTimeMillis {
             bufferedImage = resize(bufferedImage, scale)

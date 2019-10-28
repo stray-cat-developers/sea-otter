@@ -1,10 +1,11 @@
 package io.mustelidae.seaotter.domain.editor.command
 
 import com.google.common.truth.Truth.assertThat
-import io.mustelidae.seaotter.domain.editor.image.FlabbyImage
+import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import io.mustelidae.seaotter.utils.write
 import org.junit.jupiter.api.Test
+import java.io.File
 
 internal class RotateCommandTest {
 
@@ -14,7 +15,7 @@ internal class RotateCommandTest {
     fun rotateBy90Degree() {
         // Given
         val option = RotateOption.Builder().angle(90.0).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val rotateCommand = RotateCommand(bufferedImage)
         // When
         rotateCommand.execute(option)
@@ -30,7 +31,7 @@ internal class RotateCommandTest {
     fun rotateBy60Degree() {
         // Given
         val option = RotateOption.Builder().angle(60.0).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val rotateCommand = RotateCommand(bufferedImage)
         // When
         rotateCommand.execute(option)
@@ -44,7 +45,7 @@ internal class RotateCommandTest {
     fun flip() {
         // Given
         val option = RotateOption.Builder().flip(RotateOption.Flip.VERT).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val rotateCommand = RotateCommand(bufferedImage)
         // When
         rotateCommand.execute(option)

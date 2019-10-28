@@ -1,10 +1,11 @@
 package io.mustelidae.seaotter.domain.editor.command
 
 import com.google.common.truth.Truth.assertThat
-import io.mustelidae.seaotter.domain.editor.image.FlabbyImage
+import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import java.io.File
 
 internal class CropCommandTest {
 
@@ -15,7 +16,7 @@ internal class CropCommandTest {
     fun cropPosition() {
         // Given
         val option = CropOption.Builder().position(CropOption.Position.CENTER, 400, 200).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val cropCommand = CropCommand(bufferedImage)
         // When
         cropCommand.execute(option)
@@ -40,7 +41,7 @@ internal class CropCommandTest {
     fun cropCoordinates() {
         // Given
         val option = CropOption.Builder().coordinates(300, 300, 700, 900).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val cropCommand = CropCommand(bufferedImage)
         // When
         cropCommand.execute(option)
@@ -63,7 +64,7 @@ internal class CropCommandTest {
     @Test
     fun cropPointScale() {
         val option = CropOption.Builder().pointScale(300, 300, 400, 600).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val cropCommand = CropCommand(bufferedImage)
         // When
         cropCommand.execute(option)

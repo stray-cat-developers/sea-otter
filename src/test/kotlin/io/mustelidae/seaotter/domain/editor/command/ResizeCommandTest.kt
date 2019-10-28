@@ -1,9 +1,10 @@
 package io.mustelidae.seaotter.domain.editor.command
 
 import com.google.common.truth.Truth.assertThat
-import io.mustelidae.seaotter.domain.editor.image.FlabbyImage
+import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import org.junit.jupiter.api.Test
+import java.io.File
 
 internal class ResizeCommandTest {
 
@@ -13,7 +14,7 @@ internal class ResizeCommandTest {
     fun reduce() {
         // Given
         val option = ResizeOption.Builder().scale(50.0).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val resizeCommand = ResizeCommand(bufferedImage)
         // When
         resizeCommand.execute(option)
@@ -27,7 +28,7 @@ internal class ResizeCommandTest {
     fun enlarge() {
         // Given
         val option = ResizeOption.Builder().scale(150.0).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val resizeCommand = ResizeCommand(bufferedImage)
         // When
         resizeCommand.execute(option)
@@ -41,7 +42,7 @@ internal class ResizeCommandTest {
     fun ignoreTheRatioAndReduce() {
         // Given
         val option = ResizeOption.Builder().size(1000, 1000, false).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val resizeCommand = ResizeCommand(bufferedImage)
         // When
         resizeCommand.execute(option)
@@ -55,7 +56,7 @@ internal class ResizeCommandTest {
     fun keepTheRatioAndReduce() {
         // Given
         val option = ResizeOption.Builder().size(1000, 1000, true).build()
-        var bufferedImage = FlabbyImage.getBufferedImage(inputPath)
+        var bufferedImage = Image.from(File(inputPath)).bufferedImage
         val resizeCommand = ResizeCommand(bufferedImage)
         // When
         resizeCommand.execute(option)
