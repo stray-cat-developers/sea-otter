@@ -12,11 +12,6 @@ class DirectoryPath(
     private var path: String = base
     private var shardType: String? = shard
 
-    fun init() {
-        path = base
-        shardType = shard
-    }
-
     fun append(isOriginal: Boolean) {
         path += if (isOriginal) "/untouched" else "/edited"
     }

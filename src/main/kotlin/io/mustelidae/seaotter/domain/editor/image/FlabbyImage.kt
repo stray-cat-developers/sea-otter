@@ -1,12 +1,11 @@
 package io.mustelidae.seaotter.domain.editor.image
 
-import com.google.common.io.Files
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import java.net.URL
 import javax.imageio.ImageIO
+import kotlin.math.roundToInt
 
 interface FlabbyImage {
 
@@ -28,8 +27,8 @@ interface FlabbyImage {
         if (ratio == 0.0 || ratio == 100.0)
             return Pair(width, height)
 
-        val fixedWidth = Math.round(width *(ratio * 0.01)).toInt()
-        val fixedHeight = Math.round(height * (ratio * 0.01)).toInt()
+        val fixedWidth = (width * (ratio * 0.01)).roundToInt()
+        val fixedHeight = (height * (ratio * 0.01)).roundToInt()
 
         return Pair(fixedWidth, fixedHeight)
     }
@@ -42,15 +41,6 @@ interface FlabbyImage {
         fun getBufferedImage(byte: ByteArray): BufferedImage {
 
             return ImageIO.read(ByteArrayInputStream(byte))
-        }
-
-        fun getBufferedImage(url: URL): BufferedImage {
-            val imgExt = Files.getFileExtension(url.path)
-
-            if (isSupportFormat(imgExt).not())
-                throw IllegalArgumentException("Unsupported image format.")
-
-            return ImageIO.read(url) ?: throw IllegalArgumentException("Invalid image url.")
         }
 
         private fun isSupportFormat(extension: String): Boolean =

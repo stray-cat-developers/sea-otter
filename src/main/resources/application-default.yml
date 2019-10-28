@@ -33,6 +33,5 @@ app:
     bucket: sea-otter
     path: /edit
     cloud-front:
-      enabled: false
       url: http://localhost
     shard-type: date

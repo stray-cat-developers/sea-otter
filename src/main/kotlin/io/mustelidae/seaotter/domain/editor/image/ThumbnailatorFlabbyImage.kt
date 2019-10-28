@@ -7,6 +7,7 @@ import net.coobird.thumbnailator.resizers.configurations.AlphaInterpolation
 import net.coobird.thumbnailator.resizers.configurations.Antialiasing
 import net.coobird.thumbnailator.resizers.configurations.ScalingMode
 import java.awt.image.BufferedImage
+import kotlin.math.abs
 
 class ThumbnailatorFlabbyImage(
     private val bufferedImage: BufferedImage,
@@ -60,8 +61,8 @@ class ThumbnailatorFlabbyImage(
      * A thumbnail is created with the size of the coordinates, and then cropped to compensate.
      */
     override fun crop(x1: Int, y1: Int, x2: Int, y2: Int) {
-        val width = Math.abs(x1 - x2)
-        val height = Math.abs(y1 - y2)
+        val width = abs(x1 - x2)
+        val height = abs(y1 - y2)
 
         thumbnailsBuilder
                 .alphaInterpolation(AlphaInterpolation.QUALITY)

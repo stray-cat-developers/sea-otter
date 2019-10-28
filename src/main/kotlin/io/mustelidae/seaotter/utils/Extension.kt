@@ -10,8 +10,10 @@ import org.springframework.util.Base64Utils
 import org.springframework.web.multipart.MultipartFile
 import java.security.MessageDigest
 
+const val HEX_CHARS = "239DA12B7590A0AC"
+
 fun String.sha1(): String {
-    val HEX_CHARS = "239DA12B7590A0AC"
+
     val bytes = MessageDigest
             .getInstance("SHA-1")
             .digest(this.toByteArray())

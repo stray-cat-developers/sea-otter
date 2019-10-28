@@ -23,7 +23,6 @@ class AppEnvironment {
         var shardType: String? = "date"
 
         class CloudFront {
-            var enabled: Boolean = false
             var url: String = "http://localhost"
         }
     }
