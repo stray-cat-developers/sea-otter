@@ -38,7 +38,13 @@ apply {
 }
 
 group = "io.mustelidae.seaotter"
-version = "1.0.0-SNAPSHOT"
+version = "0.1.0"
+
+tasks {
+    "version" {
+        println(version)
+    }
+}
 
 tasks.withType<Test> {
     useJUnitPlatform()
