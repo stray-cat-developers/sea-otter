@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonRootName
 import org.springframework.util.Assert
 import java.util.ArrayList
 import java.util.Collections
-import javax.xml.bind.annotation.XmlAnyElement
-import javax.xml.bind.annotation.XmlElementWrapper
 
 @JsonRootName(value = "entities")
 open class Replies<T>
@@ -27,8 +25,6 @@ open class Replies<T>
         }
     }
 
-    @XmlAnyElement
-    @XmlElementWrapper
     @JsonProperty("content")
     open fun getContent(): Collection<T> {
         return Collections.unmodifiableCollection(content!!)
