@@ -6,7 +6,6 @@ import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.domain.delivery.EditImageDelivery
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.domain.editor.processor.EditOperation
-import io.mustelidae.seaotter.utils.decodeFromUrlSafe
 import io.mustelidae.seaotter.utils.toReplies
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam
@@ -14,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParams
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.util.Base64Utils
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -97,7 +97,7 @@ class EditingImageUploadController
     fun upload(
         @RequestBody request: EditingUploadResources.Request
     ): Replies<EditingUploadResources.ReplyOnImage> {
-        val base64 = request.base64.decodeFromUrlSafe()
+        val base64 = String(Base64Utils.decodeFromUrlSafeString(request.base64))
         val editOperation = EditOperation.from(request.edits)
         val image = Image.from(base64)
 

@@ -1,12 +1,10 @@
 package io.mustelidae.seaotter.utils
 
-import com.github.kittinunf.fuel.util.encodeBase64
 import com.google.common.io.Files
 import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.common.Reply
 import io.mustelidae.seaotter.config.UnSupportException
 import io.mustelidae.seaotter.constant.ImageFileFormat
-import org.springframework.util.Base64Utils
 import org.springframework.web.multipart.MultipartFile
 import java.security.MessageDigest
 
@@ -48,14 +46,3 @@ fun MultipartFile.isSupport(): Boolean {
 
 fun <T> List<T>.toReplies(): Replies<T> = Replies(this)
 fun <T> T.toReply(): Reply<T> = Reply(this)
-
-fun String.decodeFromUrlSafe(): String {
-    val index = this.lastIndexOf(',')
-    val base64SafeUrl = this.substring(index + 1)
-    val header = this.substring(0, index).replace('_', '/')
-
-    val byteArray = Base64Utils.decodeFromUrlSafeString(base64SafeUrl)
-    val encodedBase64 = String(byteArray.encodeBase64())
-
-    return "$header,$encodedBase64"
-}

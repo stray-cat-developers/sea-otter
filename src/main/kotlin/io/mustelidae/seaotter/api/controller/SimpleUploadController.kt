@@ -9,6 +9,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.util.Base64Utils
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -66,7 +67,7 @@ class SimpleUploadController
             .toReplies()
     }
 
-    @ApiOperation("upload by base64 using json", notes = "To send base64 to json, convert it to base64 safe url")
+    @ApiOperation("upload by base64 safe url using json")
     @PostMapping(
         "base64/json",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
@@ -75,7 +76,9 @@ class SimpleUploadController
     fun upload(
         @RequestBody request: UploadResources.Request
     ): Replies<UploadResources.ReplyOnImage> {
-        val image = Image.from(request.convertBase64SafeUrlToBase64())
+
+        val base64 = String(Base64Utils.decodeFromUrlSafeString(request.base64))
+        val image = Image.from(base64)
         val shippingItem = pureDelivery.delivery(image, request.hasOriginal ?: false)
 
         return shippingItem.shippedImages
