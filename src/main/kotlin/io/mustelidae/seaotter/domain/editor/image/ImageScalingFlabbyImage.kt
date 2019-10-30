@@ -64,7 +64,7 @@ class ImageScalingFlabbyImage(
      */
     override fun crop(x1: Int, y1: Int, x2: Int, y2: Int) {
         if (x1 < 0 || x2 <= x1 || y1 < 0 || y2 <= y1 || x2 > bufferedImage.width || y2 > bufferedImage.height)
-            throw IllegalArgumentException("invalid crop coordinates")
+            throw IllegalArgumentException("invalid crop coordinates image size is ${bufferedImage.width}, ${bufferedImage.height}")
 
         val width = x2 - x1
         val height = y2 - y1
