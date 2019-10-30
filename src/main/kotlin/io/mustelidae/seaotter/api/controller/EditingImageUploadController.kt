@@ -63,9 +63,9 @@ class EditingImageUploadController
 
     @ApiOperation("upload by base64")
     @ApiImplicitParams(value = [
-        ApiImplicitParam(paramType = "query", name = "crop"),
-        ApiImplicitParam(paramType = "query", name = "resize"),
-        ApiImplicitParam(paramType = "query", name = "rotate")
+        ApiImplicitParam(paramType = "query", name = "1:crop"),
+        ApiImplicitParam(paramType = "query", name = "1:resize"),
+        ApiImplicitParam(paramType = "query", name = "1:rotate")
     ])
     @PostMapping(
         "base64/form",
