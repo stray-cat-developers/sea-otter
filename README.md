@@ -1,4 +1,5 @@
 # Sea-otter
+https://travis-ci.org/fennec-fox/sea-otter.svg?branch=master
 JPEG and PNG images optimized application
 
 - upload image file
