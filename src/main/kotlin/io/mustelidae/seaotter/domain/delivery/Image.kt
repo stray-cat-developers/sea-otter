@@ -42,7 +42,7 @@ data class Image(
 
             return Image(
                 ImageIO.read(ByteArrayInputStream(multipartFile.bytes)) ?: throw IllegalArgumentException("No images uploaded."),
-                multipartFile.name ?: ObjectId().toString(),
+                multipartFile.name,
                 multipartFile.extension(),
                 true
             )

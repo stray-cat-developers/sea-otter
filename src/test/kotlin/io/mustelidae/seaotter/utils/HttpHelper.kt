@@ -7,7 +7,7 @@ import com.github.kittinunf.result.Result
 import org.springframework.http.HttpStatus
 
 fun ResponseResultOf<String>.success(): Result<String, FuelError> {
-    val (req, res, result) = this
+    val (_, res, result) = this
     if (HttpStatus.valueOf(res.statusCode).is2xxSuccessful.not()) {
         throw IllegalStateException("http state fail.")
     }

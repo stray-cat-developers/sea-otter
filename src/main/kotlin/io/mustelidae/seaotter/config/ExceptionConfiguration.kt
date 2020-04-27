@@ -100,7 +100,7 @@ class ExceptionConfiguration
             errors.map {
                     ValidationError(field = it.field,
                         rejectedValue = it.rejectedValue.toString(),
-                        message = it.defaultMessage)
+                        message = it.defaultMessage?: "validate fail.")
                 }.toList()
 
     private data class ValidationError(
