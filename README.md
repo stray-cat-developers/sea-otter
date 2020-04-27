@@ -13,6 +13,14 @@ JPEG and PNG images optimized application
   - local storage  
      
 # New Features!
+##### 0.1.1
+ - Upgrade library
+   - Springboot 2.1.3 to 2.2.6
+   - kotlin 1.3.31 to 1.3.70
+   - kotlin coroutines 1.3.0 to 1.3.5
+   - gradle 4.8 to 6.3
+   - etc
+##### 0.1.0
  - Upload the original image.
  - It supports json in the form of base64 safe url.
  
