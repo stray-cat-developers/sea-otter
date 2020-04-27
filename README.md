@@ -1,6 +1,8 @@
 # Sea-otter
 JPEG and PNG images optimized application
 
+[![Build Status](https://travis-ci.org/fennec-fox/sea-otter.svg?branch=master)](https://travis-ci.org/fennec-fox/sea-otter)
+
 - upload image file
 - support edit command
   - coordinate crop, position crop, point with scale crop
