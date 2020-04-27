@@ -6,44 +6,33 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 buildscript {
     repositories {
         mavenLocal()
-        mavenCentral()
         jcenter()
+        mavenCentral()
         maven("https://palantir.bintray.com/releases/")
     }
     dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.3.31"))
-        classpath("com.palantir.configurationresolver:gradle-configuration-resolver-plugin:0.3.0")
+        classpath(kotlin("gradle-plugin", version = "1.3.70"))
+        classpath("com.palantir.configurationresolver:gradle-configuration-resolver-plugin:0.4.0")
     }
 }
 
 plugins {
     java
     idea
-    kotlin("jvm") version "1.3.31"
-    kotlin("kapt") version "1.3.31"
-    kotlin("plugin.allopen") version "1.3.31"
-    kotlin("plugin.noarg") version "1.3.31"
-    kotlin("plugin.spring") version "1.3.31"
-    id("org.springframework.boot") version "2.1.3.RELEASE"
+    kotlin("jvm") version "1.3.70"
+    kotlin("kapt") version "1.3.70"
+    kotlin("plugin.spring") version "1.3.70"
+    id("org.springframework.boot") version "2.2.6.RELEASE"
+    id("io.spring.dependency-management") version "1.0.9.RELEASE"
     id("org.jmailen.kotlinter") version "1.26.0"
-}
-
-apply {
-    java
-    kotlin
-    idea
-    plugin("kotlin-spring")
-    plugin("io.spring.dependency-management")
-    plugin("com.palantir.configuration-resolver")
 }
 
 group = "io.mustelidae.seaotter"
 version = "0.1.0"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
-tasks {
-    "version" {
-        println(version)
-    }
+tasks.register("version") {
+    println(version)
 }
 
 tasks.withType<Test> {
@@ -52,7 +41,10 @@ tasks.withType<Test> {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "1.8"
+    }
 }
 
 repositories {
@@ -70,9 +62,9 @@ dependencies {
     // https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
     compile("commons-fileupload:commons-fileupload:1.4")
 
-    compile("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.8")
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.8")
+    compile("com.fasterxml.jackson.module:jackson-module-kotlin")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
 
     compile("com.twelvemonkeys.imageio:imageio-jpeg:3.4.1")
     compile("com.twelvemonkeys.imageio:imageio-tiff:3.4.1")
@@ -82,7 +74,7 @@ dependencies {
     compile("com.twelvemonkeys.imageio:imageio-hdr:3.4.1")
     compile("com.twelvemonkeys.servlet:servlet:3.4.1")
 
-    compile("com.github.kittinunf.fuel:fuel:2.0.1")
+    compile("com.github.kittinunf.fuel:fuel:2.2.1")
 
     compile("com.google.guava:guava:28.1-jre")
     testCompile("com.google.truth:truth:1.0")
@@ -103,7 +95,7 @@ dependencies {
         exclude("io.undertow","undertow-websockets-jsr")
     }
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
     testCompile("org.springframework.boot:spring-boot-starter-test")
 
     compile("javax.interceptor:javax.interceptor-api:1.2.2")
