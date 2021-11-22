@@ -70,11 +70,7 @@ dependencies {
 
     implementation("org.mongodb:bson:4.3.1")
     testImplementation("io.mockk:mockk:1.12.1")
-
-    //Deprecated
-
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
-    implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    testImplementation("com.github.kittinunf.fuel:fuel:2.3.1")
 
 }
 
