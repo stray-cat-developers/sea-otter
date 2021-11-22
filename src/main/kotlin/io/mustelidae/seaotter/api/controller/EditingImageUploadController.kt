@@ -33,11 +33,13 @@ class EditingImageUploadController
     private val editingStepValueDeserializer = EditingStepValueDeserializer()
 
     @ApiOperation("upload by multipart")
-    @ApiImplicitParams(value = [
-        ApiImplicitParam(paramType = "query", name = "1:crop"),
-        ApiImplicitParam(paramType = "query", name = "1:resize"),
-        ApiImplicitParam(paramType = "query", name = "1:rotate")
-    ])
+    @ApiImplicitParams(
+        value = [
+            ApiImplicitParam(paramType = "query", name = "1:crop"),
+            ApiImplicitParam(paramType = "query", name = "1:resize"),
+            ApiImplicitParam(paramType = "query", name = "1:rotate")
+        ]
+    )
     @PostMapping(
         "multipart",
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
@@ -62,11 +64,13 @@ class EditingImageUploadController
     }
 
     @ApiOperation("upload by base64")
-    @ApiImplicitParams(value = [
-        ApiImplicitParam(paramType = "query", name = "1:crop"),
-        ApiImplicitParam(paramType = "query", name = "1:resize"),
-        ApiImplicitParam(paramType = "query", name = "1:rotate")
-    ])
+    @ApiImplicitParams(
+        value = [
+            ApiImplicitParam(paramType = "query", name = "1:crop"),
+            ApiImplicitParam(paramType = "query", name = "1:resize"),
+            ApiImplicitParam(paramType = "query", name = "1:rotate")
+        ]
+    )
     @PostMapping(
         "base64/form",
         consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE],

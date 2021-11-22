@@ -9,7 +9,7 @@ import java.util.Collections
 @JsonRootName(value = "entities")
 open class Replies<T>
 
-    constructor(content: Iterable<T>) : Iterable<T> {
+constructor(content: Iterable<T>) : Iterable<T> {
 
     private val content: MutableCollection<T>?
 

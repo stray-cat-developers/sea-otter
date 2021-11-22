@@ -1,7 +1,6 @@
 package io.mustelidae.seaotter.config
 
 import com.fasterxml.classmate.TypeResolver
-import com.google.common.base.Predicates
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.beans.factory.annotation.Autowired

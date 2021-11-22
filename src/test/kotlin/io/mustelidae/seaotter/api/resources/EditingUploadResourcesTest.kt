@@ -25,7 +25,7 @@ internal class EditingUploadResourcesTest {
                      }
                   ]
             }
-    """.trimIndent()
+        """.trimIndent()
 
         val mapper = Jackson.getMapper()
 

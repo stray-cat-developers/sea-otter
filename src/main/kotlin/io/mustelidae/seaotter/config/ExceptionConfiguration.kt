@@ -26,10 +26,12 @@ class ExceptionConfiguration
 
     private val log = LoggerFactory.getLogger(javaClass)
 
-    @ExceptionHandler(value = [
-        RuntimeException::class,
-        IllegalStateException::class
-    ])
+    @ExceptionHandler(
+        value = [
+            RuntimeException::class,
+            IllegalStateException::class
+        ]
+    )
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
     fun handleGlobalException(e: RuntimeException, request: HttpServletRequest): Map<String, Any> {
@@ -99,15 +101,18 @@ class ExceptionConfiguration
         return errorAttributes
     }
 
-    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+    @Suppress(
+        "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
         "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
     )
     private fun methodArgumentNotValidExceptionErrorForm(errors: List<FieldError>) =
-            errors.map {
-                    ValidationError(field = it.field,
-                        rejectedValue = it.rejectedValue.toString(),
-                        message = it.defaultMessage ?: "validate fail.")
-                }.toList()
+        errors.map {
+            ValidationError(
+                field = it.field,
+                rejectedValue = it.rejectedValue.toString(),
+                message = it.defaultMessage ?: "validate fail."
+            )
+        }.toList()
 
     private data class ValidationError(
         val field: String,

@@ -44,6 +44,6 @@ interface FlabbyImage {
         }
 
         private fun isSupportFormat(extension: String): Boolean =
-                ImageFileFormat.valueOf(extension.toUpperCase()).support
+            ImageFileFormat.valueOf(extension.toUpperCase()).support
     }
 }

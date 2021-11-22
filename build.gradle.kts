@@ -73,11 +73,9 @@ dependencies {
 
     //Deprecated
 
-
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
-    // https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
-    implementation("commons-fileupload:commons-fileupload:1.4")
+
 }
 
 tasks.register("version") {

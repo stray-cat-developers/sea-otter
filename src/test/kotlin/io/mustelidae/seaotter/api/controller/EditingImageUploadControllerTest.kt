@@ -1,7 +1,5 @@
 package io.mustelidae.seaotter.api.controller
 
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.extensions.jsonBody
 import io.kotlintest.matchers.asClue
 import io.kotlintest.shouldBe
 import io.kotlintest.shouldNotBe
@@ -12,10 +10,7 @@ import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.fromJson
 import io.mustelidae.seaotter.utils.fromJsonByContent
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
-import io.mustelidae.seaotter.utils.success
-import io.mustelidae.seaotter.utils.toJson
 import org.junit.jupiter.api.Test
-import org.springframework.hateoas.server.core.DummyInvocationUtils.methodOn
 import org.springframework.hateoas.server.mvc.linkTo
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -56,7 +51,7 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
             .response
             .contentAsString
             .fromJsonByContent<List<EditingUploadResources.ReplyOnImage>>()
-        
+
         // Then
         replies.first().asClue {
             it.width shouldBe 50
@@ -94,7 +89,6 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
             .contentAsString
             .fromJson<Replies<EditingUploadResources.ReplyOnImage>>()
             .getContent()
-
 
         // Then
         replies.first().asClue {

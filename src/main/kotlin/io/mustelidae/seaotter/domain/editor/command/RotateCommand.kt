@@ -22,14 +22,14 @@ class RotateCommand(private var bufferedImage: BufferedImage) : EditCommand<Rota
 
             bufferedImage = if (scalrRotation != null) {
                 ImgscalrFlabbyImage(bufferedImage)
-                        .apply {
-                            rotate(scalrRotation)
-                        }.getBufferedImage()
+                    .apply {
+                        rotate(scalrRotation)
+                    }.getBufferedImage()
             } else {
                 ThumbnailatorFlabbyImage(bufferedImage)
-                        .apply {
-                            rotate(angle)
-                        }.getBufferedImage()
+                    .apply {
+                        rotate(angle)
+                    }.getBufferedImage()
             }
         }
     }

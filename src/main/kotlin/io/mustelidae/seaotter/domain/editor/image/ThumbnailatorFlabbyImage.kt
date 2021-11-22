@@ -22,9 +22,9 @@ class ThumbnailatorFlabbyImage(
     override fun resize(width: Int, height: Int) {
         val scalingMode = choiceScalingMode(width, height)
         thumbnailsBuilder
-                .width(width)
-                .height(height)
-                .scalingMode(scalingMode)
+            .width(width)
+            .height(height)
+            .scalingMode(scalingMode)
     }
 
     /**
@@ -33,8 +33,8 @@ class ThumbnailatorFlabbyImage(
     override fun resize(scale: Double) {
         val scalingMode = choiceScalingMode(scale)
         thumbnailsBuilder
-                .scale(scale * 0.01)
-                .scalingMode(scalingMode)
+            .scale(scale * 0.01)
+            .scalingMode(scalingMode)
     }
 
     /**
@@ -44,14 +44,14 @@ class ThumbnailatorFlabbyImage(
      */
     override fun crop(width: Int, height: Int) {
         thumbnailsBuilder
-                .size(width, height)
-                .crop(Positions.CENTER)
+            .size(width, height)
+            .crop(Positions.CENTER)
     }
 
     fun rotate(angle: Double) {
         thumbnailsBuilder
-                .scale(1.0)
-                .rotate(angle)
+            .scale(1.0)
+            .rotate(angle)
     }
 
     /**
@@ -65,17 +65,17 @@ class ThumbnailatorFlabbyImage(
         val height = abs(y1 - y2)
 
         thumbnailsBuilder
-                .alphaInterpolation(AlphaInterpolation.QUALITY)
-                .crop(Positions.CENTER)
-                .size(width, height)
-                .keepAspectRatio(true)
+            .alphaInterpolation(AlphaInterpolation.QUALITY)
+            .crop(Positions.CENTER)
+            .size(width, height)
+            .keepAspectRatio(true)
     }
 
     fun compress(quality: Double) {
         thumbnailsBuilder
-                .scale(1.0)
-                .resizer(BicubicResizer())
-                .outputQuality(quality)
+            .scale(1.0)
+            .resizer(BicubicResizer())
+            .outputQuality(quality)
     }
 
     override fun getBufferedImage(): BufferedImage = thumbnailsBuilder.asBufferedImage()
