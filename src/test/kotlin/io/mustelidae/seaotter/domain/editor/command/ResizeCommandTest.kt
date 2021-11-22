@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.domain.editor.command
 
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.shouldBe
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import org.junit.jupiter.api.Test
@@ -20,8 +20,8 @@ internal class ResizeCommandTest {
         resizeCommand.execute(option)
         bufferedImage = resizeCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(1392)
-        assertThat(bufferedImage.height).isEqualTo(928)
+        bufferedImage.width shouldBe 1392
+        bufferedImage.height shouldBe 928
     }
 
     @Test
@@ -34,8 +34,8 @@ internal class ResizeCommandTest {
         resizeCommand.execute(option)
         bufferedImage = resizeCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(4176)
-        assertThat(bufferedImage.height).isEqualTo(2784)
+        bufferedImage.width shouldBe 4176
+        bufferedImage.height shouldBe 2784
     }
 
     @Test
@@ -48,8 +48,8 @@ internal class ResizeCommandTest {
         resizeCommand.execute(option)
         bufferedImage = resizeCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(1000)
-        assertThat(bufferedImage.height).isEqualTo(1000)
+        bufferedImage.width shouldBe 1000
+        bufferedImage.height shouldBe 1000
     }
 
     @Test
@@ -61,7 +61,7 @@ internal class ResizeCommandTest {
         // When
         resizeCommand.execute(option)
         bufferedImage = resizeCommand.getBufferedImage()
-        assertThat(bufferedImage.width).isEqualTo(1000)
-        assertThat(bufferedImage.height).isEqualTo(667)
+        bufferedImage.width shouldBe 1000
+        bufferedImage.height shouldBe 667
     }
 }

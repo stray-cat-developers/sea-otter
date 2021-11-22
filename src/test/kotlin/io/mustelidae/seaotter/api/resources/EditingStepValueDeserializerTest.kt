@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.api.resources
 
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class EditingStepValueDeserializerTest {
@@ -17,9 +17,8 @@ internal class EditingStepValueDeserializerTest {
         // When
         val operationOptions = editingStepValueDeserializer.deserialize(map)
         // Then
-        assertThat(operationOptions.size).isEqualTo(3)
-
-        assertThat(operationOptions[0] is EditingUploadResources.Crop.Coordinate).isTrue()
-        assertThat(operationOptions[2] is EditingUploadResources.Rotate.Angle).isTrue()
+        operationOptions.size shouldBe 3
+        (operationOptions.first() is EditingUploadResources.Crop.Coordinate) shouldBe true
+        (operationOptions[2] is EditingUploadResources.Rotate.Angle) shouldBe true
     }
 }

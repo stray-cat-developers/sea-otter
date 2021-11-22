@@ -1,6 +1,7 @@
 package io.mustelidae.seaotter.api.resources
 
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.matchers.asClue
+import io.kotlintest.shouldBe
 import io.mustelidae.seaotter.utils.Jackson
 import org.junit.jupiter.api.Test
 
@@ -29,9 +30,11 @@ internal class EditingUploadResourcesTest {
         val mapper = Jackson.getMapper()
 
         val request = mapper.readValue(json, EditingUploadResources.Request::class.java)
-        assertThat(request.edits.size).isEqualTo(1)
+        request.edits.size shouldBe 1
         val coordinate = request.edits[0] as EditingUploadResources.Crop.Coordinate
-        assertThat(coordinate.x1).isEqualTo(1)
-        assertThat(coordinate.y1).isEqualTo(2)
+        coordinate.asClue {
+            it.x1 shouldBe 1
+            it.y1 shouldBe 2
+        }
     }
 }

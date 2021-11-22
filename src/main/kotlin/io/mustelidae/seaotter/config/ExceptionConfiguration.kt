@@ -3,6 +3,7 @@ package io.mustelidae.seaotter.config
 import com.amazonaws.AmazonClientException
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.web.error.ErrorAttributeOptions
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes
 import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatus.BAD_REQUEST
@@ -83,8 +84,13 @@ class ExceptionConfiguration
     }
 
     private fun errorForm(request: HttpServletRequest, errorSource: ErrorSource): MutableMap<String, Any> {
+
+        val errorAttributeOptions = if (env.activeProfiles.contains("prod").not())
+            ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE)
+        else ErrorAttributeOptions.defaults()
+
         val errorAttributes =
-            DefaultErrorAttributes().getErrorAttributes(ServletWebRequest(request), isDevelopMode(env))
+            DefaultErrorAttributes().getErrorAttributes(ServletWebRequest(request), errorAttributeOptions)
 
         errorAttributes["status"] = "fail"
         errorAttributes["code"] = errorSource.getCode()
@@ -108,10 +114,4 @@ class ExceptionConfiguration
         val rejectedValue: String,
         val message: String
     )
-}
-
-private fun isDevelopMode(env: Environment): Boolean {
-    val profiles = env.activeProfiles
-
-    return (profiles.contains("default"))
 }

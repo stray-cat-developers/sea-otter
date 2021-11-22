@@ -39,9 +39,10 @@ class WebConfiguration : WebMvcConfigurationSupport() {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
-                .allowCredentials(true)
+            .allowedOrigins("*")
+            .allowedMethods("*")
+            .allowCredentials(false)
+            .maxAge(3600)
     }
 
     override fun configureViewResolvers(registry: ViewResolverRegistry) {

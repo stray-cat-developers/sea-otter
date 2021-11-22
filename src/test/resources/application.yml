@@ -1,0 +1,37 @@
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
+    org.springframework.boot.actuate: off
+    org.springframework.web: debug
+    org.springframework.boot: info
+    io.swagger.models.parameters.AbstractSerializableParameter: error
+
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  port: 6100
+  error:
+    include-stacktrace: always
+    whitelabel:
+      enabled: false
+  compression:
+    enabled: true
+    mime-types: application/json,text/html,text/plain,text/css,text/javascript,application/javascript,image/jpeg,image/png
+
+app:
+  uploader: local
+  local-storage:
+    path: /var/tmp/image
+    url: http://localhost
+    shard-type: date
+  aws-s3:
+    bucket: sea-otter
+    path: /edit
+    cloud-front:
+      url: http://localhost
+    shard-type: date

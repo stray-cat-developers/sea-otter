@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.domain.editor.command
 
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.shouldBe
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import org.junit.jupiter.api.DisplayName
@@ -22,8 +22,8 @@ internal class CropCommandTest {
         cropCommand.execute(option)
         bufferedImage = cropCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(400)
-        assertThat(bufferedImage.height).isEqualTo(200)
+        bufferedImage.width shouldBe 400
+        bufferedImage.height shouldBe 200
 
         val validateRGBTable = listOf(
                 Triple(20, 30, -398450),
@@ -32,7 +32,7 @@ internal class CropCommandTest {
         )
 
         validateRGBTable.forEach { (x, y, rgb) ->
-            assertThat(bufferedImage.getRGB(x, y)).isEqualTo(rgb)
+            bufferedImage.getRGB(x, y) shouldBe rgb
         }
     }
 
@@ -47,8 +47,8 @@ internal class CropCommandTest {
         cropCommand.execute(option)
         bufferedImage = cropCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(400)
-        assertThat(bufferedImage.height).isEqualTo(600)
+        bufferedImage.width shouldBe 400
+        bufferedImage.height shouldBe 600
 
         val validateRGBTable = listOf(
                 Triple(20, 30, -8550252),
@@ -57,7 +57,7 @@ internal class CropCommandTest {
         )
 
         validateRGBTable.forEach { (x, y, rgb) ->
-            assertThat(bufferedImage.getRGB(x, y)).isEqualTo(rgb)
+            bufferedImage.getRGB(x, y) shouldBe rgb
         }
     }
 
@@ -70,8 +70,8 @@ internal class CropCommandTest {
         cropCommand.execute(option)
         bufferedImage = cropCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(400)
-        assertThat(bufferedImage.height).isEqualTo(600)
+        bufferedImage.width shouldBe 400
+        bufferedImage.height shouldBe 600
 
         val validateRGBTable = listOf(
                 Triple(20, 30, -8550252),
@@ -80,7 +80,7 @@ internal class CropCommandTest {
         )
 
         validateRGBTable.forEach { (x, y, rgb) ->
-            assertThat(bufferedImage.getRGB(x, y)).isEqualTo(rgb)
+            bufferedImage.getRGB(x, y) shouldBe rgb
         }
     }
 }

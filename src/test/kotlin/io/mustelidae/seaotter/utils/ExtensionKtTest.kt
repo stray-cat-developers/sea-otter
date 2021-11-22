@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.utils
 
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.util.Base64Utils
@@ -14,7 +14,7 @@ internal class ExtensionKtTest {
         // When
         val support = multipartFile.isSupport()
         // Then
-        assertThat(support).isTrue()
+        support shouldBe true
     }
 
     @Test
@@ -24,7 +24,7 @@ internal class ExtensionKtTest {
         // When
         val support = multipartFile.isSupport()
         // Then
-        assertThat(support).isFalse()
+        support shouldBe false
     }
 
     @Test
