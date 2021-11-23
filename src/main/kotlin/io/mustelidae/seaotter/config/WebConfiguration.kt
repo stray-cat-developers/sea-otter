@@ -39,9 +39,10 @@ class WebConfiguration : WebMvcConfigurationSupport() {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
-                .allowCredentials(true)
+            .allowedOrigins("*")
+            .allowedMethods("*")
+            .allowCredentials(false)
+            .maxAge(3600)
     }
 
     override fun configureViewResolvers(registry: ViewResolverRegistry) {
@@ -55,8 +56,8 @@ class WebConfiguration : WebMvcConfigurationSupport() {
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/")
+            .addResourceLocations("classpath:/META-INF/resources/")
         registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/")
     }
 }

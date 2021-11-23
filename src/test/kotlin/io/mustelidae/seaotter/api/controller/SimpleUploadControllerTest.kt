@@ -1,23 +1,27 @@
 package io.mustelidae.seaotter.api.controller
 
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.FileDataPart
-import com.github.kittinunf.fuel.core.Method
-import com.github.kittinunf.fuel.core.extensions.jsonBody
 import com.github.kittinunf.fuel.util.encodeBase64UrlToString
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.matchers.asClue
+import io.kotlintest.shouldBe
 import io.mustelidae.seaotter.api.IntegrationTestSupport
+import io.mustelidae.seaotter.api.resources.EditingUploadResources
 import io.mustelidae.seaotter.api.resources.UploadResources
+import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.domain.delivery.Image
+import io.mustelidae.seaotter.utils.fromJson
 import io.mustelidae.seaotter.utils.fromJsonByContent
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
-import io.mustelidae.seaotter.utils.success
 import io.mustelidae.seaotter.utils.toJson
 import org.junit.jupiter.api.Test
-import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
-import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
+import org.springframework.hateoas.server.mvc.linkTo
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
+import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.util.Base64Utils
+import org.springframework.util.LinkedMultiValueMap
 import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.imageio.ImageIO
@@ -30,17 +34,24 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
         val fileName = "snapshot.png"
         val file = File(getTestImageFileAsAbsolutePath(fileName))
         val bufferedImage = Image.from(file).bufferedImage
-        val url = "http://localhost:$port" + linkTo(methodOn(SimpleUploadController::class.java).upload(MockMultipartFile(file.name, file.inputStream()), false)).toUri().path
 
         // When
-        val replies = Fuel.upload(url, Method.POST)
-            .add(FileDataPart(file, "multiPartFile", fileName))
-            .responseString()
-            .success()
+        val uri = linkTo<SimpleUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), false) }.toUri()
+        val replies = mockMvc.perform(
+            MockMvcRequestBuilders.multipart(uri)
+                .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+        ).andExpect(
+            status().is2xxSuccessful
+        ).andReturn()
+            .response
+            .contentAsString
             .fromJsonByContent<List<UploadResources.ReplyOnImage>>()
         // Then
-        assertThat(replies[0].width).isEqualTo(bufferedImage.width)
-        assertThat(replies[0].height).isEqualTo(bufferedImage.height)
+        replies.first().asClue {
+            it.width shouldBe bufferedImage.width
+            it.height shouldBe bufferedImage.height
+        }
     }
 
     @Test
@@ -53,20 +64,26 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "PNG", out)
         val base64 = "data:image/png;base64," + Base64Utils.encodeToString(out.toByteArray())
-        val url = "http://localhost:$port" + linkTo(methodOn(SimpleUploadController::class.java).upload("", false)).toUri().path
-        val parameters = listOf(
-            Pair("base64", base64),
-            Pair("hasOriginal", "false")
-        )
+        val uri = linkTo<SimpleUploadController> { upload("", false) }.toUri()
+        val parameters = LinkedMultiValueMap<String, String>().apply {
+            add("base64", base64)
+            add("hasOriginal", "false")
+        }
         // When
-        val replies = Fuel.post(url, parameters)
-            .header(mapOf("Content-type" to "application/x-www-form-urlencoded"))
-            .responseString()
-            .success()
+        val replies = mockMvc.post(uri) {
+            params = parameters
+            contentType = MediaType.APPLICATION_FORM_URLENCODED
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }.andReturn()
+            .response
+            .contentAsString
             .fromJsonByContent<List<UploadResources.ReplyOnImage>>()
         // Then
-        assertThat(replies[0].width).isEqualTo(bufferedImage.width)
-        assertThat(replies[0].height).isEqualTo(bufferedImage.height)
+        replies.first().asClue {
+            it.width shouldBe bufferedImage.width
+            it.height shouldBe bufferedImage.height
+        }
     }
 
     @Test
@@ -86,16 +103,22 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
             false
         )
 
-        val url = "http://localhost:$port" + linkTo(methodOn(SimpleUploadController::class.java).upload(request)).toUri().path
         // When
-        val replies = Fuel.post(url)
-            .header(Pair("Content-type", "application/json"))
-            .jsonBody(request.toJson())
-            .responseString()
-            .success()
-            .fromJsonByContent<List<UploadResources.ReplyOnImage>>()
+        val replies = mockMvc.post(linkTo<SimpleUploadController> { upload(request) }.toUri()) {
+            accept = MediaType.APPLICATION_JSON
+            contentType = MediaType.APPLICATION_JSON
+            content = request.toJson()
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }.andReturn()
+            .response
+            .contentAsString
+            .fromJson<Replies<EditingUploadResources.ReplyOnImage>>()
+            .getContent()
         // Then
-        assertThat(replies[0].width).isEqualTo(bufferedImage.width)
-        assertThat(replies[0].height).isEqualTo(bufferedImage.height)
+        replies.first().asClue {
+            it.width shouldBe bufferedImage.width
+            it.height shouldBe bufferedImage.height
+        }
     }
 }

@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.domain.delivery
 
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.shouldBe
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import org.junit.jupiter.api.Test
 
@@ -17,6 +17,6 @@ internal class ImageTest {
         val image = Image.from(base64)
 
         // Then
-        assertThat(image.imageFileFormat).isEqualTo(ImageFileFormat.PNG)
+        image.imageFileFormat shouldBe ImageFileFormat.PNG
     }
 }

@@ -13,13 +13,13 @@ class CropCommand(private var bufferedImage: BufferedImage) : EditCommand<CropOp
         bufferedImage = when (option.type) {
             POINT_SCALE -> {
                 ImgscalrFlabbyImage(bufferedImage)
-                        .apply { cropByPointScale(option.x1!!, option.y1!!, option.width!!, option.height!!) }
-                        .getBufferedImage()
+                    .apply { cropByPointScale(option.x1!!, option.y1!!, option.width!!, option.height!!) }
+                    .getBufferedImage()
             }
             COORDINATES -> {
                 ImageScalingFlabbyImage(bufferedImage)
-                        .apply { crop(option.x1!!, option.y1!!, option.x2!!, option.y2!!) }
-                        .getBufferedImage()
+                    .apply { crop(option.x1!!, option.y1!!, option.x2!!, option.y2!!) }
+                    .getBufferedImage()
             }
             POSITION -> {
                 val flabbyImage = if (option.position == CropOption.Position.CENTER)

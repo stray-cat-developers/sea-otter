@@ -10,15 +10,15 @@ import kotlin.system.measureTimeMillis
 abstract class ImagePerformanceTemplate {
 
     val imageFiles = listOf(
-            "denden_CMYK_2784x1856.jpg",
-            "denden_RGB_2784x1856.jpg",
-            "night_RGB_2784x1856.jpg",
-            "scenery_RGB_4128×2322.jpg",
-            "weed_RGB_2784x1856.jpg",
-            "denden_RGB_2784x1856.png",
-            "way_RGB_1568x1044.png",
-            "lena_RGB_512x512.tiff",
-            "lena_RGB_512x512.bmp"
+        "denden_CMYK_2784x1856.jpg",
+        "denden_RGB_2784x1856.jpg",
+        "night_RGB_2784x1856.jpg",
+        "scenery_RGB_4128×2322.jpg",
+        "weed_RGB_2784x1856.jpg",
+        "denden_RGB_2784x1856.png",
+        "way_RGB_1568x1044.png",
+        "lena_RGB_512x512.tiff",
+        "lena_RGB_512x512.bmp"
     )
 
     abstract fun resize(bufferedImage: BufferedImage, scale: Double): BufferedImage

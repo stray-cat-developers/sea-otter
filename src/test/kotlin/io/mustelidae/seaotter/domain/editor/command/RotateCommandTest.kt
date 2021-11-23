@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.domain.editor.command
 
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.shouldBe
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import io.mustelidae.seaotter.utils.write
@@ -21,8 +21,8 @@ internal class RotateCommandTest {
         rotateCommand.execute(option)
         bufferedImage = rotateCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(1856)
-        assertThat(bufferedImage.height).isEqualTo(2784)
+        bufferedImage.width shouldBe 1856
+        bufferedImage.height shouldBe 2784
 
         write(bufferedImage, "rotate90")
     }
@@ -37,8 +37,8 @@ internal class RotateCommandTest {
         rotateCommand.execute(option)
         bufferedImage = rotateCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(2999)
-        assertThat(bufferedImage.height).isEqualTo(3339)
+        bufferedImage.width shouldBe 2999
+        bufferedImage.height shouldBe 3339
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class RotateCommandTest {
         rotateCommand.execute(option)
         bufferedImage = rotateCommand.getBufferedImage()
         // Then
-        assertThat(bufferedImage.width).isEqualTo(2784)
-        assertThat(bufferedImage.height).isEqualTo(1856)
+        bufferedImage.width shouldBe 2784
+        bufferedImage.height shouldBe 1856
     }
 }

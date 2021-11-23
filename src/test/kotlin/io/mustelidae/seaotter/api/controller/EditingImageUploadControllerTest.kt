@@ -1,21 +1,25 @@
 package io.mustelidae.seaotter.api.controller
 
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.core.FileDataPart
-import com.github.kittinunf.fuel.core.Method
-import com.github.kittinunf.fuel.core.extensions.jsonBody
-import com.google.common.truth.Truth.assertThat
+import io.kotlintest.matchers.asClue
+import io.kotlintest.shouldBe
+import io.kotlintest.shouldNotBe
 import io.mustelidae.seaotter.api.IntegrationTestSupport
 import io.mustelidae.seaotter.api.resources.EditingUploadResources
+import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.domain.delivery.Image
+import io.mustelidae.seaotter.utils.fromJson
 import io.mustelidae.seaotter.utils.fromJsonByContent
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
-import io.mustelidae.seaotter.utils.success
 import org.junit.jupiter.api.Test
-import org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo
-import org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn
+import org.springframework.hateoas.server.mvc.linkTo
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
+import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.util.Base64Utils
+import org.springframework.util.LinkedMultiValueMap
 import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.imageio.ImageIO
@@ -27,24 +31,34 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
         // Given
         val fileName = "snapshot.png"
         val file = File(getTestImageFileAsAbsolutePath(fileName))
-        val parameters = listOf(
-            "1:crop" to "coordinate:0,0,100,100",
-            "2:resize" to "scale:50.0",
-            "3:rotate" to "flip:HORZ",
-            "4:rotate" to "angle:180.0"
-        )
-        val url = "http://localhost:$port" + linkTo(methodOn(EditingImageUploadController::class.java).upload(MockMultipartFile(file.name, file.inputStream()), mapOf(), false)).toUri().path
+        val parameters = LinkedMultiValueMap<String, String>().apply {
+            add("1:crop", "coordinate:0,0,100,100")
+            add("2:resize", "scale:50.0")
+            add("3:rotate", "flip:HORZ")
+            add("4:rotate", "angle:180.0")
+            add("hasOriginal", "false")
+        }
+
         // When
-        val replies = Fuel.upload(url, Method.POST, parameters)
-            .add(FileDataPart(file, "multiPartFile", fileName))
-            .responseString()
-            .success()
+        val uri = linkTo<EditingImageUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), mapOf(), false) }.toUri()
+        val replies = mockMvc.perform(
+            MockMvcRequestBuilders.multipart(uri)
+                .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
+                .params(parameters)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+        ).andExpect(status().is2xxSuccessful)
+            .andReturn()
+            .response
+            .contentAsString
             .fromJsonByContent<List<EditingUploadResources.ReplyOnImage>>()
+
         // Then
-        assertThat(replies[0].width).isEqualTo(50)
-        assertThat(replies[0].height).isEqualTo(50)
-        assertThat(replies[0].histories).isNotEmpty()
-        assertThat(replies[0].histories?.get(0)).isEqualTo("crop")
+        replies.first().asClue {
+            it.width shouldBe 50
+            it.height shouldBe 50
+            it.histories shouldNotBe null
+            it.histories!!.first() shouldBe "crop"
+        }
     }
 
     @Test
@@ -57,24 +71,31 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "PNG", out)
         val base64 = "data:image/png;base64," + Base64Utils.encodeToString(out.toByteArray())
-        val url = "http://localhost:$port" + linkTo(methodOn(EditingImageUploadController::class.java).upload("", mapOf(), false)).toUri().path
-        val parameters = listOf(
-            "base64" to base64,
-            "1:crop" to "coordinate:0,0,100,100",
-            "2:rotate" to "flip:HORZ",
-            "3:rotate" to "angle:180.0"
-        )
+        val uri = linkTo<EditingImageUploadController> { upload("", mapOf(), false) }.toUri()
+        val parameters = LinkedMultiValueMap<String, String>().apply {
+            add("base64", base64)
+            add("1:crop", "coordinate:0,0,100,100")
+            add("2:rotate", "flip:HORZ")
+            add("3:rotate", "angle:180.0")
+        }
         // When
-        val replies = Fuel.post(url, parameters)
-            .header(mapOf("Content-type" to "application/x-www-form-urlencoded"))
-            .responseString()
-            .success()
-            .fromJsonByContent<List<EditingUploadResources.ReplyOnImage>>()
+        val replies = mockMvc.post(uri) {
+            contentType = MediaType.APPLICATION_FORM_URLENCODED
+            params = parameters
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }.andReturn()
+            .response
+            .contentAsString
+            .fromJson<Replies<EditingUploadResources.ReplyOnImage>>()
+            .getContent()
 
         // Then
-        assertThat(replies[0].histories!!.size).isEqualTo(3)
-        assertThat(replies[0].width).isEqualTo(100)
-        assertThat(replies[0].height).isEqualTo(100)
+        replies.first().asClue {
+            it.histories!!.size shouldBe 3
+            it.width shouldBe 100
+            it.height shouldBe 100
+        }
     }
 
     @Test
@@ -103,17 +124,24 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
               "hasOriginal": false 
             }
         """.trimIndent()
-        val url = "http://localhost:$port" + linkTo(methodOn(EditingImageUploadController::class.java).upload(EditingUploadResources.Request(listOf(), "", false))).toUri().path
-        // When
-        val replies = Fuel.post(url)
-            .header(Pair("Content-type", "application/json"))
-            .jsonBody(request)
-            .responseString()
-            .success()
-            .fromJsonByContent<List<EditingUploadResources.ReplyOnImage>>()
+
+        val replies = mockMvc.post(linkTo<EditingImageUploadController> { upload(EditingUploadResources.Request(listOf(), "", false)) }.toUri()) {
+            accept = MediaType.APPLICATION_JSON
+            contentType = MediaType.APPLICATION_JSON
+            content = request
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }.andReturn()
+            .response
+            .contentAsString
+            .fromJson<Replies<EditingUploadResources.ReplyOnImage>>()
+            .getContent()
+
         // Then
-        assertThat(replies[0].histories!!.size).isEqualTo(2)
-        assertThat(replies[0].width).isEqualTo(1)
-        assertThat(replies[0].height).isEqualTo(1)
+        replies.first().asClue {
+            it.histories!!.size shouldBe 2
+            it.width shouldBe 1
+            it.height shouldBe 1
+        }
     }
 }

@@ -18,12 +18,12 @@ class Jackson {
     companion object {
         fun getMapper(): ObjectMapper {
             return Jackson2ObjectMapperBuilder.json()
-                    .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                    .modules(JavaTimeModule())
-                    .serializers(CustomDateSerializer())
-                    .build<ObjectMapper>()
-                    .registerKotlinModule()
-                    .enable(MapperFeature.DEFAULT_VIEW_INCLUSION)
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                .modules(JavaTimeModule())
+                .serializers(CustomDateSerializer())
+                .build<ObjectMapper>()
+                .registerKotlinModule()
+                .enable(MapperFeature.DEFAULT_VIEW_INCLUSION)
         }
     }
 }

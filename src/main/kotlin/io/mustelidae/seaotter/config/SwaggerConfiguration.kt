@@ -1,13 +1,13 @@
 package io.mustelidae.seaotter.config
 
 import com.fasterxml.classmate.TypeResolver
-import com.google.common.base.Predicates
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import springfox.documentation.builders.PathSelectors
+import springfox.documentation.builders.RequestHandlerSelectors
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spring.web.plugins.Docket
 import springfox.documentation.swagger2.annotations.EnableSwagger2
@@ -23,13 +23,15 @@ class SwaggerConfiguration {
     private lateinit var typeResolver: TypeResolver
 
     @Bean
-    fun docket(): Docket = Docket(DocumentationType.SWAGGER_2)
+    fun default(): Docket = Docket(DocumentationType.SWAGGER_2)
         .directModelSubstitute(LocalDate::class.java, String::class.java)
         .directModelSubstitute(LocalDateTime::class.java, String::class.java)
         .directModelSubstitute(LocalTime::class.java, String::class.java)
         .ignoredParameterTypes(Map::class.java)
+        .groupName("API")
         .select()
-        .paths(Predicates.and(PathSelectors.regex("/upload.*")))
+        .apis(RequestHandlerSelectors.basePackage("io.mustelidae.seaotter.api"))
+        .paths(PathSelectors.ant("/upload/**"))
         .build()
         .additionalModels(typeResolver.resolve(GlobalErrorFormat::class.java))
 }

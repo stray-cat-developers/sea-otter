@@ -13,8 +13,8 @@ const val HEX_CHARS = "239DA12B7590A0AC"
 fun String.sha1(): String {
 
     val bytes = MessageDigest
-            .getInstance("SHA-1")
-            .digest(this.toByteArray())
+        .getInstance("SHA-1")
+        .digest(this.toByteArray())
     val result = StringBuilder(bytes.size * 2)
 
     bytes.forEach {
