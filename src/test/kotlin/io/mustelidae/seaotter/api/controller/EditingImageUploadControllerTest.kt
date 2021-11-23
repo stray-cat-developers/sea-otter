@@ -26,6 +26,8 @@ import javax.imageio.ImageIO
 
 internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
 
+    private val topicCode = "507f1f77bcf86cd799439011"
+
     @Test
     fun uploadMultipart() {
         // Given
@@ -37,10 +39,11 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
             add("3:rotate", "flip:HORZ")
             add("4:rotate", "angle:180.0")
             add("hasOriginal", "false")
+            add("topic", topicCode)
         }
 
         // When
-        val uri = linkTo<EditingImageUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), mapOf(), false) }.toUri()
+        val uri = linkTo<EditingImageUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), mapOf(), false, topicCode) }.toUri()
         val replies = mockMvc.perform(
             MockMvcRequestBuilders.multipart(uri)
                 .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
@@ -71,7 +74,7 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "PNG", out)
         val base64 = "data:image/png;base64," + Base64Utils.encodeToString(out.toByteArray())
-        val uri = linkTo<EditingImageUploadController> { upload("", mapOf(), false) }.toUri()
+        val uri = linkTo<EditingImageUploadController> { upload("", mapOf(), false, topicCode) }.toUri()
         val parameters = LinkedMultiValueMap<String, String>().apply {
             add("base64", base64)
             add("1:crop", "coordinate:0,0,100,100")
@@ -125,7 +128,7 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
             }
         """.trimIndent()
 
-        val replies = mockMvc.post(linkTo<EditingImageUploadController> { upload(EditingUploadResources.Request(listOf(), "", false)) }.toUri()) {
+        val replies = mockMvc.post(linkTo<EditingImageUploadController> { upload(EditingUploadResources.Request(listOf(), "", false), topicCode) }.toUri()) {
             accept = MediaType.APPLICATION_JSON
             contentType = MediaType.APPLICATION_JSON
             content = request

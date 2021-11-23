@@ -48,7 +48,8 @@ class EditingImageUploadController
     fun upload(
         @RequestPart(required = true) multiPartFile: MultipartFile,
         @RequestParam allParams: Map<String, String>,
-        @RequestParam(required = false) hasOriginal: Boolean?
+        @RequestParam(required = false) hasOriginal: Boolean?,
+        @RequestParam(required = false) topic: String?
     ): Replies<EditingUploadResources.ReplyOnImage> {
         val operations = editingStepValueDeserializer.deserialize(allParams)
         val editOperation = EditOperation.from(operations)
@@ -79,7 +80,8 @@ class EditingImageUploadController
     fun upload(
         @RequestParam base64: String,
         @RequestParam allParams: Map<String, String>,
-        @RequestParam(required = false) hasOriginal: Boolean?
+        @RequestParam(required = false) hasOriginal: Boolean?,
+        @RequestParam(required = false) topic: String?
     ): Replies<EditingUploadResources.ReplyOnImage> {
         val operations = editingStepValueDeserializer.deserialize(allParams)
         val editOperation = EditOperation.from(operations)
@@ -99,7 +101,8 @@ class EditingImageUploadController
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
     fun upload(
-        @RequestBody request: EditingUploadResources.Request
+        @RequestBody request: EditingUploadResources.Request,
+        @RequestParam(required = false) topic: String?
     ): Replies<EditingUploadResources.ReplyOnImage> {
         val base64 = String(Base64Utils.decodeFromUrlSafeString(request.base64))
         val editOperation = EditOperation.from(request.edits)

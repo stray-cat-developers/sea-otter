@@ -18,12 +18,15 @@ import javax.imageio.ImageIO
  */
 @NotThreadSafe
 internal class S3Uploader(
-    private val awsS3: AppEnvironment.AwsS3
+    private val awsS3: AppEnvironment.AwsS3,
+    override val topicCode: String?
 ) : Uploader {
     private val s3Client = AmazonS3ClientBuilder.defaultClient()
 
     override fun upload(image: Image): String {
-        val directoryPath = newPath(image.isOriginal)
+        val directoryPath = DirectoryPath(awsS3.path, awsS3.shardType, topicCode).apply {
+            append(image.isOriginal)
+        }
 
         val out = ByteArrayOutputStream()
         ImageIO.write(image.bufferedImage, image.getExtension(), out)
@@ -40,12 +43,6 @@ internal class S3Uploader(
 
         s3Client.putObject(putObjectRequest)
         return directoryPath.getPath()
-    }
-
-    private fun newPath(isOriginal: Boolean): DirectoryPath {
-        return DirectoryPath(awsS3.path, awsS3.shardType).apply {
-            append(isOriginal)
-        }
     }
 
     companion object {

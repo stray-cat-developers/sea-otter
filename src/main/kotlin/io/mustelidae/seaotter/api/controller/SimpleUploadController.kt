@@ -34,7 +34,8 @@ class SimpleUploadController
     )
     fun upload(
         @RequestPart(required = true) multiPartFile: MultipartFile,
-        @RequestParam(required = false) hasOriginal: Boolean?
+        @RequestParam(required = false) hasOriginal: Boolean?,
+        @RequestParam(required = false) topic: String?
     ): Replies<UploadResources.ReplyOnImage> {
 
         val image = Image.from(multiPartFile).apply {
@@ -56,7 +57,8 @@ class SimpleUploadController
     )
     fun upload(
         @RequestParam base64: String,
-        @RequestParam(required = false) hasOriginal: Boolean?
+        @RequestParam(required = false) hasOriginal: Boolean?,
+        @RequestParam(required = false) topic: String?
     ): Replies<UploadResources.ReplyOnImage> {
 
         val image = Image.from(base64)

@@ -14,9 +14,8 @@ import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport
-import org.springframework.web.servlet.view.InternalResourceViewResolver
 
 @Configuration
 class WebConfiguration : WebMvcConfigurationSupport() {
@@ -45,19 +44,13 @@ class WebConfiguration : WebMvcConfigurationSupport() {
             .maxAge(3600)
     }
 
-    override fun configureViewResolvers(registry: ViewResolverRegistry) {
-        val resolver = InternalResourceViewResolver()
-        resolver.setPrefix("/WEB-INF/")
-        resolver.setSuffix(".html")
-        registry.viewResolver(resolver)
-
-        super.configureViewResolvers(registry)
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        registry.addResourceHandler("/swagger-ui/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
     }
 
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("/swagger-ui.html")
-            .addResourceLocations("classpath:/META-INF/resources/")
-        registry.addResourceHandler("/webjars/**")
-            .addResourceLocations("classpath:/META-INF/resources/webjars/")
+    override fun addViewControllers(registry: ViewControllerRegistry) {
+        registry.addViewController("/swagger-ui/")
+            .setViewName("forward:/swagger-ui/index.html")
     }
 }

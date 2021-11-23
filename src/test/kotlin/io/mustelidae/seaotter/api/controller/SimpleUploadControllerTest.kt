@@ -28,6 +28,8 @@ import javax.imageio.ImageIO
 
 internal class SimpleUploadControllerTest : IntegrationTestSupport() {
 
+    private val topicCode = "507f191e810c19729de860ea"
+
     @Test
     fun uploadMultipart() {
         // Given
@@ -36,7 +38,7 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
         val bufferedImage = Image.from(file).bufferedImage
 
         // When
-        val uri = linkTo<SimpleUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), false) }.toUri()
+        val uri = linkTo<SimpleUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), false, topicCode) }.toUri()
         val replies = mockMvc.perform(
             MockMvcRequestBuilders.multipart(uri)
                 .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
@@ -64,7 +66,7 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "PNG", out)
         val base64 = "data:image/png;base64," + Base64Utils.encodeToString(out.toByteArray())
-        val uri = linkTo<SimpleUploadController> { upload("", false) }.toUri()
+        val uri = linkTo<SimpleUploadController> { upload("", false, topicCode) }.toUri()
         val parameters = LinkedMultiValueMap<String, String>().apply {
             add("base64", base64)
             add("hasOriginal", "false")

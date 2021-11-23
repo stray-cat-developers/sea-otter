@@ -4,13 +4,14 @@ import io.mustelidae.seaotter.constant.ImageFileFormat
 import io.mustelidae.seaotter.utils.sha1
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class DirectoryPath(
-    private val base: String,
-    private val shard: String?
+    base: String,
+    shardType: String?,
+    topicCode: String? = null
 ) {
-    private var path: String = base
-    private var shardType: String? = shard
+    private var path: String = if (topicCode == null) base else "$base/topic/$topicCode"
 
     fun append(isOriginal: Boolean) {
         path += if (isOriginal) "/untouched" else "/edited"
@@ -21,7 +22,7 @@ class DirectoryPath(
     }
 
     fun append(name: String, format: ImageFileFormat) {
-        this.path += "/$name.${format.name.toLowerCase()}"
+        this.path += "/$name.${format.name.lowercase(Locale.getDefault())}"
     }
 
     fun getPath(): String {
