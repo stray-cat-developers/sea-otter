@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "io.mustelidae.seaotter"
-version = "0.1.2"
+version = "0.1.3"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
@@ -29,6 +29,8 @@ dependencies {
     implementation(kotlin("reflect"))
 
     implementation("com.amazonaws:aws-java-sdk-s3:1.12.115")
+    implementation("com.azure:azure-storage-blob:12.14.2")
+
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -109,7 +111,7 @@ tasks.withType<Test> {
         override fun afterSuite(suite: TestDescriptor, result: TestResult) {
             if(suite.parent == null){
                 val output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
-                val startItem = "|  "
+                val startItem = "|"
                 val endItem = "  |"
                 val repeatLength = startItem.length + output.length + endItem.length
                 println("\n${"-".repeat(repeatLength)}\n|  $output  |\n${"-".repeat(repeatLength)}")

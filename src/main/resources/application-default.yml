@@ -30,8 +30,16 @@ app:
     url: http://localhost
     shard-type: date
   aws-s3:
+    access-key: dummy
+    secret-key: dummy
     bucket: sea-otter
     path: /edit
     cloud-front:
       url: http://localhost
     shard-type: date
+  azure-storage:
+    account-name: sea-otter
+    account-key: dummy
+    endpoint: http://localhost
+    shard-type: sha1
+    path: /images

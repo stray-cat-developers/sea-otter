@@ -9,11 +9,14 @@ import java.net.URL
 import javax.imageio.ImageIO
 
 internal class LocalStorageUploader(
-    private val localStorage: AppEnvironment.LocalStorage
+    private val localStorage: AppEnvironment.LocalStorage,
+    override val topicCode: String? = null
 ) : Uploader {
 
     override fun upload(image: Image): String {
-        val directoryPath: DirectoryPath = newPath(image.isOriginal)
+        val directoryPath = DirectoryPath(localStorage.path, localStorage.shardType, topicCode).apply {
+            append(image.isOriginal)
+        }
 
         val out = ByteArrayOutputStream()
         ImageIO.write(image.bufferedImage, image.getExtension(), out)
@@ -30,12 +33,6 @@ internal class LocalStorageUploader(
         Files.write(out.toByteArray(), file)
 
         return directoryPath.getPath()
-    }
-
-    private fun newPath(isOriginal: Boolean): DirectoryPath {
-        return DirectoryPath(localStorage.path, localStorage.shardType).apply {
-            append(isOriginal)
-        }
     }
 
     companion object {
