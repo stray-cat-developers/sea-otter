@@ -28,8 +28,8 @@ class UploadHandler
         val topicCode = findTopicCode()
 
         return when (uploader) {
-            UploadTarget.S3 -> {
-                S3Uploader(appEnvironment.awsS3, topicCode)
+            UploadTarget.AWS_S3 -> {
+                AwsS3Uploader(appEnvironment.awsS3, topicCode)
             }
             UploadTarget.LOCAL -> {
                 LocalStorageUploader(appEnvironment.localStorage, topicCode)
@@ -41,8 +41,8 @@ class UploadHandler
     }
     private fun makeUrl(pathOfImage: String): URL {
         return when (uploader) {
-            UploadTarget.S3 -> {
-                S3Uploader.makeUrl(appEnvironment.awsS3, pathOfImage)
+            UploadTarget.AWS_S3 -> {
+                AwsS3Uploader.makeUrl(appEnvironment.awsS3, pathOfImage)
             }
             UploadTarget.LOCAL -> {
                 LocalStorageUploader.makeUrl(appEnvironment.localStorage, pathOfImage)

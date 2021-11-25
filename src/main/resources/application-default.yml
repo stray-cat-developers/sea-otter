@@ -30,6 +30,8 @@ app:
     url: http://localhost
     shard-type: date
   aws-s3:
+    access-key: dummy
+    secret-key: dummy
     bucket: sea-otter
     path: /edit
     cloud-front:

@@ -18,6 +18,9 @@ class AppEnvironment {
     }
 
     class AwsS3 {
+        lateinit var accessKey: String
+        lateinit var secretKey: String
+
         var bucket: String = "sea-otter"
         var cloudFront = CloudFront()
         lateinit var path: String

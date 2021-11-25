@@ -9,5 +9,5 @@ interface Uploader {
 }
 
 enum class UploadTarget {
-    S3, LOCAL, AZURE
+    AWS_S3, LOCAL, AZURE
 }
