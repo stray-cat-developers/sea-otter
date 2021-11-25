@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration
 class AppEnvironment {
     var uploader: String = "local"
     var localStorage = LocalStorage()
+    var azureStorage = AzureStorage()
     var awsS3 = AwsS3()
 
     class LocalStorage {
@@ -25,5 +26,13 @@ class AppEnvironment {
         class CloudFront {
             var url: String = "http://localhost"
         }
+    }
+
+    class AzureStorage {
+        lateinit var accountName: String
+        lateinit var accountKey: String
+        lateinit var endpoint: String
+        lateinit var path: String
+        var shardType: String = "date"
     }
 }

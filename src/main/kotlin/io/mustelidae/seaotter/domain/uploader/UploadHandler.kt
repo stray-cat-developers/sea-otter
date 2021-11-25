@@ -34,6 +34,9 @@ class UploadHandler
             UploadTarget.LOCAL -> {
                 LocalStorageUploader(appEnvironment.localStorage, topicCode)
             }
+            UploadTarget.AZURE -> {
+                AzureStorageUploader(appEnvironment.azureStorage, topicCode)
+            }
         }
     }
     private fun makeUrl(pathOfImage: String): URL {
@@ -44,6 +47,7 @@ class UploadHandler
             UploadTarget.LOCAL -> {
                 LocalStorageUploader.makeUrl(appEnvironment.localStorage, pathOfImage)
             }
+            UploadTarget.AZURE -> URL(pathOfImage)
         }
     }
 
