@@ -15,6 +15,10 @@ JPEG and PNG images optimized application
   - local storage  
      
 # New Features!
+##### 0.1.3
+ - Support azure client
+##### 0.1.2
+- Refactor test code
 ##### 0.1.1
  - Upgrade library
    - Springboot 2.1.3 to 2.2.6
