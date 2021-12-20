@@ -94,7 +94,6 @@ class ExceptionConfiguration
         val errorAttributes =
             DefaultErrorAttributes().getErrorAttributes(ServletWebRequest(request), errorAttributeOptions)
 
-        errorAttributes["status"] = "fail"
         errorAttributes["code"] = errorSource.getCode()
         errorAttributes["message"] = errorSource.getMessage()
 

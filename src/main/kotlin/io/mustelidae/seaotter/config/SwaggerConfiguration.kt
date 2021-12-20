@@ -37,7 +37,6 @@ class SwaggerConfiguration {
 @ApiModel(description = "default error format")
 data class GlobalErrorFormat(
     val timestamp: String,
-
     @ApiModelProperty(value = "Http Status Code")
     val status: Int,
     @ApiModelProperty(value = "error code")
