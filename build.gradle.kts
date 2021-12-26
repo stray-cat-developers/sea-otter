@@ -24,11 +24,14 @@ repositories {
     mavenLocal()
     mavenCentral()
 }
+
+ext["log4j2.version"] = "2.17.0"
+
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
 
-    implementation("com.amazonaws:aws-java-sdk-s3:1.12.115")
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.130")
     implementation("com.azure:azure-storage-blob:12.14.2")
 
 
@@ -39,15 +42,15 @@ dependencies {
     //Image Processor
     implementation("org.imgscalr:imgscalr-lib:4.2") // https://github.com/rkalla/imgscalr
     implementation("com.mortennobel:java-image-scaling:0.8.6") // https://github.com/mortennobel/java-image-scaling
-    implementation("net.coobird:thumbnailator:0.4.14") // https://github.com/coobird/thumbnailator
+    implementation("net.coobird:thumbnailator:0.4.15") // https://github.com/coobird/thumbnailator
 
-    implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.7.0")
-    implementation("com.twelvemonkeys.imageio:imageio-tiff:3.7.0")
-    implementation("com.twelvemonkeys.imageio:imageio-psd:3.7.0")
-    implementation("com.twelvemonkeys.imageio:imageio-bmp:3.7.0")
-    implementation("com.twelvemonkeys.imageio:imageio-pdf:3.7.0")
-    implementation("com.twelvemonkeys.imageio:imageio-hdr:3.7.0")
-    implementation("com.twelvemonkeys.servlet:servlet:3.7.0")
+    implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.8.0")
+    implementation("com.twelvemonkeys.imageio:imageio-tiff:3.8.0")
+    implementation("com.twelvemonkeys.imageio:imageio-psd:3.8.0")
+    implementation("com.twelvemonkeys.imageio:imageio-bmp:3.8.0")
+    implementation("com.twelvemonkeys.imageio:imageio-pdf:3.8.0")
+    implementation("com.twelvemonkeys.imageio:imageio-hdr:3.8.0")
+    implementation("com.twelvemonkeys.servlet:servlet:3.8.0")
 
     implementation("com.google.guava:guava:31.0.1-jre")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
@@ -65,12 +68,12 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     implementation("javax.interceptor:javax.interceptor-api:1.2.2")
 
-    implementation("org.mongodb:bson:4.3.1")
+    implementation("org.mongodb:bson:4.4.0")
     testImplementation("io.mockk:mockk:1.12.1")
     testImplementation("com.github.kittinunf.fuel:fuel:2.3.1")
 
