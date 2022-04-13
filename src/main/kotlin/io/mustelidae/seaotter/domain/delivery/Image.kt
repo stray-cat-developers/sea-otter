@@ -35,6 +35,7 @@ data class Image(
 
     companion object {
         private val base64Regex = Regex("(data:image/)(.*);base64")
+        private val extensionRegex = Regex("(?<=/)[^/?#]+(?=[^/]*\$)")
 
         fun from(multipartFile: MultipartFile): Image {
             if (multipartFile.isSupport().not())
@@ -82,6 +83,18 @@ data class Image(
                 bufferedImage,
                 ObjectId().toString(),
                 format,
+                true
+            )
+        }
+        
+        fun from(url: URL): Image {
+            val file = extensionRegex.find(url.path)!!.groupValues[0]
+            val name = file.substringBeforeLast(".")
+            val extension = file.substringAfterLast('.', "")
+            return Image(
+                ImageIO.read(url),
+                name,
+                ImageFileFormat.valueOf(extension.uppercase()),
                 true
             )
         }
