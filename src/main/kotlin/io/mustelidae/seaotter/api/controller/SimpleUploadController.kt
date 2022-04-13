@@ -87,4 +87,21 @@ class SimpleUploadController
             .map { UploadResources.ReplyOnImage.from(it) }
             .toReplies()
     }
+    
+    @ApiOperation("upload using url")
+    @PostMapping(
+        "url",
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        produces = [MediaType.APPLICATION_JSON_VALUE]
+    )
+    fun upload(
+        @RequestBody request: UploadResources.RequestOnUrl
+    ): Replies<UploadResources.ReplyOnImage> {
+        val image = Image.from(URL(request.url))
+        val shippingItem = pureDelivery.delivery(image, request.hasOriginal ?: false)
+
+        return shippingItem.shippedImages
+            .map { UploadResources.ReplyOnImage.from(it) }
+            .toReplies()
+    }
 }
