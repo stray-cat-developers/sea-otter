@@ -15,6 +15,8 @@ JPEG and PNG images optimized application
   - local storage  
      
 # New Features!
+##### 0.1.4 
+ - Upload using the image url
 ##### 0.1.3
  - Support azure client
 ##### 0.1.2
