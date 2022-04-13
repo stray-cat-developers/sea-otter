@@ -11,6 +11,12 @@ class UploadResources {
         val base64: String,
         val hasOriginal: Boolean?
     )
+    
+    @ApiModel("Upload.RequestOnUrl")
+    data class RequestOnUrl(
+        val url: String,
+        val hasOriginal: Boolean?
+    )    
 
     @ApiModel("Upload.ReplyOnImage")
     data class ReplyOnImage(

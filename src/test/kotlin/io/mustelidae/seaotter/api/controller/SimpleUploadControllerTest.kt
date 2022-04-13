@@ -123,4 +123,31 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
             it.height shouldBe bufferedImage.height
         }
     }
+    
+    @Test
+    fun uploadUrl() {
+        // Given
+        val imageUrl = "https://t1.daumcdn.net/daumtop_chanel/op/20200723055344399.png"
+        val request = UploadResources.RequestOnUrl(
+            imageUrl,
+            false
+        )
+
+        val replies = mockMvc.post(linkTo<SimpleUploadController> { upload(request) }.toUri()) {
+            accept = MediaType.APPLICATION_JSON
+            contentType = MediaType.APPLICATION_JSON
+            content = request.toJson()
+        }.andExpect {
+            status { is2xxSuccessful() }
+        }.andReturn()
+            .response
+            .contentAsString
+            .fromJson<Replies<EditingUploadResources.ReplyOnImage>>()
+            .getContent()
+        // Then
+        replies.first().asClue {
+            it.width shouldBe 360
+            it.height shouldBe 188
+        }
+    }    
 }
