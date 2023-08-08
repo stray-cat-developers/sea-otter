@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.net.URL
+import java.util.Locale
 import javax.imageio.ImageIO
 
 data class Image(
@@ -57,7 +58,7 @@ data class Image(
             return Image(
                 ImageIO.read(file),
                 file.nameWithoutExtension,
-                ImageFileFormat.valueOf(file.extension.toUpperCase()),
+                ImageFileFormat.valueOf(file.extension.uppercase(Locale.getDefault())),
                 true
             )
         }
@@ -70,7 +71,7 @@ data class Image(
 
             try {
                 val extension = base64Regex.find(base64.substring(0, index))!!.groupValues[2]
-                format = ImageFileFormat.valueOf(extension.toUpperCase())
+                format = ImageFileFormat.valueOf(extension.uppercase(Locale.getDefault()))
             } catch (e: NullPointerException) {
                 throw java.lang.IllegalArgumentException("invalid base 64 image format")
             } catch (e: java.lang.IllegalArgumentException) {
@@ -102,7 +103,7 @@ data class Image(
     }
 
     fun getExtension(): String {
-        return imageFileFormat.name.toLowerCase()
+        return imageFileFormat.name.lowercase(Locale.getDefault())
     }
 
     fun getMeta(): Meta {

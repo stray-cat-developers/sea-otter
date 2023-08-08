@@ -6,7 +6,6 @@ import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.common.StorageSharedKeyCredential
 import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.domain.delivery.Image
-import org.springframework.http.MediaType
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
