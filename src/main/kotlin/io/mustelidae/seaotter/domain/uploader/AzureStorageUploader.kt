@@ -2,6 +2,7 @@ package io.mustelidae.seaotter.domain.uploader
 
 import com.azure.core.util.BinaryData
 import com.azure.storage.blob.BlobServiceClientBuilder
+import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.common.StorageSharedKeyCredential
 import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.domain.delivery.Image
@@ -19,26 +20,26 @@ internal class AzureStorageUploader(
 ) : Uploader {
 
     override fun upload(image: Image): String {
-        val directoryPath = DirectoryPath(azureStorage.path, azureStorage.shardType, topicCode).apply {
-            append(image.isOriginal)
-        }
-
+        val directoryPath = DirectoryPath(azureStorage.path, azureStorage.shardType, topicCode)
         val credential = StorageSharedKeyCredential(azureStorage.accountName, azureStorage.accountKey)
 
         val blobClient = BlobServiceClientBuilder()
             .endpoint(azureStorage.endpoint)
             .credential(credential)
             .buildClient()
-            .getBlobContainerClient(directoryPath.getPath()).apply {
-                create()
-            }.getBlobClient(image.name)
+            .getBlobContainerClient(directoryPath.getPath())
+            .getBlobClient(image.name)
 
         val out = ByteArrayOutputStream()
         ImageIO.write(image.bufferedImage, image.getExtension(), out)
         val byteArray = out.toByteArray()
 
-        blobClient.upload(BinaryData.fromBytes(byteArray))
+        val headers = BlobHttpHeaders().apply {
+            contentType = image.imageFileFormat.mediaType
+        }
+        blobClient.setHttpHeaders(headers)
 
+        blobClient.upload(BinaryData.fromBytes(byteArray))
         return blobClient.blobUrl
     }
 }
