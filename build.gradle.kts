@@ -44,13 +44,14 @@ dependencies {
     implementation("com.mortennobel:java-image-scaling:0.8.6") // https://github.com/mortennobel/java-image-scaling
     implementation("net.coobird:thumbnailator:0.4.15") // https://github.com/coobird/thumbnailator
 
-    implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.8.0")
-    implementation("com.twelvemonkeys.imageio:imageio-tiff:3.8.0")
-    implementation("com.twelvemonkeys.imageio:imageio-psd:3.8.0")
-    implementation("com.twelvemonkeys.imageio:imageio-bmp:3.8.0")
-    implementation("com.twelvemonkeys.imageio:imageio-pdf:3.8.0")
-    implementation("com.twelvemonkeys.imageio:imageio-hdr:3.8.0")
-    implementation("com.twelvemonkeys.servlet:servlet:3.8.0")
+    implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
+    implementation("com.twelvemonkeys.imageio:imageio-tiff:3.9.4")
+    implementation("com.twelvemonkeys.imageio:imageio-psd:3.9.4")
+    implementation("com.twelvemonkeys.imageio:imageio-bmp:3.9.4")
+    implementation("com.twelvemonkeys.imageio:imageio-pdf:3.9.4")
+    implementation("com.twelvemonkeys.imageio:imageio-hdr:3.9.4")
+    implementation("com.twelvemonkeys.servlet:servlet:3.9.4")
+    implementation("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
 
     implementation("com.google.guava:guava:31.0.1-jre")
     implementation("io.springfox:springfox-boot-starter:3.0.0")

@@ -9,12 +9,15 @@ JPEG and PNG images optimized application
   - resize, scale resize
   - angle rotate, flip rotate
 - support image 
-  - JPG, JPEG, TIFF, BMP, PNG, HDR
+  - JPG, JPEG, TIFF, BMP, PNG, HDR, WEBP
 - support storage 
   - aws s3
   - local storage  
      
 # New Features!
+##### 0.2.1
+- Support webP format
+- Fix Azure Blob Uploader  
 ##### 0.1.4 
  - Upload using the image url
 ##### 0.1.3

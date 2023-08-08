@@ -36,7 +36,7 @@ enum class ImageFileFormat(
     PNM(false, "image/pnm"),
 
     // WebP is a new open image format that uses both lossless and lossy compression.
-    WEBP(false, "image/webp"),
+    WEBP(true, "image/webp"),
 
     // Most typical raster formats cannot store HDR data (32 bit floating point values per pixel component), which is why some relatively old or complex formats are still predominant here, and worth mentioning separately.
     HDR(true, "image/hdr"),
