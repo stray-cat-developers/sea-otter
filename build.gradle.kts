@@ -31,8 +31,8 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
 
-    implementation("com.amazonaws:aws-java-sdk-s3:1.12.130")
-    implementation("com.azure:azure-storage-blob:12.14.2")
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.523")
+    implementation("com.azure:azure-storage-blob:12.23.0")
 
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
