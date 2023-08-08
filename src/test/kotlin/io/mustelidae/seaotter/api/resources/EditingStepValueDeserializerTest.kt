@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.api.resources
 
-import io.kotlintest.shouldBe
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 internal class EditingStepValueDeserializerTest {

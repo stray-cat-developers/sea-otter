@@ -1,8 +1,8 @@
 package io.mustelidae.seaotter.api.controller
 
 import com.github.kittinunf.fuel.util.encodeBase64UrlToString
-import io.kotlintest.matchers.asClue
-import io.kotlintest.shouldBe
+import io.kotest.assertions.asClue
+import io.kotest.matchers.shouldBe
 import io.mustelidae.seaotter.api.IntegrationTestSupport
 import io.mustelidae.seaotter.api.resources.EditingUploadResources
 import io.mustelidae.seaotter.api.resources.UploadResources
@@ -123,7 +123,7 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
             it.height shouldBe bufferedImage.height
         }
     }
-    
+
     @Test
     fun uploadUrl() {
         // Given

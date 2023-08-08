@@ -88,7 +88,7 @@ data class Image(
                 true
             )
         }
-        
+
         fun from(url: URL): Image {
             val file = extensionRegex.find(url.path)!!.groupValues[0]
             val name = file.substringBeforeLast(".")

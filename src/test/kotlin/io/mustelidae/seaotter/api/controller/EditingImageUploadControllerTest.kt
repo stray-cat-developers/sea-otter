@@ -1,8 +1,8 @@
 package io.mustelidae.seaotter.api.controller
 
-import io.kotlintest.matchers.asClue
-import io.kotlintest.shouldBe
-import io.kotlintest.shouldNotBe
+import io.kotest.assertions.asClue
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.mustelidae.seaotter.api.IntegrationTestSupport
 import io.mustelidae.seaotter.api.resources.EditingUploadResources
 import io.mustelidae.seaotter.common.Replies

@@ -1,6 +1,5 @@
 package io.mustelidae.seaotter.constant
 
-
 enum class ImageFileFormat(
     val support: Boolean,
     /**
@@ -42,5 +41,5 @@ enum class ImageFileFormat(
     HDR(true, "image/hdr"),
 
     // The High Efficiency Image File Format (HEIF) is an image container format that was standardized by MPEG on the basis of the ISO base media file format.
-    HEIF(false,"image/heif")
+    HEIF(false, "image/heif")
 }

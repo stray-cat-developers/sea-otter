@@ -88,7 +88,7 @@ class SimpleUploadController
             .map { UploadResources.ReplyOnImage.from(it) }
             .toReplies()
     }
-    
+
     @ApiOperation("upload using url")
     @PostMapping(
         "url",

@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.domain.editor.command
 
-import io.kotlintest.shouldBe
+import io.kotest.matchers.shouldBe
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.utils.getTestImageFileAsAbsolutePath
 import org.junit.jupiter.api.Test

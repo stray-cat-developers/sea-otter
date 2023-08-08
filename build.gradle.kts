@@ -8,31 +8,43 @@ plugins {
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jmailen.kotlinter") version "3.6.0"
     id("com.avast.gradle.docker-compose") version "0.14.9"
-    kotlin("jvm") version "1.5.31"
-    kotlin("plugin.spring") version "1.5.31"
-    kotlin("plugin.jpa") version "1.5.31"
-    kotlin("plugin.allopen") version "1.5.31"
-    kotlin("plugin.noarg") version "1.5.31"
+    kotlin("jvm") version "1.8.22"
+    kotlin("plugin.spring") version "1.8.22"
+    kotlin("plugin.jpa") version "1.8.22"
+    kotlin("plugin.allopen") version "1.8.22"
+    kotlin("plugin.noarg") version "1.8.22"
 
 }
 
 group = "io.mustelidae.seaotter"
-version = "0.1.4"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+version = "0.2.1"
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
-ext["log4j2.version"] = "2.17.0"
+ext["log4j2.version"] = "2.17.1"
 
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
 
-    implementation("com.amazonaws:aws-java-sdk-s3:1.12.523")
-    implementation("com.azure:azure-storage-blob:12.23.0")
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.523") {
+        constraints {
+            implementation("com.fasterxml.woodstox", "woodstox-core", "6.5.1") {
+                because("CVE-2022-40151, CVE-2022-40152, CVE-2022-40156  7.5 Out-of-bounds Write vulnerability with medium severity found")
+            }
+        }
+    }
+    implementation("com.azure:azure-storage-blob:12.23.0") {
+        constraints {
+            implementation("io.netty", "netty-codec", "4.1.96.Final") {
+                because("CVE-2022-41915 6.5 Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting') vulnerability pending CVSS allocation")
+            }
+        }
+    }
 
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -42,7 +54,7 @@ dependencies {
     //Image Processor
     implementation("org.imgscalr:imgscalr-lib:4.2") // https://github.com/rkalla/imgscalr
     implementation("com.mortennobel:java-image-scaling:0.8.6") // https://github.com/mortennobel/java-image-scaling
-    implementation("net.coobird:thumbnailator:0.4.15") // https://github.com/coobird/thumbnailator
+    implementation("net.coobird:thumbnailator:0.4.20") // https://github.com/coobird/thumbnailator
 
     implementation("com.twelvemonkeys.imageio:imageio-jpeg:3.9.4")
     implementation("com.twelvemonkeys.imageio:imageio-tiff:3.9.4")
@@ -53,9 +65,9 @@ dependencies {
     implementation("com.twelvemonkeys.servlet:servlet:3.9.4")
     implementation("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
 
-    implementation("com.google.guava:guava:31.0.1-jre")
+    implementation("com.google.guava:guava:32.1.2-jre")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.1.0")
 
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -69,13 +81,13 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     implementation("javax.interceptor:javax.interceptor-api:1.2.2")
 
     implementation("org.mongodb:bson:4.4.0")
-    testImplementation("io.mockk:mockk:1.12.1")
+    testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("com.github.kittinunf.fuel:fuel:2.3.1")
 
 }
@@ -87,7 +99,7 @@ tasks.register("version") {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 

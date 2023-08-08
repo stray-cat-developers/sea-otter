@@ -16,8 +16,10 @@ JPEG and PNG images optimized application
      
 # New Features!
 ##### 0.2.1
-- Support webP format
-- Fix Azure Blob Uploader  
+ - Support WebP format
+ - Fix Azure Blob Uploader
+ - Upgrade library
+ - Fix vulnerability lib
 ##### 0.1.4 
  - Upload using the image url
 ##### 0.1.3
