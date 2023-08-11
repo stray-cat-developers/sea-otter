@@ -21,7 +21,12 @@ server:
       enabled: false
   compression:
     enabled: true
-    mime-types: application/json,text/html,text/plain,text/css,text/javascript,application/javascript,image/jpeg,image/png
+    mime-types: application/json,text/html,text/plain,text/css,text/javascript,application/javascript,image/jpeg,image/png,image/webp
+
+springdoc:
+  show-actuator: false
+  swagger-ui:
+    enabled: false
 
 app:
   uploader: local

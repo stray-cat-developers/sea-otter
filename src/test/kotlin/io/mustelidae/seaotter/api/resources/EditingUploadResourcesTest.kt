@@ -1,7 +1,7 @@
 package io.mustelidae.seaotter.api.resources
 
-import io.kotlintest.matchers.asClue
-import io.kotlintest.shouldBe
+import io.kotest.assertions.asClue
+import io.kotest.matchers.shouldBe
 import io.mustelidae.seaotter.utils.Jackson
 import org.junit.jupiter.api.Test
 

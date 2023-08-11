@@ -1,6 +1,6 @@
 package io.mustelidae.seaotter.utils
 
-import io.kotlintest.shouldBe
+import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.util.Base64Utils

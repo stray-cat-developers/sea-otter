@@ -1,6 +1,5 @@
 package io.mustelidae.seaotter.constant
 
-
 enum class ImageFileFormat(
     val support: Boolean,
     /**
@@ -36,11 +35,11 @@ enum class ImageFileFormat(
     PNM(false, "image/pnm"),
 
     // WebP is a new open image format that uses both lossless and lossy compression.
-    WEBP(false, "image/webp"),
+    WEBP(true, "image/webp"),
 
     // Most typical raster formats cannot store HDR data (32 bit floating point values per pixel component), which is why some relatively old or complex formats are still predominant here, and worth mentioning separately.
     HDR(true, "image/hdr"),
 
     // The High Efficiency Image File Format (HEIF) is an image container format that was standardized by MPEG on the basis of the ISO base media file format.
-    HEIF(false,"image/heif")
+    HEIF(false, "image/heif")
 }

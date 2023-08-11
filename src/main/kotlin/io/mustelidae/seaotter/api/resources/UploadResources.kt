@@ -1,24 +1,24 @@
 package io.mustelidae.seaotter.api.resources
 
 import io.mustelidae.seaotter.domain.delivery.Image
-import io.swagger.annotations.ApiModel
+import io.swagger.v3.oas.annotations.media.Schema
 import java.net.URL
 
 class UploadResources {
 
-    @ApiModel("Upload.Request")
+    @Schema(name = "Upload.Request")
     data class Request(
         val base64: String,
         val hasOriginal: Boolean?
     )
-    
-    @ApiModel("Upload.RequestOnUrl")
+
+    @Schema(name = "Upload.RequestOnUrl")
     data class RequestOnUrl(
         val url: String,
         val hasOriginal: Boolean?
-    )    
+    )
 
-    @ApiModel("Upload.ReplyOnImage")
+    @Schema(name = "Upload.ReplyOnImage")
     data class ReplyOnImage(
         val width: Int,
         val height: Int,

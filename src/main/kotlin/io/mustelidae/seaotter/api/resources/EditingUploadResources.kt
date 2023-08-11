@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.domain.editor.command.CropOption
 import io.mustelidae.seaotter.domain.editor.command.RotateOption
-import io.swagger.annotations.ApiModel
+import io.swagger.v3.oas.annotations.media.Schema
 import java.net.URL
 
 /**
@@ -13,7 +13,7 @@ import java.net.URL
  */
 class EditingUploadResources {
 
-    @ApiModel("EditingUpload.Request")
+    @Schema(name = "EditingUpload.Request")
     data class Request(
         @JsonRawValue
         @JsonDeserialize(using = EditingStepJsonDeserializer::class)
@@ -66,7 +66,7 @@ class EditingUploadResources {
         ) : OperationOption
     }
 
-    @ApiModel("EditingUpload.ReplyOnImage")
+    @Schema(name = "EditingUpload.ReplyOnImage")
     data class ReplyOnImage(
         val width: Int,
         val height: Int,

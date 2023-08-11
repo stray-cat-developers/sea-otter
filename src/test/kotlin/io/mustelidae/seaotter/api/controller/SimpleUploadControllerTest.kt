@@ -1,8 +1,8 @@
 package io.mustelidae.seaotter.api.controller
 
 import com.github.kittinunf.fuel.util.encodeBase64UrlToString
-import io.kotlintest.matchers.asClue
-import io.kotlintest.shouldBe
+import io.kotest.assertions.asClue
+import io.kotest.matchers.shouldBe
 import io.mustelidae.seaotter.api.IntegrationTestSupport
 import io.mustelidae.seaotter.api.resources.EditingUploadResources
 import io.mustelidae.seaotter.api.resources.UploadResources
@@ -123,7 +123,7 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
             it.height shouldBe bufferedImage.height
         }
     }
-    
+
     @Test
     fun uploadUrl() {
         // Given
@@ -149,5 +149,31 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
             it.width shouldBe 360
             it.height shouldBe 188
         }
-    }    
+    }
+
+    @Test
+    fun uploadMultipartSupportWebp() {
+        // Given
+        val fileName = "denden_RGB_2784x1856.webp"
+        val file = File(getTestImageFileAsAbsolutePath(fileName))
+        val bufferedImage = Image.from(file).bufferedImage
+
+        // When
+        val uri = linkTo<SimpleUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), false, topicCode) }.toUri()
+        val replies = mockMvc.perform(
+            MockMvcRequestBuilders.multipart(uri)
+                .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+        ).andExpect(
+            status().is2xxSuccessful
+        ).andReturn()
+            .response
+            .contentAsString
+            .fromJsonByContent<List<UploadResources.ReplyOnImage>>()
+        // Then
+        replies.first().asClue {
+            it.width shouldBe bufferedImage.width
+            it.height shouldBe bufferedImage.height
+        }
+    }
 }
