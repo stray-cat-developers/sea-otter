@@ -1,6 +1,7 @@
 package io.mustelidae.seaotter.config
 
 import com.amazonaws.AmazonClientException
+import io.mustelidae.seaotter.utils.Jackson
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.error.ErrorAttributeOptions
@@ -34,58 +35,53 @@ class ExceptionConfiguration
     )
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun handleGlobalException(e: RuntimeException, request: HttpServletRequest): Map<String, Any> {
+    fun handleGlobalException(e: RuntimeException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("Unexpected error", e)
-        return errorForm(request, AppError(ErrorCode.S000, ErrorCode.S000.description))
+        return errorForm(request, AppError(ErrorCode.S000, ErrorCode.S000.description), e)
     }
 
     @ExceptionHandler(value = [SystemException::class])
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
-    fun handleSystemException(e: SystemException, request: HttpServletRequest): Map<String, Any> {
-        return errorForm(request, e.errorSource)
+    fun handleSystemException(e: SystemException, request: HttpServletRequest): GlobalErrorFormat {
+        return errorForm(request, e.errorSource, e)
     }
 
     @ExceptionHandler(value = [AmazonClientException::class])
-    fun handleAWSException(e: AmazonClientException, request: HttpServletRequest): Map<String, Any> {
+    fun handleAWSException(e: AmazonClientException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("aws communication fail", e)
-        return errorForm(request, AppError(ErrorCode.S002, ErrorCode.S002.description))
+        return errorForm(request, AppError(ErrorCode.S002, ErrorCode.S002.description), e)
     }
 
     @ExceptionHandler(value = [HumanException::class])
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
-    fun handleHumanException(e: HumanException, request: HttpServletRequest): Map<String, Any> {
-        return errorForm(request, e.errorSource)
+    fun handleHumanException(e: HumanException, request: HttpServletRequest): GlobalErrorFormat {
+        return errorForm(request, e.errorSource, e)
     }
 
     @ExceptionHandler(value = [IllegalArgumentException::class])
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
-    fun handleIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): Map<String, Any> {
+    fun handleIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("[T] wrong input.", e)
-        return errorForm(request, AppError(ErrorCode.H002, ErrorCode.H002.description))
+        return errorForm(request, AppError(ErrorCode.H002, ErrorCode.H002.description), e)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(BAD_REQUEST)
     @ResponseBody
     fun methodArgumentNotValidException(
-        exception: MethodArgumentNotValidException,
+        e: MethodArgumentNotValidException,
         request: HttpServletRequest
-    ): MutableMap<String, Any> {
+    ): GlobalErrorFormat {
+        val message = methodArgumentNotValidExceptionErrorForm(e.bindingResult.fieldErrors)
+            .joinToString(",") { "reject field(${it.field}) and value(${it.rejectedValue}" }
 
-        val error = errorForm(request, AppError(ErrorCode.H002, ErrorCode.H002.description))
-
-        error["errors"]?.let {
-            @Suppress("UNCHECKED_CAST")
-            error["errors"] = methodArgumentNotValidExceptionErrorForm(it as List<FieldError>)
-        }
-
-        return error
+        return errorForm(request, AppError(ErrorCode.H002, message), e)
     }
 
-    private fun errorForm(request: HttpServletRequest, errorSource: ErrorSource): MutableMap<String, Any> {
+    private fun errorForm(request: HttpServletRequest, errorSource: ErrorSource, e: Exception): GlobalErrorFormat {
 
         val errorAttributeOptions = if (env.activeProfiles.contains("prod").not())
             ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE)
@@ -97,13 +93,15 @@ class ExceptionConfiguration
         errorAttributes["code"] = errorSource.getCode()
         errorAttributes["message"] = errorSource.getMessage()
 
-        return errorAttributes
+        errorAttributes.apply {
+            this["message"] = errorSource.getMessage()
+            this["code"] = errorSource.getCode()
+            this["type"] = e.javaClass.simpleName
+        }
+
+        return Jackson.getMapper().convertValue(errorAttributes, GlobalErrorFormat::class.java)
     }
 
-    @Suppress(
-        "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
-        "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
-    )
     private fun methodArgumentNotValidExceptionErrorForm(errors: List<FieldError>) =
         errors.map {
             ValidationError(

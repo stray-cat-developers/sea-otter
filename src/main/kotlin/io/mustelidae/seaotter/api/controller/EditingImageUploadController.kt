@@ -7,10 +7,11 @@ import io.mustelidae.seaotter.domain.delivery.EditImageDelivery
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.domain.editor.processor.EditOperation
 import io.mustelidae.seaotter.utils.toReplies
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiImplicitParam
-import io.swagger.annotations.ApiImplicitParams
-import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.Parameters
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.util.Base64Utils
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
-@Api(tags = ["Editing Image Upload"])
+@Tag(name = "Editing Image Upload")
 @RestController
 @RequestMapping("/upload/editing")
 class EditingImageUploadController
@@ -32,12 +33,12 @@ class EditingImageUploadController
 
     private val editingStepValueDeserializer = EditingStepValueDeserializer()
 
-    @ApiOperation("upload by multipart")
-    @ApiImplicitParams(
+    @Operation(summary = "upload by multipart")
+    @Parameters(
         value = [
-            ApiImplicitParam(paramType = "query", name = "1:crop"),
-            ApiImplicitParam(paramType = "query", name = "1:resize"),
-            ApiImplicitParam(paramType = "query", name = "1:rotate")
+            Parameter(name = "1:crop", `in` = ParameterIn.QUERY),
+            Parameter(name = "1:resize", `in` = ParameterIn.QUERY),
+            Parameter(name = "1:rotate", `in` = ParameterIn.QUERY),
         ]
     )
     @PostMapping(
@@ -64,12 +65,12 @@ class EditingImageUploadController
             .toReplies()
     }
 
-    @ApiOperation("upload by base64")
-    @ApiImplicitParams(
+    @Operation(summary = "upload by base64")
+    @Parameters(
         value = [
-            ApiImplicitParam(paramType = "query", name = "1:crop"),
-            ApiImplicitParam(paramType = "query", name = "1:resize"),
-            ApiImplicitParam(paramType = "query", name = "1:rotate")
+            Parameter(`in` = ParameterIn.QUERY, name = "1:crop"),
+            Parameter(`in` = ParameterIn.QUERY, name = "1:resize"),
+            Parameter(`in` = ParameterIn.QUERY, name = "1:rotate")
         ]
     )
     @PostMapping(
@@ -94,7 +95,7 @@ class EditingImageUploadController
             .toReplies()
     }
 
-    @ApiOperation("upload by safe url base64 using json")
+    @Operation(summary = "upload by safe url base64 using json")
     @PostMapping(
         "base64/json",
         consumes = [MediaType.APPLICATION_JSON_VALUE],

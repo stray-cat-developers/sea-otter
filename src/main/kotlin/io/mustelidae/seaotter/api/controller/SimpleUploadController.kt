@@ -5,8 +5,8 @@ import io.mustelidae.seaotter.common.Replies
 import io.mustelidae.seaotter.domain.delivery.Image
 import io.mustelidae.seaotter.domain.delivery.PureDelivery
 import io.mustelidae.seaotter.utils.toReplies
-import io.swagger.annotations.Api
-import io.swagger.annotations.ApiOperation
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.util.Base64Utils
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.net.URL
 
-@Api(tags = ["Simple Image Upload"])
+@Tag(name = "Simple Image Upload")
 @RestController
 @RequestMapping("/upload/simple")
 class SimpleUploadController
@@ -27,7 +27,7 @@ class SimpleUploadController
     private val pureDelivery: PureDelivery
 ) {
 
-    @ApiOperation("upload by multipart")
+    @Operation(summary = "upload by multipart")
     @PostMapping(
         "multipart",
         consumes = [MediaType.MULTIPART_FORM_DATA_VALUE],
@@ -50,7 +50,7 @@ class SimpleUploadController
             .toReplies()
     }
 
-    @ApiOperation("upload by base64")
+    @Operation(summary = "upload by base64")
     @PostMapping(
         "base64/form",
         consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE],
@@ -70,7 +70,7 @@ class SimpleUploadController
             .toReplies()
     }
 
-    @ApiOperation("upload by base64 safe url using json")
+    @Operation(summary = "upload by base64 safe url using json")
     @PostMapping(
         "base64/json",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
@@ -89,7 +89,7 @@ class SimpleUploadController
             .toReplies()
     }
 
-    @ApiOperation("upload using url")
+    @Operation(summary = "upload using url")
     @PostMapping(
         "url",
         consumes = [MediaType.APPLICATION_JSON_VALUE],

@@ -4,7 +4,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.5.5"
+    id("org.springframework.boot") version "2.7.14"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.jmailen.kotlinter") version "3.6.0"
     id("com.avast.gradle.docker-compose") version "0.14.9"
@@ -36,6 +36,9 @@ dependencies {
             implementation("com.fasterxml.woodstox", "woodstox-core", "6.5.1") {
                 because("CVE-2022-40151, CVE-2022-40152, CVE-2022-40156  7.5 Out-of-bounds Write vulnerability with medium severity found")
             }
+            implementation("org.yaml","snakeyaml","2.1") {
+                because("Uncontrolled Resource Consumption vulnerability pending CVSS allocation")
+            }
         }
     }
     implementation("com.azure:azure-storage-blob:12.23.0") {
@@ -45,7 +48,6 @@ dependencies {
             }
         }
     }
-
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -65,8 +67,10 @@ dependencies {
     implementation("com.twelvemonkeys.servlet:servlet:3.9.4")
     implementation("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
 
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
+    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.5")
+
     implementation("com.google.guava:guava:32.1.2-jre")
-    implementation("io.springfox:springfox-boot-starter:3.0.0")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:5.1.0")
 
     implementation("org.springframework.boot:spring-boot-starter-validation")
