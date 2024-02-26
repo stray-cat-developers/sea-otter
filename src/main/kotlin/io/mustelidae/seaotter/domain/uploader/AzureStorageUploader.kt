@@ -17,7 +17,7 @@ import javax.imageio.ImageIO
  */
 internal class AzureStorageUploader(
     private val azureStorage: AppEnvironment.AzureStorage,
-    override val topicCode: String?
+    override val topicCode: String?,
 ) : Uploader {
 
     override fun upload(image: Image): String {

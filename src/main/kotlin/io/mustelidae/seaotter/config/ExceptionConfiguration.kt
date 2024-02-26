@@ -2,6 +2,7 @@ package io.mustelidae.seaotter.config
 
 import com.amazonaws.AmazonClientException
 import io.mustelidae.seaotter.utils.Jackson
+import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.error.ErrorAttributeOptions
@@ -17,12 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.ServletWebRequest
-import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice(annotations = [RestController::class])
 class ExceptionConfiguration
 @Autowired constructor(
-    private val env: Environment
+    private val env: Environment,
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -30,8 +30,8 @@ class ExceptionConfiguration
     @ExceptionHandler(
         value = [
             RuntimeException::class,
-            IllegalStateException::class
-        ]
+            IllegalStateException::class,
+        ],
     )
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
@@ -73,7 +73,7 @@ class ExceptionConfiguration
     @ResponseBody
     fun methodArgumentNotValidException(
         e: MethodArgumentNotValidException,
-        request: HttpServletRequest
+        request: HttpServletRequest,
     ): GlobalErrorFormat {
         val message = methodArgumentNotValidExceptionErrorForm(e.bindingResult.fieldErrors)
             .joinToString(",") { "reject field(${it.field}) and value(${it.rejectedValue}" }
@@ -82,10 +82,11 @@ class ExceptionConfiguration
     }
 
     private fun errorForm(request: HttpServletRequest, errorSource: ErrorSource, e: Exception): GlobalErrorFormat {
-
-        val errorAttributeOptions = if (env.activeProfiles.contains("prod").not())
+        val errorAttributeOptions = if (env.activeProfiles.contains("prod").not()) {
             ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE)
-        else ErrorAttributeOptions.defaults()
+        } else {
+            ErrorAttributeOptions.defaults()
+        }
 
         val errorAttributes =
             DefaultErrorAttributes().getErrorAttributes(ServletWebRequest(request), errorAttributeOptions)
@@ -107,13 +108,13 @@ class ExceptionConfiguration
             ValidationError(
                 field = it.field,
                 rejectedValue = it.rejectedValue.toString(),
-                message = it.defaultMessage ?: "validate fail."
+                message = it.defaultMessage ?: "validate fail.",
             )
         }.toList()
 
     private data class ValidationError(
         val field: String,
         val rejectedValue: String,
-        val message: String
+        val message: String,
     )
 }

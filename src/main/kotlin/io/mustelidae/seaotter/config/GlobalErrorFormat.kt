@@ -10,5 +10,5 @@ data class GlobalErrorFormat(
     @Schema(description = "error code")
     val code: String,
     @Schema(description = "exception message")
-    val message: String
+    val message: String,
 )

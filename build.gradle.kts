@@ -4,21 +4,18 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.7.14"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.jmailen.kotlinter") version "3.6.0"
-    id("com.avast.gradle.docker-compose") version "0.14.9"
-    kotlin("jvm") version "1.8.22"
-    kotlin("plugin.spring") version "1.8.22"
-    kotlin("plugin.jpa") version "1.8.22"
-    kotlin("plugin.allopen") version "1.8.22"
-    kotlin("plugin.noarg") version "1.8.22"
+    id("org.springframework.boot") version "3.2.2"
+    id("io.spring.dependency-management") version "1.1.4"
+    id("org.jmailen.kotlinter") version "3.14.0"
+    id("com.avast.gradle.docker-compose") version "0.17.6"
+    kotlin("jvm") version "1.9.22"
+    kotlin("plugin.spring") version "1.9.22"
 
 }
 
 group = "io.mustelidae.seaotter"
-version = "0.2.1"
-java.sourceCompatibility = JavaVersion.VERSION_11
+version = "1.0.0"
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
     mavenLocal()
@@ -31,23 +28,8 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
 
-    implementation("com.amazonaws:aws-java-sdk-s3:1.12.523") {
-        constraints {
-            implementation("com.fasterxml.woodstox", "woodstox-core", "6.5.1") {
-                because("CVE-2022-40151, CVE-2022-40152, CVE-2022-40156  7.5 Out-of-bounds Write vulnerability with medium severity found")
-            }
-            implementation("org.yaml","snakeyaml","2.1") {
-                because("Uncontrolled Resource Consumption vulnerability pending CVSS allocation")
-            }
-        }
-    }
-    implementation("com.azure:azure-storage-blob:12.23.0") {
-        constraints {
-            implementation("io.netty", "netty-codec", "4.1.96.Final") {
-                because("CVE-2022-41915 6.5 Improper Neutralization of CRLF Sequences in HTTP Headers ('HTTP Response Splitting') vulnerability pending CVSS allocation")
-            }
-        }
-    }
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.665")
+    implementation("com.azure:azure-storage-blob:12.25.1")
 
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
@@ -67,11 +49,10 @@ dependencies {
     implementation("com.twelvemonkeys.servlet:servlet:3.9.4")
     implementation("com.twelvemonkeys.imageio:imageio-webp:3.9.4")
 
-    implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
-    implementation("org.springdoc:springdoc-openapi-kotlin:1.6.5")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
-    implementation("com.google.guava:guava:32.1.2-jre")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.1.0")
+    implementation("com.google.guava:guava:32.1.3-jre")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.6.2")
 
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
@@ -85,14 +66,14 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-hateoas")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
     implementation("javax.interceptor:javax.interceptor-api:1.2.2")
 
-    implementation("org.mongodb:bson:4.4.0")
-    testImplementation("io.mockk:mockk:1.13.5")
+    implementation("org.mongodb:bson:4.11.1")
+    testImplementation("io.mockk:mockk:1.13.9")
     testImplementation("com.github.kittinunf.fuel:fuel:2.3.1")
+
+    compileOnly("javax.servlet:servlet-api:2.5")
+    testImplementation("javax.servlet:servlet-api:2.5")
 
 }
 
@@ -103,11 +84,12 @@ tasks.register("version") {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "21"
     }
 }
 
 tasks.withType<Test> {
+    jvmArgs("-XX:+EnableDynamicAgentLoading") // https://github.com/mockito/mockito/issues/3037
     useJUnitPlatform()
     failFast = true
 

@@ -22,7 +22,7 @@ import javax.imageio.ImageIO
 @NotThreadSafe
 internal class AwsS3Uploader(
     private val awsS3: AppEnvironment.AwsS3,
-    override val topicCode: String?
+    override val topicCode: String?,
 ) : Uploader {
     private val s3Client = AmazonS3ClientBuilder.standard()
         .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(awsS3.accessKey, awsS3.secretKey)))

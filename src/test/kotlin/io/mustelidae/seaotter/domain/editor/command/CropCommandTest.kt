@@ -28,7 +28,7 @@ internal class CropCommandTest {
         val validateRGBTable = listOf(
             Triple(20, 30, -398450),
             Triple(40, 50, -463719),
-            Triple(17, 26, -529268)
+            Triple(17, 26, -529268),
         )
 
         validateRGBTable.forEach { (x, y, rgb) ->
@@ -53,7 +53,7 @@ internal class CropCommandTest {
         val validateRGBTable = listOf(
             Triple(20, 30, -8550252),
             Triple(40, 50, -9864054),
-            Triple(160, 567, -7765629)
+            Triple(160, 567, -7765629),
         )
 
         validateRGBTable.forEach { (x, y, rgb) ->
@@ -76,7 +76,7 @@ internal class CropCommandTest {
         val validateRGBTable = listOf(
             Triple(20, 30, -8550252),
             Triple(40, 50, -9864054),
-            Triple(160, 567, -7765629)
+            Triple(160, 567, -7765629),
         )
 
         validateRGBTable.forEach { (x, y, rgb) ->

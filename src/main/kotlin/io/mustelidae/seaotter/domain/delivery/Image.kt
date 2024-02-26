@@ -5,13 +5,13 @@ import io.mustelidae.seaotter.constant.ImageFileFormat
 import io.mustelidae.seaotter.utils.extension
 import io.mustelidae.seaotter.utils.isSupport
 import org.bson.types.ObjectId
-import org.springframework.util.Base64Utils
 import org.springframework.web.multipart.MultipartFile
 import java.awt.Color
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.net.URL
+import java.util.Base64
 import java.util.Locale
 import javax.imageio.ImageIO
 
@@ -19,7 +19,7 @@ data class Image(
     var bufferedImage: BufferedImage,
     var name: String,
     var imageFileFormat: ImageFileFormat,
-    val isOriginal: Boolean
+    val isOriginal: Boolean,
 ) {
 
     fun randomizeName() {
@@ -40,32 +40,34 @@ data class Image(
         private val extensionRegex = Regex("(?<=/)[^/?#]+(?=[^/]*\$)")
 
         fun from(multipartFile: MultipartFile): Image {
-            if (multipartFile.isSupport().not())
+            if (multipartFile.isSupport().not()) {
                 throw UnSupportException()
+            }
 
             return Image(
                 ImageIO.read(ByteArrayInputStream(multipartFile.bytes)) ?: throw IllegalArgumentException("No images uploaded."),
                 multipartFile.name,
                 multipartFile.extension(),
-                true
+                true,
             )
         }
 
         fun from(file: File): Image {
-            if (file.isFile.not())
+            if (file.isFile.not()) {
                 throw java.lang.IllegalArgumentException("Invalid image file path")
+            }
 
             return Image(
                 ImageIO.read(file),
                 file.nameWithoutExtension,
                 ImageFileFormat.valueOf(file.extension.uppercase(Locale.getDefault())),
-                true
+                true,
             )
         }
 
         fun from(base64: String): Image {
             val index = base64.lastIndexOf(',')
-            val byteArray = Base64Utils.decodeFromString(base64.substring(index + 1))
+            val byteArray = Base64.getDecoder().decode(base64.substring(index + 1))
             val bufferedImage = ImageIO.read(ByteArrayInputStream(byteArray))
             val format: ImageFileFormat
 
@@ -78,14 +80,15 @@ data class Image(
                 throw UnSupportException()
             }
 
-            if (format.support.not())
+            if (format.support.not()) {
                 throw UnSupportException()
+            }
 
             return Image(
                 bufferedImage,
                 ObjectId().toString(),
                 format,
-                true
+                true,
             )
         }
 
@@ -97,7 +100,7 @@ data class Image(
                 ImageIO.read(url),
                 name,
                 ImageFileFormat.valueOf(extension.uppercase()),
-                true
+                true,
             )
         }
     }
@@ -109,12 +112,12 @@ data class Image(
     fun getMeta(): Meta {
         return Meta(
             bufferedImage.width,
-            bufferedImage.height
+            bufferedImage.height,
         )
     }
 
     data class Meta(
         val width: Int,
-        val height: Int
+        val height: Int,
     )
 }

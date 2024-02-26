@@ -4,6 +4,7 @@ import io.mustelidae.seaotter.constant.ImageFileFormat
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.IOException
+import java.util.Locale
 import javax.imageio.ImageIO
 import kotlin.math.roundToInt
 
@@ -24,8 +25,9 @@ interface FlabbyImage {
     fun getBufferedImage(): BufferedImage
 
     fun ratioToPixelSize(ratio: Double, width: Int, height: Int): Pair<Int, Int> {
-        if (ratio == 0.0 || ratio == 100.0)
+        if (ratio == 0.0 || ratio == 100.0) {
             return Pair(width, height)
+        }
 
         val fixedWidth = (width * (ratio * 0.01)).roundToInt()
         val fixedHeight = (height * (ratio * 0.01)).roundToInt()
@@ -39,11 +41,10 @@ interface FlabbyImage {
 
     companion object {
         fun getBufferedImage(byte: ByteArray): BufferedImage {
-
             return ImageIO.read(ByteArrayInputStream(byte))
         }
 
         private fun isSupportFormat(extension: String): Boolean =
-            ImageFileFormat.valueOf(extension.toUpperCase()).support
+            ImageFileFormat.valueOf(extension.uppercase(Locale.getDefault())).support
     }
 }

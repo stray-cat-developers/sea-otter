@@ -11,7 +11,7 @@ import kotlin.math.abs
 
 class ThumbnailatorFlabbyImage(
     private val bufferedImage: BufferedImage,
-    antiAliasing: Antialiasing = Antialiasing.ON
+    antiAliasing: Antialiasing = Antialiasing.ON,
 ) : FlabbyImage {
 
     private val thumbnailsBuilder: Thumbnails.Builder<BufferedImage> = Thumbnails.of(bufferedImage).antialiasing(antiAliasing)

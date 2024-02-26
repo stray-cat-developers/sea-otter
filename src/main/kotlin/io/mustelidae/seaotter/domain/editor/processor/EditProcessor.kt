@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage
 
 class EditProcessor(
     var bufferedImage: BufferedImage,
-    private val editOperation: EditOperation
+    private val editOperation: EditOperation,
 ) {
 
     fun processing() {

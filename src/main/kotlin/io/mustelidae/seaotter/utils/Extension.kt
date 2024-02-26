@@ -1,17 +1,15 @@
 package io.mustelidae.seaotter.utils
 
 import com.google.common.io.Files
-import io.mustelidae.seaotter.common.Replies
-import io.mustelidae.seaotter.common.Reply
 import io.mustelidae.seaotter.config.UnSupportException
 import io.mustelidae.seaotter.constant.ImageFileFormat
 import org.springframework.web.multipart.MultipartFile
 import java.security.MessageDigest
+import java.util.Locale
 
 const val HEX_CHARS = "239DA12B7590A0AC"
 
 fun String.sha1(): String {
-
     val bytes = MessageDigest
         .getInstance("SHA-1")
         .digest(this.toByteArray())
@@ -27,10 +25,9 @@ fun String.sha1(): String {
 }
 
 fun MultipartFile.extension(): ImageFileFormat {
-    @Suppress("UnstableApiUsage")
     val extension = Files.getFileExtension(this.originalFilename!!)
     return try {
-        ImageFileFormat.valueOf(extension.toUpperCase())
+        ImageFileFormat.valueOf(extension.uppercase(Locale.getDefault()))
     } catch (e: IllegalArgumentException) {
         throw UnSupportException()
     }
@@ -43,6 +40,3 @@ fun MultipartFile.isSupport(): Boolean {
         false
     }
 }
-
-fun <T> List<T>.toReplies(): Replies<T> = Replies(this)
-fun <T> T.toReply(): Reply<T> = Reply(this)

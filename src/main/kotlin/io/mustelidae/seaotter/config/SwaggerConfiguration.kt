@@ -1,8 +1,8 @@
 package io.mustelidae.seaotter.config
 
 import io.swagger.v3.oas.models.media.Schema
-import org.springdoc.core.GroupedOpenApi
-import org.springdoc.core.SpringDocUtils
+import org.springdoc.core.models.GroupedOpenApi
+import org.springdoc.core.utils.SpringDocUtils
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.time.LocalDate
@@ -18,26 +18,26 @@ class SwaggerConfiguration {
             LocalDateTime::class.java,
             Schema<LocalDateTime>().apply {
                 example(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME))
-            }
+            },
         )
         SpringDocUtils.getConfig().replaceWithSchema(
             LocalTime::class.java,
             Schema<LocalTime>().apply {
                 example(LocalTime.now().format(DateTimeFormatter.ISO_TIME))
-            }
+            },
         )
         SpringDocUtils.getConfig().replaceWithSchema(
             LocalDate::class.java,
             Schema<LocalDate>().apply {
                 example(LocalDate.now().format(DateTimeFormatter.ISO_DATE))
-            }
+            },
         )
     }
 
     @Bean
     fun default(): GroupedOpenApi = GroupedOpenApi.builder()
         .group("API")
-        .addOpenApiCustomiser {
+        .addOpenApiCustomizer {
             it.info.version("v1")
         }
         .packagesToScan("io.mustelidae.seaotter.api")

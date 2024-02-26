@@ -11,7 +11,7 @@ import java.net.URL
 @Service
 class PureDelivery
 @Autowired constructor(
-    private val uploadHandler: UploadHandler
+    private val uploadHandler: UploadHandler,
 ) {
 
     fun delivery(image: Image, hasOriginal: Boolean): ShippingItem<Image> {
@@ -44,7 +44,7 @@ class PureDelivery
         val shippingItem = ShippingItem(multipartFile)
 
         shippingItem.shippedItem.add(
-            Pair(multipartFile, uploadHandler.upload(multipartFile))
+            Pair(multipartFile, uploadHandler.upload(multipartFile)),
         )
 
         return shippingItem

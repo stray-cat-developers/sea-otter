@@ -4,7 +4,7 @@ import org.imgscalr.Scalr
 import java.awt.image.BufferedImage
 
 class ImgscalrFlabbyImage(
-    private var bufferedImage: BufferedImage
+    private var bufferedImage: BufferedImage,
 ) : FlabbyImage {
 
     /**

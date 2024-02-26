@@ -8,7 +8,7 @@ class CropOption(
     val x1: Int?,
     val y1: Int?,
     val x2: Int?,
-    val y2: Int?
+    val y2: Int?,
 ) : Option {
     class Builder {
         var type: Type? = null
@@ -22,8 +22,9 @@ class CropOption(
 
         @Throws(IllegalArgumentException::class)
         fun coordinates(x1: Int, y1: Int, x2: Int, y2: Int) = apply {
-            if (width != null && height != null)
+            if (width != null && height != null) {
                 throw IllegalArgumentException("width and height are already set.")
+            }
 
             this.x1 = x1
             this.y1 = y1
@@ -34,8 +35,9 @@ class CropOption(
 
         @Throws(IllegalArgumentException::class)
         fun position(position: Position, width: Int, height: Int) = apply {
-            if (x1 != null || y1 != null || x2 != null || y2 != null)
+            if (x1 != null || y1 != null || x2 != null || y2 != null) {
                 throw IllegalArgumentException("coordinates is already set.")
+            }
 
             this.position = position
             this.width = width

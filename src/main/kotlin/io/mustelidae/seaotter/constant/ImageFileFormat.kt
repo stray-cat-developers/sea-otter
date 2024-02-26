@@ -6,7 +6,7 @@ enum class ImageFileFormat(
      * Common MIME type
      * @ref https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
      */
-    val mediaType: String
+    val mediaType: String,
 ) {
     // JPEG (Joint Photographic Experts Group) is a lossy compression method; JPEG-compressed images are usually stored in the JFIF (JPEG File Interchange Format) file format.
     JPG(true, "image/jpeg"),
@@ -41,5 +41,5 @@ enum class ImageFileFormat(
     HDR(true, "image/vnd.radiance"),
 
     // The High Efficiency Image File Format (HEIF) is an image container format that was standardized by MPEG on the basis of the ISO base media file format.
-    HEIF(false, "image/heif")
+    HEIF(false, "image/heif"),
 }

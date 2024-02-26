@@ -13,7 +13,7 @@ import java.util.Locale
 @Service
 class UploadHandler
 @Autowired constructor(
-    private val appEnvironment: AppEnvironment
+    private val appEnvironment: AppEnvironment,
 ) {
 
     private val uploader = UploadTarget.valueOf(appEnvironment.uploader.uppercase(Locale.getDefault()))
@@ -62,8 +62,9 @@ class UploadHandler
      * use magic.
      */
     private fun findTopicCode(): String? {
-        if (RequestContextHolder.getRequestAttributes() == null)
+        if (RequestContextHolder.getRequestAttributes() == null) {
             return null
+        }
 
         return (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes)
             .request.getParameter("topic")

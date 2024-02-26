@@ -28,9 +28,9 @@ class FileUploadControllerTest : IntegrationTestSupport() {
         val fileUrl = mockMvc.perform(
             MockMvcRequestBuilders.multipart(url)
                 .file(mockMultipartFile)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE),
         ).andExpect(
-            MockMvcResultMatchers.status().is2xxSuccessful
+            MockMvcResultMatchers.status().is2xxSuccessful,
         ).andReturn()
             .response
             .contentAsString

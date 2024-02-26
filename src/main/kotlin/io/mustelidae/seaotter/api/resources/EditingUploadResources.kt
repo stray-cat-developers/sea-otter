@@ -19,7 +19,7 @@ class EditingUploadResources {
         @JsonDeserialize(using = EditingStepJsonDeserializer::class)
         val edits: List<OperationOption>,
         val base64: String,
-        val hasOriginal: Boolean?
+        val hasOriginal: Boolean?,
     )
 
     class Crop : Operation {
@@ -27,20 +27,20 @@ class EditingUploadResources {
             val x1: Int,
             val y1: Int,
             val x2: Int,
-            val y2: Int
+            val y2: Int,
         ) : OperationOption
 
         data class Position(
             val position: CropOption.Position,
             val width: Int,
-            val height: Int
+            val height: Int,
         ) : OperationOption
 
         data class PointScale(
             val x1: Int,
             val y1: Int,
             val width: Int,
-            val height: Int
+            val height: Int,
         ) : OperationOption
     }
 
@@ -48,21 +48,21 @@ class EditingUploadResources {
         data class Size(
             val width: Int,
             val height: Int,
-            val keepRatio: Boolean
+            val keepRatio: Boolean,
         ) : OperationOption
 
         data class Scale(
-            val scale: Double
+            val scale: Double,
         ) : OperationOption
     }
 
     class Rotate : Operation {
         data class Angle(
-            val degree: Double
+            val degree: Double,
         ) : OperationOption
 
         data class Flip(
-            val flip: RotateOption.Flip
+            val flip: RotateOption.Flip,
         ) : OperationOption
     }
 
@@ -73,7 +73,7 @@ class EditingUploadResources {
         val path: String,
         val format: String,
         val original: Boolean,
-        val histories: List<String>? = null
+        val histories: List<String>? = null,
     ) {
         companion object {
             fun from(pair: Pair<Image, URL>, histories: List<String>): ReplyOnImage {
@@ -86,7 +86,7 @@ class EditingUploadResources {
                     url,
                     image.getExtension(),
                     image.isOriginal,
-                    if (image.isOriginal.not()) histories else null
+                    if (image.isOriginal.not()) histories else null,
                 )
             }
         }

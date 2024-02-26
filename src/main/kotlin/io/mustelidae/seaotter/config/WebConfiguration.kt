@@ -26,11 +26,11 @@ class WebConfiguration : DelegatingWebMvcConfiguration() {
 
     override fun configureMessageConverters(converters: MutableList<HttpMessageConverter<*>>) {
         val objectMapper = Jackson.getMapper()
+        converters.add(ByteArrayHttpMessageConverter())
         converters.add(StringHttpMessageConverter())
         converters.add(MappingJackson2HttpMessageConverter(objectMapper))
         converters.add(BufferedImageHttpMessageConverter())
         converters.add(FormHttpMessageConverter())
-        converters.add(ByteArrayHttpMessageConverter())
         converters.add(ResourceHttpMessageConverter())
     }
 

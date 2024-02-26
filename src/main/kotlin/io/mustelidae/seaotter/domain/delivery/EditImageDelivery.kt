@@ -12,11 +12,10 @@ import java.net.URL
 @Service
 class EditImageDelivery
 @Autowired constructor(
-    private val uploadHandler: UploadHandler
+    private val uploadHandler: UploadHandler,
 ) {
 
     fun delivery(image: Image, hasOriginal: Boolean, editOperation: EditOperation): ShippingItem<Image> {
-
         val shippingItem = ShippingItem(image)
         if (hasOriginal) {
             shippingItem.shippedItem.add(upload(image))

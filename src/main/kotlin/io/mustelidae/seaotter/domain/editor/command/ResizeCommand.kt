@@ -8,24 +8,28 @@ class ResizeCommand(private var bufferedImage: BufferedImage) : EditCommand<Resi
 
     override fun execute(option: ResizeOption) {
         if (option.scale != null) {
-            if (option.scale == 100.0)
+            if (option.scale == 100.0) {
                 return
+            }
 
-            val flabbyImage = if (option.scale > 100.0)
+            val flabbyImage = if (option.scale > 100.0) {
                 ImageScalingFlabbyImage(bufferedImage)
-            else
+            } else {
                 ImgscalrFlabbyImage(bufferedImage)
+            }
 
             flabbyImage.resize(option.scale)
             bufferedImage = flabbyImage.getBufferedImage()
         } else {
-            if (option.width == bufferedImage.width && option.height == bufferedImage.height)
+            if (option.width == bufferedImage.width && option.height == bufferedImage.height) {
                 return
+            }
 
-            val flabbyImage = if (option.keepRatio)
+            val flabbyImage = if (option.keepRatio) {
                 ImgscalrFlabbyImage(bufferedImage)
-            else
+            } else {
                 ImageScalingFlabbyImage(bufferedImage)
+            }
 
             flabbyImage.resize(option.width!!, option.height!!)
             bufferedImage = flabbyImage.getBufferedImage()

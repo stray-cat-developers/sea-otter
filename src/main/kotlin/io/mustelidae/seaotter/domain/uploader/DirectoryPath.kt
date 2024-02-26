@@ -9,7 +9,7 @@ import java.util.Locale
 class DirectoryPath(
     base: String,
     shardType: String?,
-    topicCode: String? = null
+    topicCode: String? = null,
 ) {
     private var path: String = if (topicCode == null) base else "$base/topic/$topicCode"
 

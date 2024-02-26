@@ -17,7 +17,7 @@ class EditOperation {
         queue.offer(
             CropOption.Builder()
                 .coordinates(x1, y1, x2, y2)
-                .build()
+                .build(),
         )
     }
 
@@ -25,7 +25,7 @@ class EditOperation {
         queue.offer(
             CropOption.Builder()
                 .position(position, width, height)
-                .build()
+                .build(),
         )
     }
 
@@ -33,7 +33,7 @@ class EditOperation {
         queue.offer(
             CropOption.Builder()
                 .pointScale(x1, y1, width, height)
-                .build()
+                .build(),
         )
     }
 
@@ -41,7 +41,7 @@ class EditOperation {
         queue.offer(
             ResizeOption.Builder()
                 .scale(scale)
-                .build()
+                .build(),
         )
     }
 
@@ -49,7 +49,7 @@ class EditOperation {
         queue.offer(
             ResizeOption.Builder()
                 .size(width, height, keepRatio)
-                .build()
+                .build(),
         )
     }
 
@@ -57,7 +57,7 @@ class EditOperation {
         queue.offer(
             RotateOption.Builder()
                 .angle(degree)
-                .build()
+                .build(),
         )
     }
 
@@ -65,7 +65,7 @@ class EditOperation {
         queue.offer(
             RotateOption.Builder()
                 .flip(flip)
-                .build()
+                .build(),
         )
     }
 

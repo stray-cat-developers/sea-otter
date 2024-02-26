@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.mustelidae.seaotter.utils.Jackson
 import java.io.IOException
+import java.util.Locale
 import kotlin.reflect.KClass
 
 /**
@@ -24,7 +25,6 @@ class EditingStepJsonDeserializer : JsonDeserializer<List<OperationOption>>() {
         val edits: MutableList<OperationOption> = mutableListOf()
 
         for (nodeOfEdit in jp.codec.readTree<JsonNode>(jp)) {
-
             convertClass(
                 mapper,
                 edits,
@@ -33,8 +33,8 @@ class EditingStepJsonDeserializer : JsonDeserializer<List<OperationOption>>() {
                 listOf(
                     EditingUploadResources.Crop.Position::class,
                     EditingUploadResources.Crop.Coordinate::class,
-                    EditingUploadResources.Crop.PointScale::class
-                )
+                    EditingUploadResources.Crop.PointScale::class,
+                ),
             )
 
             convertClass(
@@ -44,8 +44,8 @@ class EditingStepJsonDeserializer : JsonDeserializer<List<OperationOption>>() {
                 EditingUploadResources.Resize::class,
                 listOf(
                     EditingUploadResources.Resize.Scale::class,
-                    EditingUploadResources.Resize.Size::class
-                )
+                    EditingUploadResources.Resize.Size::class,
+                ),
             )
 
             convertClass(
@@ -55,8 +55,8 @@ class EditingStepJsonDeserializer : JsonDeserializer<List<OperationOption>>() {
                 EditingUploadResources.Rotate::class,
                 listOf(
                     EditingUploadResources.Rotate.Angle::class,
-                    EditingUploadResources.Rotate.Flip::class
-                )
+                    EditingUploadResources.Rotate.Flip::class,
+                ),
             )
         }
 
@@ -64,7 +64,7 @@ class EditingStepJsonDeserializer : JsonDeserializer<List<OperationOption>>() {
     }
 
     private fun convertClass(mapper: ObjectMapper, edits: MutableList<OperationOption>, nodeOfOperation: JsonNode, classOfOperation: KClass<*>, classesOfOperationOption: List<KClass<*>>) {
-        val operationName = classOfOperation.simpleName!!.decapitalize()
+        val operationName = classOfOperation.simpleName!!.lowercase(Locale.getDefault())
         val mapOfOperationOption = classesOfOperationOption.map { it.simpleName!!.decapitalize() to it }
 
         if (nodeOfOperation.has(operationName)) {
