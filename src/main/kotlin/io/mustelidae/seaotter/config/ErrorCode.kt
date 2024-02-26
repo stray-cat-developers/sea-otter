@@ -7,7 +7,6 @@ enum class ErrorCode(val description: String) {
 
     /* wrong input */
     H002("Invalid input"),
-    H003("Not found"),
 
     // system error
     S000("Unknown internal server error"),

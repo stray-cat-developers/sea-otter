@@ -1,8 +1,8 @@
 package io.mustelidae.seaotter.api.controller
 
 import io.mustelidae.seaotter.common.Reply
+import io.mustelidae.seaotter.common.toReply
 import io.mustelidae.seaotter.domain.delivery.PureDelivery
-import io.mustelidae.seaotter.utils.toReply
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired

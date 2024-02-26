@@ -37,7 +37,7 @@ class ExceptionConfiguration
     @ResponseBody
     fun handleGlobalException(e: RuntimeException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("Unexpected error", e)
-        return errorForm(request, AppError(ErrorCode.S000, ErrorCode.S000.description), e)
+        return errorForm(request, NormalError(ErrorCode.S000, ErrorCode.S000.description), e)
     }
 
     @ExceptionHandler(value = [SystemException::class])
@@ -50,7 +50,7 @@ class ExceptionConfiguration
     @ExceptionHandler(value = [AmazonClientException::class])
     fun handleAWSException(e: AmazonClientException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("aws communication fail", e)
-        return errorForm(request, AppError(ErrorCode.S002, ErrorCode.S002.description), e)
+        return errorForm(request, NormalError(ErrorCode.S002, ErrorCode.S002.description), e)
     }
 
     @ExceptionHandler(value = [HumanException::class])
@@ -65,7 +65,7 @@ class ExceptionConfiguration
     @ResponseBody
     fun handleIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("[T] wrong input.", e)
-        return errorForm(request, AppError(ErrorCode.H002, ErrorCode.H002.description), e)
+        return errorForm(request, NormalError(ErrorCode.H002, ErrorCode.H002.description), e)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
@@ -78,7 +78,7 @@ class ExceptionConfiguration
         val message = methodArgumentNotValidExceptionErrorForm(e.bindingResult.fieldErrors)
             .joinToString(",") { "reject field(${it.field}) and value(${it.rejectedValue}" }
 
-        return errorForm(request, AppError(ErrorCode.H002, message), e)
+        return errorForm(request, NormalError(ErrorCode.H002, message), e)
     }
 
     private fun errorForm(request: HttpServletRequest, errorSource: ErrorSource, e: Exception): GlobalErrorFormat {
@@ -91,12 +91,9 @@ class ExceptionConfiguration
         val errorAttributes =
             DefaultErrorAttributes().getErrorAttributes(ServletWebRequest(request), errorAttributeOptions)
 
-        errorAttributes["code"] = errorSource.getCode()
-        errorAttributes["message"] = errorSource.getMessage()
-
         errorAttributes.apply {
-            this["message"] = errorSource.getMessage()
-            this["code"] = errorSource.getCode()
+            this["message"] = errorSource.message
+            this["code"] = errorSource.code
             this["type"] = e.javaClass.simpleName
         }
 
