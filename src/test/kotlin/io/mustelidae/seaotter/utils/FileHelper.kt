@@ -15,12 +15,10 @@ fun getTestImageFileAsAbsolutePath(fileName: String): String {
     return path
 }
 
-fun getOutputFile(fileName: String): File {
-    val file = File("out/image")
-    if (file.exists().not()) {
-        file.mkdirs()
-    }
-    return File(file.absolutePath, fileName)
+fun getTestFileAsAbsolutePath(fileName: String): String {
+    val path = File("src/test/resources/file/$fileName").absolutePath
+    println("test image file path is $path")
+    return path
 }
 
 fun write(targetImage: BufferedImage, fileName: String) {
@@ -35,7 +33,12 @@ fun write(targetImage: BufferedImage, fileName: String) {
     val outputStream = ByteArrayOutputStream()
     ImageIO.write(bufferedImage, "jpg", outputStream)
 
-    val outFile = getOutputFile("$fileName.jpg")
+    val file = File("out/image")
+    if (file.exists().not()) {
+        file.mkdirs()
+    }
+
+    val outFile = File(file.absolutePath, fileName)
 
     println("out file path: ${outFile.absolutePath}")
     outFile.createNewFile()

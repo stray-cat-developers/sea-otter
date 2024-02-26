@@ -60,7 +60,7 @@ class EditingImageUploadController
 
         val shippingItem = editImageDelivery.delivery(image, hasOriginal ?: false, editOperation)
 
-        return shippingItem.shippedImages
+        return shippingItem.shippedItem
             .map { EditingUploadResources.ReplyOnImage.from(it, editOperation.histories) }
             .toReplies()
     }
@@ -90,7 +90,7 @@ class EditingImageUploadController
 
         val shippingItem = editImageDelivery.delivery(image, hasOriginal ?: false, editOperation)
 
-        return shippingItem.shippedImages
+        return shippingItem.shippedItem
             .map { EditingUploadResources.ReplyOnImage.from(it, editOperation.histories) }
             .toReplies()
     }
@@ -111,7 +111,7 @@ class EditingImageUploadController
 
         val shippingItem = editImageDelivery.delivery(image, request.hasOriginal ?: false, editOperation)
 
-        return shippingItem.shippedImages
+        return shippingItem.shippedItem
             .map { EditingUploadResources.ReplyOnImage.from(it, editOperation.histories) }
             .toReplies()
     }

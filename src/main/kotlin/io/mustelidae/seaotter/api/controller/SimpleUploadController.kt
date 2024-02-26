@@ -45,7 +45,7 @@ class SimpleUploadController
 
         val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
 
-        return shippingItem.shippedImages
+        return shippingItem.shippedItem
             .map { UploadResources.ReplyOnImage.from(it) }
             .toReplies()
     }
@@ -65,7 +65,7 @@ class SimpleUploadController
         val image = Image.from(base64)
         val shippingItem = pureDelivery.delivery(image, hasOriginal ?: false)
 
-        return shippingItem.shippedImages
+        return shippingItem.shippedItem
             .map { UploadResources.ReplyOnImage.from(it) }
             .toReplies()
     }
@@ -84,7 +84,7 @@ class SimpleUploadController
         val image = Image.from(base64)
         val shippingItem = pureDelivery.delivery(image, request.hasOriginal ?: false)
 
-        return shippingItem.shippedImages
+        return shippingItem.shippedItem
             .map { UploadResources.ReplyOnImage.from(it) }
             .toReplies()
     }
@@ -101,7 +101,7 @@ class SimpleUploadController
         val image = Image.from(URL(request.url))
         val shippingItem = pureDelivery.delivery(image, request.hasOriginal ?: false)
 
-        return shippingItem.shippedImages
+        return shippingItem.shippedItem
             .map { UploadResources.ReplyOnImage.from(it) }
             .toReplies()
     }

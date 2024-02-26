@@ -21,8 +21,12 @@ class DirectoryPath(
         this.path += if (path.first() == '/') path else "/$path"
     }
 
-    fun append(name: String, format: ImageFileFormat) {
+    fun appendImageName(name: String, format: ImageFileFormat) {
         this.path += "/$name.${format.name.lowercase(Locale.getDefault())}"
+    }
+
+    fun appendFileName(name: String) {
+        this.path += "/$name"
     }
 
     fun getPath(): String {

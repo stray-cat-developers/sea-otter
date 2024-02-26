@@ -5,6 +5,7 @@ import io.mustelidae.seaotter.domain.editor.image.ThumbnailatorFlabbyImage
 import io.mustelidae.seaotter.domain.uploader.UploadHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.net.URL
 
 @Service
@@ -13,13 +14,13 @@ class PureDelivery
     private val uploadHandler: UploadHandler
 ) {
 
-    fun delivery(image: Image, hasOriginal: Boolean): ShippingItem {
+    fun delivery(image: Image, hasOriginal: Boolean): ShippingItem<Image> {
         val shippingItem = ShippingItem(image)
         if (hasOriginal) {
-            shippingItem.shippedImages.add(upload(image))
+            shippingItem.shippedItem.add(upload(image))
         }
 
-        shippingItem.shippedImages.add(compressAndUpload(image))
+        shippingItem.shippedItem.add(compressAndUpload(image))
         return shippingItem
     }
 
@@ -37,5 +38,15 @@ class PureDelivery
         val compressedImage = Image(compressedBufferedImage, image.name, ImageFileFormat.JPG, false)
 
         return upload(compressedImage)
+    }
+
+    fun delivery(multipartFile: MultipartFile): ShippingItem<MultipartFile> {
+        val shippingItem = ShippingItem(multipartFile)
+
+        shippingItem.shippedItem.add(
+            Pair(multipartFile, uploadHandler.upload(multipartFile))
+        )
+
+        return shippingItem
     }
 }

@@ -38,7 +38,7 @@ enum class ImageFileFormat(
     WEBP(true, "image/webp"),
 
     // Most typical raster formats cannot store HDR data (32 bit floating point values per pixel component), which is why some relatively old or complex formats are still predominant here, and worth mentioning separately.
-    HDR(true, "image/hdr"),
+    HDR(true, "image/vnd.radiance"),
 
     // The High Efficiency Image File Format (HEIF) is an image container format that was standardized by MPEG on the basis of the ISO base media file format.
     HEIF(false, "image/heif")

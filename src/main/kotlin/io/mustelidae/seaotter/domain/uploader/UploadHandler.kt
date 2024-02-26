@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import org.springframework.web.multipart.MultipartFile
 import java.net.URL
 import java.util.Locale
 
@@ -22,6 +23,12 @@ class UploadHandler
         val uploader = getUploader()
         val pathOfImage = uploader.upload(image)
         return makeUrl(pathOfImage)
+    }
+
+    fun upload(multipartFile: MultipartFile): URL {
+        val uploader = getUploader()
+        val pathOfFile = uploader.upload(multipartFile)
+        return makeUrl(pathOfFile)
     }
 
     private fun getUploader(): Uploader {

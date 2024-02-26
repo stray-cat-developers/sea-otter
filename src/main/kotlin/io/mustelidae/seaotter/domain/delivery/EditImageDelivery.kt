@@ -15,11 +15,11 @@ class EditImageDelivery
     private val uploadHandler: UploadHandler
 ) {
 
-    fun delivery(image: Image, hasOriginal: Boolean, editOperation: EditOperation): ShippingItem {
+    fun delivery(image: Image, hasOriginal: Boolean, editOperation: EditOperation): ShippingItem<Image> {
 
         val shippingItem = ShippingItem(image)
         if (hasOriginal) {
-            shippingItem.shippedImages.add(upload(image))
+            shippingItem.shippedItem.add(upload(image))
         }
 
         val processor = EditProcessor(image.bufferedImage, editOperation)
@@ -29,7 +29,7 @@ class EditImageDelivery
             reviseFormat()
         }
 
-        shippingItem.shippedImages.add(upload(touchedImage))
+        shippingItem.shippedItem.add(upload(touchedImage))
 
         return shippingItem
     }

@@ -6,6 +6,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.common.StorageSharedKeyCredential
 import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.domain.delivery.Image
+import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
@@ -28,7 +29,7 @@ internal class AzureStorageUploader(
             .credential(credential)
             .buildClient()
             .getBlobContainerClient(directoryPath.getPath())
-            .getBlobClient(image.name)
+            .getBlobClient("${image.name}.${image.getExtension()}")
 
         val out = ByteArrayOutputStream()
         ImageIO.write(image.bufferedImage, image.getExtension(), out)
@@ -40,6 +41,21 @@ internal class AzureStorageUploader(
         blobClient.setHttpHeaders(headers)
 
         blobClient.upload(BinaryData.fromBytes(byteArray))
+        return blobClient.blobUrl
+    }
+
+    override fun upload(multipartFile: MultipartFile): String {
+        val directoryPath = DirectoryPath(azureStorage.path, azureStorage.shardType, topicCode)
+        val credential = StorageSharedKeyCredential(azureStorage.accountName, azureStorage.accountKey)
+
+        val blobClient = BlobServiceClientBuilder()
+            .endpoint(azureStorage.endpoint)
+            .credential(credential)
+            .buildClient()
+            .getBlobContainerClient(directoryPath.getPath())
+            .getBlobClient(multipartFile.originalFilename)
+
+        blobClient.upload(multipartFile.inputStream, multipartFile.size)
         return blobClient.blobUrl
     }
 }
