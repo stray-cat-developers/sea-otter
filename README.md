@@ -1,7 +1,7 @@
 # Sea-otter
 JPEG and PNG images optimized application
 
-[![Build Status](https://travis-ci.org/fennec-fox/sea-otter.svg?branch=master)](https://travis-ci.org/fennec-fox/sea-otter)
+[![Build Status](https://github.com/stray-cat-developers/sea-otter/actions/workflows/gradle.yml/badge.svg)](https://github.com/stray-cat-developers/sea-otter/actions/workflows/gradle.yml)
 
 - upload image file
 - support edit command
@@ -15,6 +15,14 @@ JPEG and PNG images optimized application
   - local storage  
      
 # New Features!
+##### 0.3.0
+ - Upgrade library
+   - Springboot 3.2.2
+   - kotlin 1.9.2
+   - gradle 8.5
+   - Java 21
+ - Upload normal file
+
 ##### 0.2.1
  - Support WebP format
  - Fix Azure Blob Uploader

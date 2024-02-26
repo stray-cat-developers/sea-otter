@@ -14,7 +14,7 @@ plugins {
 }
 
 group = "io.mustelidae.seaotter"
-version = "1.0.0"
+version = "0.3.0"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 repositories {
