@@ -22,7 +22,7 @@ class Jackson {
                 .modules(JavaTimeModule())
                 .serializerByType(
                     LocalDateTime::class.java,
-                    LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"))
+                    LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")),
                 )
                 .serializers(CustomDateSerializer())
                 .build<ObjectMapper>()
@@ -38,3 +38,5 @@ private class CustomDateSerializer : StdSerializer<Date>(Date::class.java) {
         }
     }
 }
+
+internal fun <T> T.toJson(): String = Jackson.getMapper().writeValueAsString(this)

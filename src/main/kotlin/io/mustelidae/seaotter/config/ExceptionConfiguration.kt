@@ -2,6 +2,7 @@ package io.mustelidae.seaotter.config
 
 import com.amazonaws.AmazonClientException
 import io.mustelidae.seaotter.utils.Jackson
+import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.error.ErrorAttributeOptions
@@ -17,12 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.context.request.ServletWebRequest
-import javax.servlet.http.HttpServletRequest
 
 @ControllerAdvice(annotations = [RestController::class])
 class ExceptionConfiguration
 @Autowired constructor(
-    private val env: Environment
+    private val env: Environment,
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -30,14 +30,14 @@ class ExceptionConfiguration
     @ExceptionHandler(
         value = [
             RuntimeException::class,
-            IllegalStateException::class
-        ]
+            IllegalStateException::class,
+        ],
     )
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ResponseBody
     fun handleGlobalException(e: RuntimeException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("Unexpected error", e)
-        return errorForm(request, AppError(ErrorCode.S000, ErrorCode.S000.description), e)
+        return errorForm(request, NormalError(ErrorCode.S000, ErrorCode.S000.description), e)
     }
 
     @ExceptionHandler(value = [SystemException::class])
@@ -50,7 +50,7 @@ class ExceptionConfiguration
     @ExceptionHandler(value = [AmazonClientException::class])
     fun handleAWSException(e: AmazonClientException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("aws communication fail", e)
-        return errorForm(request, AppError(ErrorCode.S002, ErrorCode.S002.description), e)
+        return errorForm(request, NormalError(ErrorCode.S002, ErrorCode.S002.description), e)
     }
 
     @ExceptionHandler(value = [HumanException::class])
@@ -65,7 +65,7 @@ class ExceptionConfiguration
     @ResponseBody
     fun handleIllegalArgumentException(e: IllegalArgumentException, request: HttpServletRequest): GlobalErrorFormat {
         log.error("[T] wrong input.", e)
-        return errorForm(request, AppError(ErrorCode.H002, ErrorCode.H002.description), e)
+        return errorForm(request, NormalError(ErrorCode.H002, ErrorCode.H002.description), e)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
@@ -73,29 +73,27 @@ class ExceptionConfiguration
     @ResponseBody
     fun methodArgumentNotValidException(
         e: MethodArgumentNotValidException,
-        request: HttpServletRequest
+        request: HttpServletRequest,
     ): GlobalErrorFormat {
         val message = methodArgumentNotValidExceptionErrorForm(e.bindingResult.fieldErrors)
             .joinToString(",") { "reject field(${it.field}) and value(${it.rejectedValue}" }
 
-        return errorForm(request, AppError(ErrorCode.H002, message), e)
+        return errorForm(request, NormalError(ErrorCode.H002, message), e)
     }
 
     private fun errorForm(request: HttpServletRequest, errorSource: ErrorSource, e: Exception): GlobalErrorFormat {
-
-        val errorAttributeOptions = if (env.activeProfiles.contains("prod").not())
+        val errorAttributeOptions = if (env.activeProfiles.contains("prod").not()) {
             ErrorAttributeOptions.of(ErrorAttributeOptions.Include.STACK_TRACE)
-        else ErrorAttributeOptions.defaults()
+        } else {
+            ErrorAttributeOptions.defaults()
+        }
 
         val errorAttributes =
             DefaultErrorAttributes().getErrorAttributes(ServletWebRequest(request), errorAttributeOptions)
 
-        errorAttributes["code"] = errorSource.getCode()
-        errorAttributes["message"] = errorSource.getMessage()
-
         errorAttributes.apply {
-            this["message"] = errorSource.getMessage()
-            this["code"] = errorSource.getCode()
+            this["message"] = errorSource.message
+            this["code"] = errorSource.code
             this["type"] = e.javaClass.simpleName
         }
 
@@ -107,13 +105,13 @@ class ExceptionConfiguration
             ValidationError(
                 field = it.field,
                 rejectedValue = it.rejectedValue.toString(),
-                message = it.defaultMessage ?: "validate fail."
+                message = it.defaultMessage ?: "validate fail.",
             )
         }.toList()
 
     private data class ValidationError(
         val field: String,
         val rejectedValue: String,
-        val message: String
+        val message: String,
     )
 }

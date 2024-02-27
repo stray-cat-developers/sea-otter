@@ -4,7 +4,7 @@ class ResizeOption(
     val keepRatio: Boolean,
     val scale: Double?,
     val width: Int?,
-    val height: Int?
+    val height: Int?,
 ) : Option {
     class Builder {
         var scale: Double? = null
@@ -18,9 +18,9 @@ class ResizeOption(
 
         @Throws(IllegalArgumentException::class)
         fun scale(scale: Double) = apply {
-
-            if (width != null && height != null)
+            if (width != null && height != null) {
                 throw IllegalArgumentException("The width and height are already set.")
+            }
 
             this.scale = scale
             keepRatio = true
@@ -28,9 +28,9 @@ class ResizeOption(
 
         @Throws(IllegalArgumentException::class)
         fun size(width: Int, height: Int, keepRatio: Boolean) = apply {
-
-            if (scale != null)
+            if (scale != null) {
                 throw IllegalArgumentException("The scale are already set.")
+            }
 
             this.width = width
             this.height = height

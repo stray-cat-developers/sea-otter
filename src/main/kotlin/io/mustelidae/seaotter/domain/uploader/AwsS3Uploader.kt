@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import io.mustelidae.seaotter.config.AppEnvironment
 import io.mustelidae.seaotter.domain.delivery.Image
+import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.net.URL
@@ -21,7 +22,7 @@ import javax.imageio.ImageIO
 @NotThreadSafe
 internal class AwsS3Uploader(
     private val awsS3: AppEnvironment.AwsS3,
-    override val topicCode: String?
+    override val topicCode: String?,
 ) : Uploader {
     private val s3Client = AmazonS3ClientBuilder.standard()
         .withCredentials(AWSStaticCredentialsProvider(BasicAWSCredentials(awsS3.accessKey, awsS3.secretKey)))
@@ -42,6 +43,24 @@ internal class AwsS3Uploader(
         }
 
         val putObjectRequest = PutObjectRequest(awsS3.bucket, directoryPath.getPath(), ByteArrayInputStream(byteArray), metaData).apply {
+            withCannedAcl(CannedAccessControlList.PublicRead)
+        }
+
+        s3Client.putObject(putObjectRequest)
+        return directoryPath.getPath()
+    }
+
+    override fun upload(multipartFile: MultipartFile): String {
+        val directoryPath = DirectoryPath(awsS3.path, awsS3.shardType, topicCode).apply {
+            appendFileName(multipartFile.originalFilename!!)
+        }
+
+        val metaData = ObjectMetadata().apply {
+            contentLength = multipartFile.bytes.size.toLong()
+            contentType = multipartFile.contentType
+        }
+
+        val putObjectRequest = PutObjectRequest(awsS3.bucket, directoryPath.getPath(), multipartFile.inputStream, metaData).apply {
             withCannedAcl(CannedAccessControlList.PublicRead)
         }
 

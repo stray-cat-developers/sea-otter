@@ -20,10 +20,10 @@ import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.util.Base64Utils
 import org.springframework.util.LinkedMultiValueMap
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.Base64
 import javax.imageio.ImageIO
 
 internal class SimpleUploadControllerTest : IntegrationTestSupport() {
@@ -42,9 +42,9 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
         val replies = mockMvc.perform(
             MockMvcRequestBuilders.multipart(uri)
                 .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE),
         ).andExpect(
-            status().is2xxSuccessful
+            status().is2xxSuccessful,
         ).andReturn()
             .response
             .contentAsString
@@ -65,7 +65,7 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
 
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "PNG", out)
-        val base64 = "data:image/png;base64," + Base64Utils.encodeToString(out.toByteArray())
+        val base64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
         val uri = linkTo<SimpleUploadController> { upload("", false, topicCode) }.toUri()
         val parameters = LinkedMultiValueMap<String, String>().apply {
             add("base64", base64)
@@ -97,12 +97,12 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
 
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "PNG", out)
-        val base64 = "data:image/png;base64," + Base64Utils.encodeToString(out.toByteArray())
+        val base64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
         val base64SafeUrl = base64.encodeBase64UrlToString()
 
         val request = UploadResources.Request(
             base64SafeUrl,
-            false
+            false,
         )
 
         // When
@@ -130,7 +130,7 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
         val imageUrl = "https://t1.daumcdn.net/daumtop_chanel/op/20200723055344399.png"
         val request = UploadResources.RequestOnUrl(
             imageUrl,
-            false
+            false,
         )
 
         val replies = mockMvc.post(linkTo<SimpleUploadController> { upload(request) }.toUri()) {
@@ -163,9 +163,35 @@ internal class SimpleUploadControllerTest : IntegrationTestSupport() {
         val replies = mockMvc.perform(
             MockMvcRequestBuilders.multipart(uri)
                 .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE),
         ).andExpect(
-            status().is2xxSuccessful
+            status().is2xxSuccessful,
+        ).andReturn()
+            .response
+            .contentAsString
+            .fromJsonByContent<List<UploadResources.ReplyOnImage>>()
+        // Then
+        replies.first().asClue {
+            it.width shouldBe bufferedImage.width
+            it.height shouldBe bufferedImage.height
+        }
+    }
+
+    @Test
+    fun uploadMultipartSupportHdr() {
+        // Given
+        val fileName = "denden_RGB_2784x1856.hdr"
+        val file = File(getTestImageFileAsAbsolutePath(fileName))
+        val bufferedImage = Image.from(file).bufferedImage
+
+        // When
+        val uri = linkTo<SimpleUploadController> { upload(MockMultipartFile(file.name, file.inputStream()), false, topicCode) }.toUri()
+        val replies = mockMvc.perform(
+            MockMvcRequestBuilders.multipart(uri)
+                .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE),
+        ).andExpect(
+            status().is2xxSuccessful,
         ).andReturn()
             .response
             .contentAsString

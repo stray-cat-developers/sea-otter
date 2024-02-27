@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.context.request.ServletRequestAttributes
+import org.springframework.web.multipart.MultipartFile
 import java.net.URL
 import java.util.Locale
 
 @Service
 class UploadHandler
 @Autowired constructor(
-    private val appEnvironment: AppEnvironment
+    private val appEnvironment: AppEnvironment,
 ) {
 
     private val uploader = UploadTarget.valueOf(appEnvironment.uploader.uppercase(Locale.getDefault()))
@@ -22,6 +23,12 @@ class UploadHandler
         val uploader = getUploader()
         val pathOfImage = uploader.upload(image)
         return makeUrl(pathOfImage)
+    }
+
+    fun upload(multipartFile: MultipartFile): URL {
+        val uploader = getUploader()
+        val pathOfFile = uploader.upload(multipartFile)
+        return makeUrl(pathOfFile)
     }
 
     private fun getUploader(): Uploader {
@@ -55,8 +62,9 @@ class UploadHandler
      * use magic.
      */
     private fun findTopicCode(): String? {
-        if (RequestContextHolder.getRequestAttributes() == null)
+        if (RequestContextHolder.getRequestAttributes() == null) {
             return null
+        }
 
         return (RequestContextHolder.getRequestAttributes() as ServletRequestAttributes)
             .request.getParameter("topic")

@@ -1,6 +1,8 @@
 package io.mustelidae.seaotter.config
 
 interface ErrorSource {
-    fun getCode(): String
-    fun getMessage(): String?
+    val code: String
+    val message: String?
+    var causeBy: Map<String, Any?>?
+    var refCode: String?
 }

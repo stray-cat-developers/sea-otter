@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage
 
 class CropCommand(private var bufferedImage: BufferedImage) : EditCommand<CropOption> {
     override fun execute(option: CropOption) {
-
         bufferedImage = when (option.type) {
             POINT_SCALE -> {
                 ImgscalrFlabbyImage(bufferedImage)
@@ -22,10 +21,11 @@ class CropCommand(private var bufferedImage: BufferedImage) : EditCommand<CropOp
                     .getBufferedImage()
             }
             POSITION -> {
-                val flabbyImage = if (option.position == CropOption.Position.CENTER)
+                val flabbyImage = if (option.position == CropOption.Position.CENTER) {
                     ImageScalingFlabbyImage(bufferedImage)
-                else
+                } else {
                     ImgscalrFlabbyImage(bufferedImage)
+                }
 
                 flabbyImage.crop(option.width!!, option.height!!)
                 flabbyImage.getBufferedImage()

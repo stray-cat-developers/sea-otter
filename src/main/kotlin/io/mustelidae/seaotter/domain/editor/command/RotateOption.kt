@@ -2,7 +2,7 @@ package io.mustelidae.seaotter.domain.editor.command
 
 class RotateOption(
     val angle: Double?,
-    val flip: Flip?
+    val flip: Flip?,
 ) : Option {
 
     class Builder {

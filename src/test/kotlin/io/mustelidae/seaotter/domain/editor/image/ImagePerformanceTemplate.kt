@@ -18,7 +18,7 @@ abstract class ImagePerformanceTemplate {
         "denden_RGB_2784x1856.png",
         "way_RGB_1568x1044.png",
         "lena_RGB_512x512.tiff",
-        "lena_RGB_512x512.bmp"
+        "lena_RGB_512x512.bmp",
     )
 
     abstract fun resize(bufferedImage: BufferedImage, scale: Double): BufferedImage

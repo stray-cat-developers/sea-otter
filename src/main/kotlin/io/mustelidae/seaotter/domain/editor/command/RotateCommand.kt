@@ -38,12 +38,15 @@ class RotateCommand(private var bufferedImage: BufferedImage) : EditCommand<Rota
 
     private fun convertScalrRotation(angle: Double): Scalr.Rotation? {
         val intOfAngle = angle.toInt()
-        if (intOfAngle == 90)
+        if (intOfAngle == 90) {
             return Scalr.Rotation.CW_90
-        if (intOfAngle == 180)
+        }
+        if (intOfAngle == 180) {
             return Scalr.Rotation.CW_180
-        if (intOfAngle == 270)
+        }
+        if (intOfAngle == 270) {
             return Scalr.Rotation.CW_270
+        }
 
         return null
     }

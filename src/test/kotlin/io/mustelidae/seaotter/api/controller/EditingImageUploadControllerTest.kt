@@ -18,10 +18,10 @@ import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.util.Base64Utils
 import org.springframework.util.LinkedMultiValueMap
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.util.Base64
 import javax.imageio.ImageIO
 
 internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
@@ -48,7 +48,7 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
             MockMvcRequestBuilders.multipart(uri)
                 .file(MockMultipartFile("multiPartFile", fileName, null, file.inputStream()))
                 .params(parameters)
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE),
         ).andExpect(status().is2xxSuccessful)
             .andReturn()
             .response
@@ -73,7 +73,7 @@ internal class EditingImageUploadControllerTest : IntegrationTestSupport() {
 
         val out = ByteArrayOutputStream()
         ImageIO.write(bufferedImage, "PNG", out)
-        val base64 = "data:image/png;base64," + Base64Utils.encodeToString(out.toByteArray())
+        val base64 = "data:image/png;base64," + Base64.getEncoder().encodeToString(out.toByteArray())
         val uri = linkTo<EditingImageUploadController> { upload("", mapOf(), false, topicCode) }.toUri()
         val parameters = LinkedMultiValueMap<String, String>().apply {
             add("base64", base64)

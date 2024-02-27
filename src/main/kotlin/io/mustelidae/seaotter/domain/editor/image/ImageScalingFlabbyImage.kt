@@ -9,7 +9,7 @@ import java.awt.RenderingHints
 import java.awt.image.BufferedImage
 
 class ImageScalingFlabbyImage(
-    private var bufferedImage: BufferedImage
+    private var bufferedImage: BufferedImage,
 ) : FlabbyImage {
 
     /**
@@ -39,11 +39,13 @@ class ImageScalingFlabbyImage(
      * Crop an image based on center.
      */
     override fun crop(width: Int, height: Int) {
-        if (bufferedImage.width < width || bufferedImage.height < height)
+        if (bufferedImage.width < width || bufferedImage.height < height) {
             throw IllegalArgumentException("invalid crop coordinates")
+        }
 
-        if (isSameSize(width, height))
+        if (isSameSize(width, height)) {
             return
+        }
 
         val centerOfX = bufferedImage.width / 2
         val centerOfY = bufferedImage.height / 2
@@ -63,8 +65,9 @@ class ImageScalingFlabbyImage(
      * Both coordinates must be entered as positive integers, and y1, y2 are calculated automatically by changing to a negative number.
      */
     override fun crop(x1: Int, y1: Int, x2: Int, y2: Int) {
-        if (x1 < 0 || x2 <= x1 || y1 < 0 || y2 <= y1 || x2 > bufferedImage.width || y2 > bufferedImage.height)
+        if (x1 < 0 || x2 <= x1 || y1 < 0 || y2 <= y1 || x2 > bufferedImage.width || y2 > bufferedImage.height) {
             throw IllegalArgumentException("invalid crop coordinates image size is ${bufferedImage.width}, ${bufferedImage.height}")
+        }
 
         val width = x2 - x1
         val height = y2 - y1
@@ -87,9 +90,10 @@ class ImageScalingFlabbyImage(
     }
 
     private fun choiceFilter(width: Int, height: Int): ResampleFilter {
-        return if (this.getBufferedImage().width < width && this.getBufferedImage().height < height)
+        return if (this.getBufferedImage().width < width && this.getBufferedImage().height < height) {
             ResampleFilters.getMitchellFilter()
-        else
+        } else {
             ResampleFilters.getLanczos3Filter()
+        }
     }
 }

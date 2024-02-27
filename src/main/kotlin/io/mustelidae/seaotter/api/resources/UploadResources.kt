@@ -9,13 +9,13 @@ class UploadResources {
     @Schema(name = "Upload.Request")
     data class Request(
         val base64: String,
-        val hasOriginal: Boolean?
+        val hasOriginal: Boolean?,
     )
 
     @Schema(name = "Upload.RequestOnUrl")
     data class RequestOnUrl(
         val url: String,
-        val hasOriginal: Boolean?
+        val hasOriginal: Boolean?,
     )
 
     @Schema(name = "Upload.ReplyOnImage")
@@ -24,7 +24,7 @@ class UploadResources {
         val height: Int,
         val path: String,
         val format: String,
-        val original: Boolean
+        val original: Boolean,
     ) {
         companion object {
             fun from(pair: Pair<Image, URL>): ReplyOnImage {
@@ -35,7 +35,7 @@ class UploadResources {
                     image.getMeta().height,
                     url,
                     image.getExtension(),
-                    image.isOriginal
+                    image.isOriginal,
                 )
             }
         }
